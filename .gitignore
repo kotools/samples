@@ -1,0 +1,97 @@
+################################### Draw.io ####################################
+
+# File extensions
+*.drawio.bkp
+*.drawio.dtmp
+
+#################################### Gradle ####################################
+
+# Directories
+build/
+.gradle/
+
+# Specific files
+!gradle-wrapper.jar
+
+################################ Java & Kotlin #################################
+
+# Directories
+.mtj.tmp/
+target/
+
+# File extensions
+*.class
+*.ctxt
+*.ear
+*.hprof
+*.log
+*.nar
+*.rar
+*.tar.gz
+*.war
+*.zip
+
+# Specific files
+hs_err_pid*
+Playground.kt
+PlaygroundTest.java
+
+################################ Jetbrains IDEs ################################
+
+# Directories
+.idea*/
+cmake-build-*/
+out/
+
+# File extensions
+*.iml
+*.ipr
+*.iws
+
+# Specific files
+atlassian-ide-plugin.xml
+com_crashlytics_export_strings.xml
+crashlytics*.properties
+fabric.properties
+
+#################################### macOS #####################################
+
+# Directories
+.apdisk/
+.AppleD*/
+Network Trash Folder/
+Temporary Items/
+
+# File extensions
+._*
+
+# Specific files
+.AppleDouble
+.com.apple.timemachine.donotpresent
+.DocumentRevisions-V100
+.DS_Store
+.fseventsd
+.LSOverride
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+################################### Windows ####################################
+
+# Directories
+$RECYCLE.BIN/
+
+# File extensions
+*.cab
+*.exe
+*.ini
+*.lnk
+*.msi*
+*.msm
+*.msp
+*.stackdump
+
+# Specific files
+ehthumbs*.db
+Thumbs.db*
