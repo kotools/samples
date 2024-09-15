@@ -107,6 +107,12 @@ When generating the documentation using Dokka, Kotools Samples will inline both
 Kotlin and Java examples into the documentation, making them visible online and
 in the IDE.
 
+## 📣 Show Your Support
+
+If you find this project valuable, show your support by giving us a ⭐️ on
+GitHub.
+Your feedback and engagement mean the world to us!
+
 ## 🚧 Contributing
 
 Contributions are welcome! Feel free to submit bug reports, feature requests, or
