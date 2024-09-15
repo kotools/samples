@@ -72,6 +72,8 @@ class HelloKotlinSample {
 And a Java sample:
 
 ```java
+// src/sample/java/HelloJavaSample.java
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -89,6 +91,8 @@ class HelloJavaSample {
 Reference these samples in your Dokka documentation:
 
 ```kotlin
+// src/main/kotlin/Hello.kt
+
 /**
  * Greets the user with the specified [name].
  *
