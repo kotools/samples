@@ -48,7 +48,14 @@ even more flexibility and broader application of the plugin.
 - **Seamless integration:** Works effortlessly with Kotlin, Java, and Dokka,
   smoothly integrating into your Gradle build process.
 
-## 🧑‍💻 Usage
+## 🧑‍💻 Usage example
+
+Kotools Samples ensures that your code samples are integrated into your
+documentation without affecting your main sources.
+When generating the documentation with Dokka, the plugin temporarily modifies
+the main sources to inline the samples, and restores them afterward to avoid
+polluting the main codebase.
+This process is transparent and automatic.
 
 Here's a Kotlin sample:
 
@@ -107,9 +114,10 @@ Reference these samples in your Dokka documentation:
 fun greet(name: String = "World"): String = "Hello $name!"
 ```
 
-When generating the documentation using Dokka, Kotools Samples will inline both
-Kotlin and Java examples into the documentation, making them visible online and
-in the IDE.
+When you generate the documentation with Dokka, Kotools Samples will inline both
+the Kotlin and Java examples directly in the documentation and automatically
+restore the main sources afterward, ensuring that the examples do not pollute
+your actual codebase.
 
 ## 📣 Show Your Support
 
