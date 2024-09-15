@@ -17,9 +17,10 @@ Unlike many Kotlin libraries, such as Jetpack Compose, Kotools Samples ensures
 your examples are not only available online but also accessible directly in the
 IDE during development.
 
-Currently, **Kotools Samples supports the Kotlin/JVM platform**, and **Kotlin
-Multiplatform support is planned for future releases**, allowing for even more
-flexibility and broader application of the plugin.
+Currently, **Kotools Samples is not available yet**, but will **support the
+Kotlin/JVM platform** starting from its first release.
+**Kotlin Multiplatform support is planned for future releases**, allowing for
+even more flexibility and broader application of the plugin.
 
 [kotlin]: https://kotlinlang.org
 [kotlin-embedded-badge]: https://img.shields.io/badge/Embedded_Kotlin-1.8.22-blue?logo=kotlin
@@ -46,13 +47,6 @@ flexibility and broader application of the plugin.
   Multiplatform support in future releases.
 - **Seamless integration:** Works effortlessly with Kotlin, Java, and Dokka,
   smoothly integrating into your Gradle build process.
-
-## 🛠️ Installation
-
-> Kotools Samples is not available yet, but you can see the
-> [Kotools Types][kotools-types] library for a full usage example.
-
-[kotools-types]: https://github.com/kotools/types
 
 ## 🧑‍💻 Usage
 
@@ -135,5 +129,5 @@ This project is licensed under the [MIT License](LICENSE.txt).
 With **Kotools Samples**, you can provide **inlined, read-only code samples** in
 **Kotlin or Java**, ensuring your documentation remains accurate, visible, and
 reliable both online and in the IDE.
-Start using Kotools Samples today and stay tuned for
-**Kotlin Multiplatform support** in future releases!
+Stay tuned for the **first release of Kotools Samples with Kotlin/JVM support**,
+and **Kotlin Multiplatform support** in future releases!
