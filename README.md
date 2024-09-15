@@ -1,9 +1,5 @@
 # Kotools Samples
 
-[![Kotools Types][kotools-samples-badge]][kotools-samples-project]
-[![Embedded Kotlin][kotlin-embedded-badge]][kotlin]
-[![Kotlin language][kotlin-language-badge]][kotlin]
-
 **Kotools Samples** is a Gradle plugin designed to help Kotlin library authors
 integrate **read-only, non-editable samples** into their documentation using
 Dokka.
@@ -21,12 +17,6 @@ Currently, **Kotools Samples is not available yet**, but will **support the
 Kotlin/JVM platform** starting from its first release.
 **Kotlin Multiplatform support is planned for future releases**, allowing for
 even more flexibility and broader application of the plugin.
-
-[kotlin]: https://kotlinlang.org
-[kotlin-embedded-badge]: https://img.shields.io/badge/Embedded_Kotlin-1.8.22-blue?logo=kotlin
-[kotlin-language-badge]: https://img.shields.io/badge/Kotlin_language-1.5-blue?logo=kotlin
-[kotools-samples-badge]: https://img.shields.io/maven-central/v/org.kotools/samples?label=Latest
-[kotools-samples-project]: https://github.com/kotools/samples
 
 ## ⭐️ Key Features
 
