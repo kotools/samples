@@ -109,6 +109,13 @@ the Kotlin and Java examples directly in the documentation and automatically
 restore the main sources afterward, ensuring that the examples do not pollute
 your actual codebase.
 
+## 🤝 Community
+
+Join our thriving community! Connect, share insights, and collaborate with
+fellow developers to make Kotools Samples even more powerful.
+
+- [#kotools on Kotlin Slack](https://kotlinlang.slack.com/archives/C05H0L1LD25)
+
 ## 📣 Show Your Support
 
 If you find this project valuable, show your support by giving us a ⭐️ on
