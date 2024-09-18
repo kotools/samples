@@ -1,0 +1,45 @@
+name: Integration
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.api'
+      - '**.kt'
+      - '**.kts'
+      - .github/workflows/integration.yml
+      - gradle/**
+      - gradle.properties
+      - gradlew
+      - gradlew.bat
+  push:
+    branches: [ main ]
+    paths:
+      - '**.api'
+      - '**.kt'
+      - '**.kts'
+      - .github/workflows/integration.yml
+      - gradle/**
+      - gradle.properties
+      - gradlew
+      - gradlew.bat
+  workflow_dispatch:
+jobs:
+  check-jvm:
+    name: Check JVM build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.7
+      - name: Setup Java
+        uses: actions/setup-java@v4.2.2
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v3.5.0
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3.5.0
+        with:
+          gradle-home-cache-cleanup: true
+      - name: Run all checks
+        run: ./gradlew :jvm:check

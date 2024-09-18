@@ -1,0 +1,20 @@
+name: Dependency submission
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.gradle.kts'
+      - .github/workflows/dependency-submission.yml
+      - gradle/libs.versions.toml
+      - yarn.lock
+jobs:
+  submit:
+    name: Submit to GitHub
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.7
+      - name: Generate and submit dependency graph
+        uses: gradle/actions/dependency-submission@v3.5.0
