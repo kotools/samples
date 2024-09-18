@@ -1,0 +1,9 @@
+[versions]
+dokka = "1.8.20"
+kotlin = "1.8.22"
+
+[libraries]
+dokka-gradle-plugin = { group = "org.jetbrains.dokka", name = "org.jetbrains.dokka.gradle.plugin", version.ref = "dokka" }
+kotlin-bom = { group = "org.jetbrains.kotlin", name = "kotlin-bom", version.ref = "kotlin" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-test-junit5 = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit5", version.ref = "kotlin" }
