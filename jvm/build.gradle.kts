@@ -5,7 +5,10 @@ version = "0.1.0-SNAPSHOT"
 
 repositories.mavenCentral()
 
-kotlin.explicitApi()
+kotlin {
+    explicitApi()
+    jvmToolchain(17)
+}
 
 dependencies {
     implementation(platform(libs.kotlin.bom))
