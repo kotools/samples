@@ -16,5 +16,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.1.7
+      - name: Setup Java
+        uses: actions/setup-java@v4.2.2
+        with:
+          distribution: temurin
+          java-version: 17
       - name: Generate and submit dependency graph
         uses: gradle/actions/dependency-submission@v3.5.0
