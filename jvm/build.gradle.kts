@@ -1,5 +1,8 @@
 plugins { `kotlin-dsl` }
 
+group = "org.kotools"
+version = "0.1.0-SNAPSHOT"
+
 repositories.mavenCentral()
 
 kotlin.explicitApi()
