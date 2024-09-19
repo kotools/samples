@@ -24,9 +24,12 @@ on:
       - gradlew.bat
   workflow_dispatch:
 jobs:
-  check-jvm:
-    name: Check JVM build
+  checks:
+    name: Checks
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [ jvm, jvm-demo ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.1.7
@@ -42,4 +45,6 @@ jobs:
         with:
           gradle-home-cache-cleanup: true
       - name: Run all checks
-        run: ./gradlew :jvm:check
+        run: ./gradlew :$PROJECT:check
+        env:
+          PROJECT: ${{ matrix.project }}
