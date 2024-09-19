@@ -109,6 +109,8 @@ the Kotlin and Java examples directly in the documentation and automatically
 restore the main sources afterward, ensuring that the examples do not pollute
 your actual codebase.
 
+![Screenshot](jvm-demo/screenshot.png)
+
 ## 🤝 Community
 
 Join our thriving community! Connect, share insights, and collaborate with
