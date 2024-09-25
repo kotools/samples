@@ -1,6 +1,6 @@
 [versions]
 dokka = "1.8.20"
-gradle-plugin-publish = "1.2.1"
+gradle-plugin-publish = "1.3.0"
 kotlin = "1.8.22"
 
 [plugins]
