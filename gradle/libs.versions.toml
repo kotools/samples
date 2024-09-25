@@ -1,9 +1,11 @@
 [versions]
 dokka = "1.8.20"
+gradle-plugin-publish = "1.2.1"
 kotlin = "1.8.22"
 
 [plugins]
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+gradle-plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-plugin-publish" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotools-samples-jvm = { id = "org.kotools.samples.jvm" }
 
