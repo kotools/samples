@@ -13,11 +13,17 @@ kotlin {
     jvmToolchain(17)
 }
 
-gradlePlugin.plugins.named("org.kotools.samples.jvm").configure {
-    displayName = "Kotools Samples"
-    description = "Gradle plugin that inlines read-only Kotlin and Java code " +
-            "samples into Dokka documentation, ensuring they are always " +
-            "correct and visible not only online but also in IDEs."
+@Suppress("UnstableApiUsage")
+gradlePlugin {
+    vcsUrl = "https://github.com/kotools/samples"
+    website = vcsUrl
+    plugins.named("org.kotools.samples.jvm").configure {
+        displayName = "Kotools Samples"
+        description = "Gradle plugin that inlines read-only Kotlin and Java " +
+                "code samples into Dokka documentation, ensuring they are " +
+                "always correct and visible not only online but also in IDEs."
+        tags = setOf("kotlin", "java", "dokka")
+    }
 }
 
 dependencies {
