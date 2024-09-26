@@ -1,5 +1,6 @@
 plugins {
     `kotlin-dsl`
+    signing
     alias(libs.plugins.gradle.plugin.publish)
 }
 
@@ -24,6 +25,12 @@ gradlePlugin {
                 "always correct and visible not only online but also in IDEs."
         tags = setOf("kotlin", "java", "dokka")
     }
+}
+
+signing {
+    val privateKey: String? = System.getenv("GPG_PRIVATE_KEY")
+    val password: String? = System.getenv("GPG_PASSWORD")
+    useInMemoryPgpKeys(privateKey, password)
 }
 
 dependencies {
