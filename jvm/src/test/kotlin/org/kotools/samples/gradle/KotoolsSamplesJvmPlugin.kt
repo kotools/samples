@@ -69,6 +69,15 @@ class KotoolsSamplesJvmPluginTest {
         assertEquals(expected, actual)
     }
 
+    private val validProject: Project
+        get() {
+            val project: Project = ProjectBuilder.builder()
+                .build()
+            project.pluginManager.apply("org.jetbrains.kotlin.jvm")
+            project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
+            return project
+        }
+
     @Test
     fun `apply should create 'sample' Kotlin source set`() {
         val project: Project = this.validProject
@@ -129,15 +138,6 @@ class KotoolsSamplesJvmPluginTest {
         val message = "Java sample directory should be included in ${test}."
         assertTrue(actual, message)
     }
-
-    private val validProject: Project
-        get() {
-            val project: Project = ProjectBuilder.builder()
-                .build()
-            project.pluginManager.apply("org.jetbrains.kotlin.jvm")
-            project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
-            return project
-        }
 
     // ------------------------------ Conversions ------------------------------
 
