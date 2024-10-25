@@ -1,3 +1,6 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
     `kotlin-dsl`
     signing
@@ -40,9 +43,17 @@ dependencies {
     testImplementation(libs.kotlin.test.junit5)
 }
 
-tasks.withType<ValidatePlugins>().configureEach {
-    failOnWarning.set(true)
-    enableStricterValidation.set(true)
+tasks {
+    withType<ValidatePlugins>().configureEach {
+        failOnWarning.set(true)
+        enableStricterValidation.set(true)
+    }
+    withType<AbstractTestTask>().configureEach {
+        testLogging {
+            events = setOf(TestLogEvent.FAILED)
+            exceptionFormat = TestExceptionFormat.FULL
+            showStackTraces = false
+        }
+    }
+    test.configure(Test::useJUnitPlatform)
 }
-
-tasks.test.configure(Test::useJUnitPlatform)
