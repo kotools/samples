@@ -6,8 +6,10 @@ import org.gradle.api.file.Directory
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.register
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+import org.kotools.samples.CheckSampleSources
 import org.kotools.samples.internal.KotlinJvmPluginNotFound
 import java.util.Objects
 
@@ -36,6 +38,7 @@ public class KotoolsSamplesJvmPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         this.kotlinSourceSets(project)
         this.javaSourceSets(project)
+        this.checkSampleSourcesTask(project)
     }
 
     private fun kotlinSourceSets(project: Project) {
@@ -58,8 +61,21 @@ public class KotoolsSamplesJvmPlugin : Plugin<Project> {
             .configure { this.java.srcDir(javaSampleDirectory) }
     }
 
-    private fun javaSampleDirectory(project: Project): Directory =
-        project.layout.projectDirectory.dir("src/sample/java")
+    private fun javaSampleDirectory(project: Project): Directory = this
+        .sourceDirectory(project)
+        .dir("sample/java")
+
+    private fun checkSampleSourcesTask(project: Project) {
+        val sourceDirectory: Directory = this.sourceDirectory(project)
+        project.tasks.register<CheckSampleSources>("checkSampleSources")
+            .configure {
+                this.description = "Checks the content of sample sources."
+                this.sourceDirectory.set(sourceDirectory)
+            }
+    }
+
+    private fun sourceDirectory(project: Project): Directory =
+        project.layout.projectDirectory.dir("src")
 
     // ------------------------------ Conversions ------------------------------
 

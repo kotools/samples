@@ -11,6 +11,7 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.testfixtures.ProjectBuilder
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+import org.kotools.samples.CheckSampleSources
 import org.kotools.samples.internal.KotlinJvmPluginNotFound
 import java.util.Objects
 import kotlin.test.Test
@@ -137,6 +138,21 @@ class KotoolsSamplesJvmPluginTest {
         val actual: Boolean = javaSample.asFile in sourceDirectories
         val message = "Java sample directory should be included in ${test}."
         assertTrue(actual, message)
+    }
+
+    @Test
+    fun `apply should create 'checkSampleSources' task`() {
+        val project: Project = this.validProject
+        val taskName = "checkSampleSources"
+        val actual: CheckSampleSources? = project.tasks.findByName(taskName)
+                as? CheckSampleSources
+        assertNotNull(actual, "The '$taskName' Gradle task is not found.")
+        val expectedDescription = "Checks the content of sample sources."
+        assertEquals(expectedDescription, actual.description)
+        val expectedSourceDirectory: Directory =
+            project.layout.projectDirectory.dir("src")
+        val actualSourceDirectory: Directory = actual.sourceDirectory.get()
+        assertEquals(expectedSourceDirectory, actualSourceDirectory)
     }
 
     // ------------------------------ Conversions ------------------------------
