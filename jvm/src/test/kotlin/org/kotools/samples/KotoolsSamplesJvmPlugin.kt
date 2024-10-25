@@ -1,11 +1,13 @@
 package org.kotools.samples
 
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.internal.plugins.PluginApplicationException
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.testfixtures.ProjectBuilder
@@ -14,6 +16,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.kotools.samples.internal.KotlinJvmPluginNotFound
 import java.util.Objects
 import kotlin.test.Test
+import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
@@ -143,8 +146,8 @@ class KotoolsSamplesJvmPluginTest {
     fun `apply should create 'checkSampleSources' task`() {
         val project: Project = this.validProject
         val taskName = "checkSampleSources"
-        val actual: CheckSampleSources? = project.tasks.findByName(taskName)
-                as? CheckSampleSources
+        val actual: CheckSampleSources? =
+            project.tasks.findByName(taskName) as? CheckSampleSources
         assertNotNull(actual, "The '$taskName' Gradle task is not found.")
         val expectedDescription = "Checks the content of sample sources."
         assertEquals(expectedDescription, actual.description)
@@ -152,6 +155,31 @@ class KotoolsSamplesJvmPluginTest {
             project.layout.projectDirectory.dir("src")
         val actualSourceDirectory: Directory = actual.sourceDirectory.get()
         assertEquals(expectedSourceDirectory, actualSourceDirectory)
+    }
+
+    @Test
+    fun `apply should create 'extractSamples' task`() {
+        val project: Project = this.validProject
+        val taskName = "extractSamples"
+        val actual: ExtractSamples? =
+            project.tasks.findByName(taskName) as? ExtractSamples
+        assertNotNull(actual, "The '$taskName' Gradle task is not found.")
+        val expectedDescription = "Extracts samples for KDoc."
+        assertEquals(expectedDescription, actual.description)
+        val expectedDependencies: List<TaskProvider<Task>> = project.tasks
+            .named("checkSampleSources")
+            .let(::listOf)
+        val actualDependencies: List<Any> = actual.dependsOn.toList()
+        assertContentEquals(expectedDependencies, actualDependencies)
+        val expectedSourceDirectory: Directory =
+            project.layout.projectDirectory.dir("src")
+        val actualSourceDirectory: Directory = actual.sourceDirectory.get()
+        assertEquals(expectedSourceDirectory, actualSourceDirectory)
+        val expectedOutputDirectory: Directory = project.layout.buildDirectory
+            .dir("samples/extracted")
+            .get()
+        val actualOutputDirectory: Directory = actual.outputDirectory.get()
+        assertEquals(expectedOutputDirectory, actualOutputDirectory)
     }
 
     // ------------------------------ Conversions ------------------------------

@@ -4,6 +4,8 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.register
@@ -37,7 +39,9 @@ public class KotoolsSamplesJvmPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         this.kotlinSourceSets(project)
         this.javaSourceSets(project)
-        this.checkSampleSourcesTask(project)
+        val checkSampleSources: TaskProvider<CheckSampleSources> =
+            this.checkSampleSourcesTask(project)
+        this.extractSamplesTask(project, checkSampleSources)
     }
 
     private fun kotlinSourceSets(project: Project) {
@@ -64,17 +68,35 @@ public class KotoolsSamplesJvmPlugin : Plugin<Project> {
         .sourceDirectory(project)
         .dir("sample/java")
 
-    private fun checkSampleSourcesTask(project: Project) {
+    private fun checkSampleSourcesTask(
+        project: Project
+    ): TaskProvider<CheckSampleSources> {
         val sourceDirectory: Directory = this.sourceDirectory(project)
-        project.tasks.register<CheckSampleSources>("checkSampleSources")
-            .configure {
-                this.description = "Checks the content of sample sources."
-                this.sourceDirectory.set(sourceDirectory)
-            }
+        return project.tasks.register<CheckSampleSources>(
+            "checkSampleSources"
+        ) {
+            this.description = "Checks the content of sample sources."
+            this.sourceDirectory.set(sourceDirectory)
+        }
     }
 
     private fun sourceDirectory(project: Project): Directory =
         project.layout.projectDirectory.dir("src")
+
+    private fun extractSamplesTask(
+        project: Project,
+        checkSampleSources: TaskProvider<CheckSampleSources>
+    ) {
+        val sourceDirectory: Directory = this.sourceDirectory(project)
+        val outputDirectory: Provider<Directory> =
+            project.layout.buildDirectory.dir("samples/extracted")
+        project.tasks.register<ExtractSamples>("extractSamples").configure {
+            this.description = "Extracts samples for KDoc."
+            this.dependsOn += checkSampleSources
+            this.sourceDirectory.set(sourceDirectory)
+            this.outputDirectory.set(outputDirectory)
+        }
+    }
 
     // ------------------------------ Conversions ------------------------------
 
