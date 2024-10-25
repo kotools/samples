@@ -41,7 +41,9 @@ public class KotoolsSamplesJvmPlugin : Plugin<Project> {
         this.javaSourceSets(project)
         val checkSampleSources: TaskProvider<CheckSampleSources> =
             this.checkSampleSourcesTask(project)
-        this.extractSamplesTask(project, checkSampleSources)
+        val extractSamples: TaskProvider<ExtractSamples> =
+            this.extractSamplesTask(project, checkSampleSources)
+        this.checkSampleReferencesTask(project, extractSamples)
     }
 
     private fun kotlinSourceSets(project: Project) {
@@ -80,23 +82,39 @@ public class KotoolsSamplesJvmPlugin : Plugin<Project> {
         }
     }
 
-    private fun sourceDirectory(project: Project): Directory =
-        project.layout.projectDirectory.dir("src")
-
     private fun extractSamplesTask(
         project: Project,
         checkSampleSources: TaskProvider<CheckSampleSources>
-    ) {
+    ): TaskProvider<ExtractSamples> {
         val sourceDirectory: Directory = this.sourceDirectory(project)
         val outputDirectory: Provider<Directory> =
             project.layout.buildDirectory.dir("samples/extracted")
-        project.tasks.register<ExtractSamples>("extractSamples").configure {
+        return project.tasks.register<ExtractSamples>("extractSamples") {
             this.description = "Extracts samples for KDoc."
             this.dependsOn += checkSampleSources
             this.sourceDirectory.set(sourceDirectory)
             this.outputDirectory.set(outputDirectory)
         }
     }
+
+    private fun checkSampleReferencesTask(
+        project: Project,
+        extractSamples: TaskProvider<ExtractSamples>
+    ) {
+        val sourceDirectory: Directory = this.sourceDirectory(project)
+        val extractedSamplesDirectory: Provider<Directory> =
+            extractSamples.flatMap(ExtractSamples::outputDirectory)
+        project.tasks.register<CheckSampleReferences>("checkSampleReferences")
+            .configure {
+                this.description = "Checks sample references from KDoc."
+                this.dependsOn += extractSamples
+                this.sourceDirectory.set(sourceDirectory)
+                this.extractedSamplesDirectory.set(extractedSamplesDirectory)
+            }
+    }
+
+    private fun sourceDirectory(project: Project): Directory =
+        project.layout.projectDirectory.dir("src")
 
     // ------------------------------ Conversions ------------------------------
 

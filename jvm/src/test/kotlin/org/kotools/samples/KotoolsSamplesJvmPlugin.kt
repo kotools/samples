@@ -10,6 +10,7 @@ import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.named
 import org.gradle.testfixtures.ProjectBuilder
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
@@ -181,6 +182,36 @@ class KotoolsSamplesJvmPluginTest {
             .get()
         val actualOutputDirectory: Directory = actual.outputDirectory.get()
         assertEquals(expectedOutputDirectory, actualOutputDirectory)
+    }
+
+    @Test
+    fun `apply should create 'checkSampleReferences' task`() {
+        val project: Project = this.validProject
+        val taskName = "checkSampleReferences"
+        val actual: CheckSampleReferences? =
+            project.tasks.findByName(taskName) as? CheckSampleReferences
+        assertNotNull(actual, "The '$taskName' Gradle task is not found.")
+        val expectedDescription = "Checks sample references from KDoc."
+        assertEquals(expectedDescription, actual.description)
+        val extractSamples: TaskProvider<ExtractSamples> =
+            project.tasks.named<ExtractSamples>("extractSamples")
+        val expectedDependencies: List<TaskProvider<ExtractSamples>> =
+            listOf(extractSamples)
+        val actualDependencies: List<Any> = actual.dependsOn.toList()
+        assertContentEquals(expectedDependencies, actualDependencies)
+        val expectedSourceDirectory: Directory =
+            project.layout.projectDirectory.dir("src")
+        val actualSourceDirectory: Directory = actual.sourceDirectory.get()
+        assertEquals(expectedSourceDirectory, actualSourceDirectory)
+        val expectedExtractedSamplesDirectory: Directory = extractSamples
+            .flatMap(ExtractSamples::outputDirectory)
+            .get()
+        val actualExtractedSamplesDirectory: Directory =
+            actual.extractedSamplesDirectory.get()
+        assertEquals(
+            expectedExtractedSamplesDirectory,
+            actualExtractedSamplesDirectory
+        )
     }
 
     // ------------------------------ Conversions ------------------------------
