@@ -1,4 +1,4 @@
-package org.kotools.samples.gradle
+package org.kotools.samples
 
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
@@ -11,7 +11,6 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.testfixtures.ProjectBuilder
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
-import org.kotools.samples.CheckSampleSources
 import org.kotools.samples.internal.KotlinJvmPluginNotFound
 import java.util.Objects
 import kotlin.test.Test
