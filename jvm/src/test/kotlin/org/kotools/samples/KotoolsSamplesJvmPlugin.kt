@@ -166,9 +166,10 @@ class KotoolsSamplesJvmPluginTest {
         assertNotNull(actual, "The '$taskName' Gradle task is not found.")
         val expectedDescription = "Extracts samples for KDoc."
         assertEquals(expectedDescription, actual.description)
-        val expectedDependencies: List<TaskProvider<Task>> = project.tasks
-            .named("checkSampleSources")
-            .let(::listOf)
+        val checkSampleSources: TaskProvider<Task> =
+            project.tasks.named("checkSampleSources")
+        val expectedDependencies: List<TaskProvider<Task>> =
+            listOf(checkSampleSources)
         val actualDependencies: List<Any> = actual.dependsOn.toList()
         assertContentEquals(expectedDependencies, actualDependencies)
         val expectedSourceDirectory: Directory =
