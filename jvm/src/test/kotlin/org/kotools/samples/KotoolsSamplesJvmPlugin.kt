@@ -76,8 +76,7 @@ class KotoolsSamplesJvmPluginTest {
     @Test
     fun `apply should create 'sample' Kotlin source set`() {
         val project = Project()
-        project.pluginManager.apply(KotlinPlatformJvmPlugin::class)
-        project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
+            .applyKotlinAndKotoolsSamplesJvmPlugins()
         val kotlin: KotlinJvmProjectExtension = project.extensions.getByType()
         val sample: KotlinSourceSet? = kotlin.sourceSets.findByName("sample")
         val plugin = KotoolsSamplesJvmPlugin()
@@ -102,8 +101,7 @@ class KotoolsSamplesJvmPluginTest {
     @Test
     fun `apply should configure 'main' Kotlin source set`() {
         val project = Project()
-        project.pluginManager.apply(KotlinPlatformJvmPlugin::class)
-        project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
+            .applyKotlinAndKotoolsSamplesJvmPlugins()
         val kotlin: KotlinJvmProjectExtension = project.extensions.getByType()
         val main: KotlinSourceSet = kotlin.sourceSets.getByName("main")
         val sample: KotlinSourceSet = kotlin.sourceSets.getByName("sample")
@@ -115,8 +113,7 @@ class KotoolsSamplesJvmPluginTest {
     @Test
     fun `apply should configure 'test' Kotlin source set`() {
         val project = Project()
-        project.pluginManager.apply(KotlinPlatformJvmPlugin::class)
-        project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
+            .applyKotlinAndKotoolsSamplesJvmPlugins()
         val kotlin: KotlinJvmProjectExtension = project.extensions.getByType()
         val sample: KotlinSourceSet = kotlin.sourceSets.getByName("sample")
         val test: KotlinSourceSet = kotlin.sourceSets.getByName("test")
@@ -128,8 +125,7 @@ class KotoolsSamplesJvmPluginTest {
     @Test
     fun `apply should configure 'test' Java source set`() {
         val project = Project()
-        project.pluginManager.apply(KotlinPlatformJvmPlugin::class)
-        project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
+            .applyKotlinAndKotoolsSamplesJvmPlugins()
         val test: SourceSet = project.extensions
             .getByType<JavaPluginExtension>()
             .sourceSets
@@ -145,8 +141,7 @@ class KotoolsSamplesJvmPluginTest {
     @Test
     fun `apply should create 'checkSampleSources' task`() {
         val project = Project()
-        project.pluginManager.apply(KotlinPlatformJvmPlugin::class)
-        project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
+            .applyKotlinAndKotoolsSamplesJvmPlugins()
         val taskName = "checkSampleSources"
         val actual: CheckSampleSources? =
             project.tasks.findByName(taskName) as? CheckSampleSources
@@ -162,8 +157,7 @@ class KotoolsSamplesJvmPluginTest {
     @Test
     fun `apply should create 'extractSamples' task`() {
         val project = Project()
-        project.pluginManager.apply(KotlinPlatformJvmPlugin::class)
-        project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
+            .applyKotlinAndKotoolsSamplesJvmPlugins()
         val taskName = "extractSamples"
         val actual: ExtractSamples? =
             project.tasks.findByName(taskName) as? ExtractSamples
@@ -190,8 +184,7 @@ class KotoolsSamplesJvmPluginTest {
     @Test
     fun `apply should create 'checkSampleReferences' task`() {
         val project = Project()
-        project.pluginManager.apply(KotlinPlatformJvmPlugin::class)
-        project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
+            .applyKotlinAndKotoolsSamplesJvmPlugins()
         val taskName = "checkSampleReferences"
         val actual: CheckSampleReferences? =
             project.tasks.findByName(taskName) as? CheckSampleReferences
@@ -234,3 +227,9 @@ class KotoolsSamplesJvmPluginTest {
 private fun Project(): Project = ProjectBuilder.builder()
     .withName("test")
     .build()
+
+private fun Project.applyKotlinAndKotoolsSamplesJvmPlugins(): Project {
+    this.pluginManager.apply(KotlinPlatformJvmPlugin::class)
+    this.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
+    return this
+}
