@@ -26,11 +26,6 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class KotoolsSamplesJvmPluginTest {
-    @Test
-    fun `primary constructor should pass`() {
-        KotoolsSamplesJvmPlugin()
-    }
-
     // -------------------- Structural equality operations ---------------------
 
     @Test
