@@ -13,6 +13,7 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.testfixtures.ProjectBuilder
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.kotools.samples.internal.KotlinJvmPluginNotFound
 import java.util.Objects
@@ -62,8 +63,7 @@ class KotoolsSamplesJvmPluginTest {
 
     @Test
     fun `apply should fail if Kotlin JVM plugin wasn't applied to project`() {
-        val project: Project = ProjectBuilder.builder()
-            .build()
+        val project = Project()
         val exception: PluginApplicationException = assertFailsWith {
             project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
         }
@@ -73,18 +73,11 @@ class KotoolsSamplesJvmPluginTest {
         assertEquals(expected, actual)
     }
 
-    private val validProject: Project
-        get() {
-            val project: Project = ProjectBuilder.builder()
-                .build()
-            project.pluginManager.apply("org.jetbrains.kotlin.jvm")
-            project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
-            return project
-        }
-
     @Test
     fun `apply should create 'sample' Kotlin source set`() {
-        val project: Project = this.validProject
+        val project = Project()
+        project.pluginManager.apply(KotlinPlatformJvmPlugin::class)
+        project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
         val kotlin: KotlinJvmProjectExtension = project.extensions.getByType()
         val sample: KotlinSourceSet? = kotlin.sourceSets.findByName("sample")
         val plugin = KotoolsSamplesJvmPlugin()
@@ -108,8 +101,10 @@ class KotoolsSamplesJvmPluginTest {
 
     @Test
     fun `apply should configure 'main' Kotlin source set`() {
-        val kotlin: KotlinJvmProjectExtension =
-            this.validProject.extensions.getByType()
+        val project = Project()
+        project.pluginManager.apply(KotlinPlatformJvmPlugin::class)
+        project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
+        val kotlin: KotlinJvmProjectExtension = project.extensions.getByType()
         val main: KotlinSourceSet = kotlin.sourceSets.getByName("main")
         val sample: KotlinSourceSet = kotlin.sourceSets.getByName("sample")
         val actual: Boolean = main in sample.dependsOn
@@ -119,8 +114,10 @@ class KotoolsSamplesJvmPluginTest {
 
     @Test
     fun `apply should configure 'test' Kotlin source set`() {
-        val kotlin: KotlinJvmProjectExtension =
-            this.validProject.extensions.getByType()
+        val project = Project()
+        project.pluginManager.apply(KotlinPlatformJvmPlugin::class)
+        project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
+        val kotlin: KotlinJvmProjectExtension = project.extensions.getByType()
         val sample: KotlinSourceSet = kotlin.sourceSets.getByName("sample")
         val test: KotlinSourceSet = kotlin.sourceSets.getByName("test")
         val actual: Boolean = sample in test.dependsOn
@@ -130,7 +127,9 @@ class KotoolsSamplesJvmPluginTest {
 
     @Test
     fun `apply should configure 'test' Java source set`() {
-        val project: Project = this.validProject
+        val project = Project()
+        project.pluginManager.apply(KotlinPlatformJvmPlugin::class)
+        project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
         val test: SourceSet = project.extensions
             .getByType<JavaPluginExtension>()
             .sourceSets
@@ -145,7 +144,9 @@ class KotoolsSamplesJvmPluginTest {
 
     @Test
     fun `apply should create 'checkSampleSources' task`() {
-        val project: Project = this.validProject
+        val project = Project()
+        project.pluginManager.apply(KotlinPlatformJvmPlugin::class)
+        project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
         val taskName = "checkSampleSources"
         val actual: CheckSampleSources? =
             project.tasks.findByName(taskName) as? CheckSampleSources
@@ -160,7 +161,9 @@ class KotoolsSamplesJvmPluginTest {
 
     @Test
     fun `apply should create 'extractSamples' task`() {
-        val project: Project = this.validProject
+        val project = Project()
+        project.pluginManager.apply(KotlinPlatformJvmPlugin::class)
+        project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
         val taskName = "extractSamples"
         val actual: ExtractSamples? =
             project.tasks.findByName(taskName) as? ExtractSamples
@@ -186,7 +189,9 @@ class KotoolsSamplesJvmPluginTest {
 
     @Test
     fun `apply should create 'checkSampleReferences' task`() {
-        val project: Project = this.validProject
+        val project = Project()
+        project.pluginManager.apply(KotlinPlatformJvmPlugin::class)
+        project.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
         val taskName = "checkSampleReferences"
         val actual: CheckSampleReferences? =
             project.tasks.findByName(taskName) as? CheckSampleReferences
@@ -224,3 +229,8 @@ class KotoolsSamplesJvmPluginTest {
         assertEquals(expected, actual)
     }
 }
+
+@Suppress("TestFunctionName")
+private fun Project(): Project = ProjectBuilder.builder()
+    .withName("test")
+    .build()
