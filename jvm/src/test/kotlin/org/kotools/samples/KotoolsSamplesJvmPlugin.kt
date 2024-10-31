@@ -1,6 +1,5 @@
 package org.kotools.samples
 
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.file.Directory
@@ -17,7 +16,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.kotools.samples.internal.KotlinJvmPluginNotFound
-import java.io.File
 import java.util.Objects
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
@@ -72,45 +70,29 @@ class KotoolsSamplesJvmPluginTest {
 
     @Test
     fun `apply should create 'sample' Kotlin source set`() {
-        val actual: KotlinSourceSet? = Project()
+        val project: Project = Project()
             .applyKotlinAndKotoolsSamplesJvmPlugins()
-            .kotlinSourceSets()
+        val sample: KotlinSourceSet? = project.extensions
+            .getByType<KotlinJvmProjectExtension>()
+            .sourceSets
             .findByName("sample")
         val plugin = KotoolsSamplesJvmPlugin()
-        val message = "$plugin should create 'sample' Kotlin source set."
-        assertNotNull(actual, message)
-    }
-
-    @Test
-    fun `apply should include Kotlin sample directory in 'sample' Kotlin source set`() {
-        val project: Project = Project()
-            .applyKotlinAndKotoolsSamplesJvmPlugins()
-        val kotlinSampleDirectory: File = project.layout.projectDirectory
-            .dir("src/sample/kotlin")
-            .asFile
-        val sourceSet: KotlinSourceSet = project.kotlinSourceSets()
-            .getByName("sample")
-        val actual: Boolean =
-            kotlinSampleDirectory in sourceSet.kotlin.sourceDirectories
-        val message =
-            "Kotlin sample directory should be included in ${sourceSet}."
-        assertTrue(actual, message)
-    }
-
-    @Test
-    fun `apply should include Java sample directory in 'sample' Kotlin source set`() {
-        val project: Project = Project()
-            .applyKotlinAndKotoolsSamplesJvmPlugins()
-        val kotlinSampleDirectory: File = project.layout.projectDirectory
-            .dir("src/sample/java")
-            .asFile
-        val sourceSet: KotlinSourceSet = project.kotlinSourceSets()
-            .getByName("sample")
-        val actual: Boolean =
-            kotlinSampleDirectory in sourceSet.kotlin.sourceDirectories
-        val message =
-            "Java sample directory should be included in ${sourceSet}."
-        assertTrue(actual, message)
+        assertNotNull(
+            actual = sample,
+            message = "$plugin should create 'sample' Kotlin source set."
+        )
+        val kotlinSample: Directory =
+            project.layout.projectDirectory.dir("src/sample/kotlin")
+        assertTrue(
+            actual = kotlinSample.asFile in sample.kotlin.sourceDirectories,
+            message = "Kotlin sample directory should be included in ${sample}."
+        )
+        val javaSample: Directory =
+            project.layout.projectDirectory.dir("src/sample/java")
+        assertTrue(
+            actual = javaSample.asFile in sample.kotlin.sourceDirectories,
+            message = "Java sample directory should be included in ${sample}."
+        )
     }
 
     @Test
@@ -248,8 +230,3 @@ private fun Project.applyKotlinAndKotoolsSamplesJvmPlugins(): Project {
     this.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
     return this
 }
-
-private fun Project.kotlinSourceSets():
-        NamedDomainObjectContainer<KotlinSourceSet> = this.extensions
-    .getByType<KotlinJvmProjectExtension>()
-    .sourceSets
