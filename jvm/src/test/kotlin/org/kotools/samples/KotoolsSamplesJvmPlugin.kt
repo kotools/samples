@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.kotools.samples.internal.KotlinJvmPluginNotFound
 import java.util.Objects
+import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
@@ -24,6 +25,7 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
+import kotlin.test.fail
 
 class KotoolsSamplesJvmPluginTest {
     // -------------------- Structural equality operations ---------------------
@@ -139,15 +141,11 @@ class KotoolsSamplesJvmPluginTest {
     fun `apply should create 'checkSampleSources' task`() {
         val project = Project()
             .applyKotlinAndKotoolsSamplesJvmPlugins()
-        val taskName = "checkSampleSources"
-        val actual: CheckSampleSources? =
-            project.tasks.findByName(taskName) as? CheckSampleSources
-        assertNotNull(actual, "The '$taskName' Gradle task is not found.")
-        val expectedDescription = "Checks the content of sample sources."
-        assertEquals(expectedDescription, actual.description)
+        val task: CheckSampleSources = project.assertTask()
+        task.assertDescription("Checks the content of sample sources.")
         val expectedSourceDirectory: Directory =
             project.layout.projectDirectory.dir("src")
-        val actualSourceDirectory: Directory = actual.sourceDirectory.get()
+        val actualSourceDirectory: Directory = task.sourceDirectory.get()
         assertEquals(expectedSourceDirectory, actualSourceDirectory)
     }
 
@@ -155,26 +153,22 @@ class KotoolsSamplesJvmPluginTest {
     fun `apply should create 'extractSamples' task`() {
         val project = Project()
             .applyKotlinAndKotoolsSamplesJvmPlugins()
-        val taskName = "extractSamples"
-        val actual: ExtractSamples? =
-            project.tasks.findByName(taskName) as? ExtractSamples
-        assertNotNull(actual, "The '$taskName' Gradle task is not found.")
-        val expectedDescription = "Extracts samples for KDoc."
-        assertEquals(expectedDescription, actual.description)
-        val checkSampleSources: TaskProvider<Task> =
-            project.tasks.named("checkSampleSources")
-        val expectedDependencies: List<TaskProvider<Task>> =
+        val task: ExtractSamples = project.assertTask()
+        task.assertDescription("Extracts samples for KDoc.")
+        val checkSampleSources: TaskProvider<CheckSampleSources> =
+            project.tasks.named<CheckSampleSources>("checkSampleSources")
+        val expectedDependencies: List<TaskProvider<CheckSampleSources>> =
             listOf(checkSampleSources)
-        val actualDependencies: List<Any> = actual.dependsOn.toList()
+        val actualDependencies: List<Any> = task.dependsOn.toList()
         assertContentEquals(expectedDependencies, actualDependencies)
         val expectedSourceDirectory: Directory =
             project.layout.projectDirectory.dir("src")
-        val actualSourceDirectory: Directory = actual.sourceDirectory.get()
+        val actualSourceDirectory: Directory = task.sourceDirectory.get()
         assertEquals(expectedSourceDirectory, actualSourceDirectory)
         val expectedOutputDirectory: Directory = project.layout.buildDirectory
             .dir("samples/extracted")
             .get()
-        val actualOutputDirectory: Directory = actual.outputDirectory.get()
+        val actualOutputDirectory: Directory = task.outputDirectory.get()
         assertEquals(expectedOutputDirectory, actualOutputDirectory)
     }
 
@@ -182,27 +176,23 @@ class KotoolsSamplesJvmPluginTest {
     fun `apply should create 'checkSampleReferences' task`() {
         val project = Project()
             .applyKotlinAndKotoolsSamplesJvmPlugins()
-        val taskName = "checkSampleReferences"
-        val actual: CheckSampleReferences? =
-            project.tasks.findByName(taskName) as? CheckSampleReferences
-        assertNotNull(actual, "The '$taskName' Gradle task is not found.")
-        val expectedDescription = "Checks sample references from KDoc."
-        assertEquals(expectedDescription, actual.description)
+        val task: CheckSampleReferences = project.assertTask()
+        task.assertDescription("Checks sample references from KDoc.")
         val extractSamples: TaskProvider<ExtractSamples> =
             project.tasks.named<ExtractSamples>("extractSamples")
         val expectedDependencies: List<TaskProvider<ExtractSamples>> =
             listOf(extractSamples)
-        val actualDependencies: List<Any> = actual.dependsOn.toList()
+        val actualDependencies: List<Any> = task.dependsOn.toList()
         assertContentEquals(expectedDependencies, actualDependencies)
         val expectedSourceDirectory: Directory =
             project.layout.projectDirectory.dir("src")
-        val actualSourceDirectory: Directory = actual.sourceDirectory.get()
+        val actualSourceDirectory: Directory = task.sourceDirectory.get()
         assertEquals(expectedSourceDirectory, actualSourceDirectory)
         val expectedExtractedSamplesDirectory: Directory = extractSamples
             .flatMap(ExtractSamples::outputDirectory)
             .get()
         val actualExtractedSamplesDirectory: Directory =
-            actual.extractedSamplesDirectory.get()
+            task.extractedSamplesDirectory.get()
         assertEquals(
             expectedExtractedSamplesDirectory,
             actualExtractedSamplesDirectory
@@ -220,6 +210,8 @@ class KotoolsSamplesJvmPluginTest {
     }
 }
 
+// ---------------------------- Project extensions -----------------------------
+
 @Suppress("TestFunctionName")
 private fun Project(): Project = ProjectBuilder.builder()
     .withName("test")
@@ -230,3 +222,17 @@ private fun Project.applyKotlinAndKotoolsSamplesJvmPlugins(): Project {
     this.pluginManager.apply(KotoolsSamplesJvmPlugin::class)
     return this
 }
+
+private inline fun <reified T : Task> Project.assertTask(): T {
+    val kClass: KClass<T> = T::class
+    val name: String = kClass.simpleName?.replaceFirstChar(Char::lowercaseChar)
+        ?: fail("The $kClass has no name.")
+    val actual: T? = this.tasks.findByName(name) as? T
+    val message = "The '$name' Gradle task is not found."
+    return assertNotNull(actual, message)
+}
+
+// ------------------------------ Task extensions ------------------------------
+
+private fun Task.assertDescription(expected: String): Unit =
+    assertEquals(expected, actual = this.description)
