@@ -6,6 +6,7 @@ import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.internal.plugins.PluginApplicationException
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.apply
@@ -16,6 +17,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.kotools.samples.internal.KotlinJvmPluginNotFound
+import java.io.File
 import java.util.Objects
 import kotlin.reflect.KClass
 import kotlin.test.Test
@@ -199,6 +201,51 @@ class KotoolsSamplesJvmPluginTest {
         )
     }
 
+    @Test
+    fun `apply should create 'backupMainSources' task`() {
+        val project = Project()
+            .applyKotlinAndKotoolsSamplesJvmPlugins()
+        val task: Copy = project.assertTask("backupMainSources")
+        task.assertDescription("Copies main sources into the build directory.")
+        val checkSampleReferences: TaskProvider<CheckSampleReferences> =
+            project.tasks.named<CheckSampleReferences>("checkSampleReferences")
+        val expectedDependencies: List<TaskProvider<CheckSampleReferences>> =
+            listOf(checkSampleReferences)
+        val actualDependencies: List<Any> = task.dependsOn.toList()
+        assertContentEquals(expectedDependencies, actualDependencies)
+        val source: Directory = project.layout.projectDirectory.dir("src")
+        val areSourceFilesInSourceDirectory: Boolean =
+            task.source.all { source.asFile.path in it.path }
+        assertTrue(
+            actual = areSourceFilesInSourceDirectory,
+            message = "Source directory should be ${source}."
+        )
+        val areApiFilesExcluded: Boolean =
+            task.source.files.none { "api" in it.path }
+        assertTrue(
+            actual = areApiFilesExcluded,
+            message = "API files should be excluded from source directory."
+        )
+        val areSamplesExcluded: Boolean =
+            task.source.files.none { "sample" in it.path }
+        assertTrue(
+            actual = areSamplesExcluded,
+            message = "Samples should be excluded from source directory."
+        )
+        val areTestsExcluded: Boolean =
+            task.source.files.none { "test" in it.path }
+        assertTrue(
+            actual = areTestsExcluded,
+            message = "Tests should be excluded from source directory."
+        )
+        val expectedDestinationDirectory: File = project.layout.buildDirectory
+            .dir("samples/sources-backup")
+            .get()
+            .asFile
+        val actualDestinationDirectory: File = task.destinationDir
+        assertEquals(expectedDestinationDirectory, actualDestinationDirectory)
+    }
+
     // ------------------------------ Conversions ------------------------------
 
     @Test
@@ -227,6 +274,10 @@ private inline fun <reified T : Task> Project.assertTask(): T {
     val kClass: KClass<T> = T::class
     val name: String = kClass.simpleName?.replaceFirstChar(Char::lowercaseChar)
         ?: fail("The $kClass has no name.")
+    return this.assertTask(name)
+}
+
+private inline fun <reified T : Task> Project.assertTask(name: String): T {
     val actual: T? = this.tasks.findByName(name) as? T
     val message = "The '$name' Gradle task is not found."
     return assertNotNull(actual, message)

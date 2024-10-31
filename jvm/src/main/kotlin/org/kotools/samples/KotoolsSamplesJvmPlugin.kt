@@ -5,6 +5,7 @@ import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.getByType
@@ -43,7 +44,9 @@ public class KotoolsSamplesJvmPlugin : Plugin<Project> {
             this.checkSampleSourcesTask(project)
         val extractSamples: TaskProvider<ExtractSamples> =
             this.extractSamplesTask(project, checkSampleSources)
-        this.checkSampleReferencesTask(project, extractSamples)
+        val checkSampleReferences: TaskProvider<CheckSampleReferences> =
+            this.checkSampleReferencesTask(project, extractSamples)
+        this.backupMainSourcesTask(project, checkSampleReferences)
     }
 
     private fun kotlinSourceSets(project: Project) {
@@ -100,16 +103,33 @@ public class KotoolsSamplesJvmPlugin : Plugin<Project> {
     private fun checkSampleReferencesTask(
         project: Project,
         extractSamples: TaskProvider<ExtractSamples>
-    ) {
+    ): TaskProvider<CheckSampleReferences> {
         val sourceDirectory: Directory = this.sourceDirectory(project)
         val extractedSamplesDirectory: Provider<Directory> =
             extractSamples.flatMap(ExtractSamples::outputDirectory)
-        project.tasks.register<CheckSampleReferences>("checkSampleReferences")
-            .configure {
+        return project.tasks
+            .register<CheckSampleReferences>("checkSampleReferences") {
                 this.description = "Checks sample references from KDoc."
                 this.dependsOn += extractSamples
                 this.sourceDirectory.set(sourceDirectory)
                 this.extractedSamplesDirectory.set(extractedSamplesDirectory)
+            }
+    }
+
+    private fun backupMainSourcesTask(
+        project: Project,
+        checkSampleReferences: TaskProvider<CheckSampleReferences>
+    ) {
+        val source: Directory = this.sourceDirectory(project)
+        val destination: Provider<Directory> =
+            project.layout.buildDirectory.dir("samples/sources-backup")
+        project.tasks.register<Copy>("backupMainSources")
+            .configure {
+                this.description =
+                    "Copies main sources into the build directory."
+                this.dependsOn(checkSampleReferences)
+                this.from(source) { exclude("api", "sample", "test") }
+                this.into(destination)
             }
     }
 
