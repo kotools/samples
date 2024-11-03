@@ -246,6 +246,31 @@ class KotoolsSamplesJvmPluginTest {
         assertEquals(expectedDestinationDirectory, actualDestinationDirectory)
     }
 
+    @Test
+    fun `apply should create 'inlineSamples' task`() {
+        val project = Project()
+            .applyKotlinAndKotoolsSamplesJvmPlugins()
+        val task: InlineSamples = project.assertTask()
+        task.assertDescription("Inlines KDoc samples.")
+        val backupMainSources: TaskProvider<Copy> =
+            project.tasks.named<Copy>("backupMainSources")
+        val expectedDependencies: List<TaskProvider<Copy>> =
+            listOf(backupMainSources)
+        val actualDependencies: List<Any> = task.dependsOn.toList()
+        assertContentEquals(expectedDependencies, actualDependencies)
+        val expectedSource: Directory =
+            project.layout.projectDirectory.dir("src")
+        val actualSource: Directory = task.sourceDirectory.get()
+        assertEquals(expectedSource, actualSource)
+        val expectedExtractedSamples: Directory = project.tasks
+            .named<ExtractSamples>("extractSamples")
+            .flatMap(ExtractSamples::outputDirectory)
+            .get()
+        val actualExtractedSamples: Directory =
+            task.extractedSamplesDirectory.get()
+        assertEquals(expectedExtractedSamples, actualExtractedSamples)
+    }
+
     // ------------------------------ Conversions ------------------------------
 
     @Test

@@ -46,7 +46,9 @@ public class KotoolsSamplesJvmPlugin : Plugin<Project> {
             this.extractSamplesTask(project, checkSampleSources)
         val checkSampleReferences: TaskProvider<CheckSampleReferences> =
             this.checkSampleReferencesTask(project, extractSamples)
-        this.backupMainSourcesTask(project, checkSampleReferences)
+        val backupMainSources: TaskProvider<Copy> =
+            this.backupMainSourcesTask(project, checkSampleReferences)
+        this.inlineSamplesTask(project, backupMainSources, extractSamples)
     }
 
     private fun kotlinSourceSets(project: Project) {
@@ -119,17 +121,33 @@ public class KotoolsSamplesJvmPlugin : Plugin<Project> {
     private fun backupMainSourcesTask(
         project: Project,
         checkSampleReferences: TaskProvider<CheckSampleReferences>
-    ) {
+    ): TaskProvider<Copy> {
         val source: Directory = this.sourceDirectory(project)
         val destination: Provider<Directory> =
             project.layout.buildDirectory.dir("samples/sources-backup")
-        project.tasks.register<Copy>("backupMainSources")
+        return project.tasks.register<Copy>("backupMainSources") {
+            this.description =
+                "Copies main sources into the build directory."
+            this.dependsOn(checkSampleReferences)
+            this.from(source) { exclude("api", "sample", "test") }
+            this.into(destination)
+        }
+    }
+
+    private fun inlineSamplesTask(
+        project: Project,
+        backupMainSources: TaskProvider<Copy>,
+        extractSamples: TaskProvider<ExtractSamples>
+    ) {
+        val source: Directory = this.sourceDirectory(project)
+        val extractedSamples: Provider<Directory> =
+            extractSamples.flatMap(ExtractSamples::outputDirectory)
+        project.tasks.register<InlineSamples>("inlineSamples")
             .configure {
-                this.description =
-                    "Copies main sources into the build directory."
-                this.dependsOn(checkSampleReferences)
-                this.from(source) { exclude("api", "sample", "test") }
-                this.into(destination)
+                this.description = "Inlines KDoc samples."
+                this.dependsOn += backupMainSources
+                this.sourceDirectory.set(source)
+                this.extractedSamplesDirectory.set(extractedSamples)
             }
     }
 
