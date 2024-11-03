@@ -49,6 +49,7 @@ public class KotoolsSamplesJvmPlugin : Plugin<Project> {
         val backupMainSources: TaskProvider<Copy> =
             this.backupMainSourcesTask(project, checkSampleReferences)
         this.inlineSamplesTask(project, backupMainSources, extractSamples)
+        this.restoreMainSourcesTask(project)
     }
 
     private fun kotlinSourceSets(project: Project) {
@@ -148,6 +149,20 @@ public class KotoolsSamplesJvmPlugin : Plugin<Project> {
                 this.dependsOn += backupMainSources
                 this.sourceDirectory.set(source)
                 this.extractedSamplesDirectory.set(extractedSamples)
+            }
+    }
+
+    private fun restoreMainSourcesTask(project: Project) {
+        val source: Provider<Directory> =
+            project.layout.buildDirectory.dir("samples/sources-backup")
+        val destination: Directory = this.sourceDirectory(project)
+        project.tasks.register<Copy>("restoreMainSources")
+            .configure {
+                this.description =
+                    "Restores main sources backup from the build directory."
+                this.from(source)
+                this.into(destination)
+                this.outputs.upToDateWhen { false }
             }
     }
 

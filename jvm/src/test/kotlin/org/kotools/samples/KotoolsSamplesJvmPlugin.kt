@@ -271,6 +271,31 @@ class KotoolsSamplesJvmPluginTest {
         assertEquals(expectedExtractedSamples, actualExtractedSamples)
     }
 
+    @Test
+    fun `apply should create 'restoreMainSources' task`() {
+        val project: Project = Project()
+            .applyKotlinAndKotoolsSamplesJvmPlugins()
+        val task: Copy = project.assertTask("restoreMainSources")
+        task.assertDescription(
+            "Restores main sources backup from the build directory."
+        )
+        val sourcesBackupDirectory: File = project.layout.buildDirectory
+            .dir("samples/sources-backup")
+            .get()
+            .asFile
+        val areSourcesFromBackup: Boolean =
+            task.source.all { sourcesBackupDirectory.path in it.path }
+        assertTrue(
+            actual = areSourcesFromBackup,
+            message = "Source directory should be ${sourcesBackupDirectory}."
+        )
+        val expectedDestinationDirectory: File = project.layout.projectDirectory
+            .dir("src")
+            .asFile
+        val actualDestinationDirectory: File = task.destinationDir
+        assertEquals(expectedDestinationDirectory, actualDestinationDirectory)
+    }
+
     // ------------------------------ Conversions ------------------------------
 
     @Test
