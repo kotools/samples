@@ -4,6 +4,7 @@ on:
     branches: [ main ]
     paths:
       - '**.gradle.kts'
+      - '!**/src/**.gradle.kts'
       - .github/workflows/dependency-submission.yml
       - gradle/libs.versions.toml
       - yarn.lock
