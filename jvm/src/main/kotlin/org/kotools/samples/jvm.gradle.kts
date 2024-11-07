@@ -6,8 +6,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
-// Temporary comment for testing triggers of the Dependency Submission workflow.
-
 // ----------------------------- Script properties -----------------------------
 
 private val projectSources: Directory = layout.projectDirectory.dir("src")
