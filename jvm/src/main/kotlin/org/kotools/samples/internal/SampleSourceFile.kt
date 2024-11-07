@@ -4,7 +4,9 @@ import java.io.File
 
 internal class SampleSourceFile private constructor(private val file: File) {
     init {
-        require("Sample/" in this.file.path || "sample/" in this.file.path) {
+        val fileIsInSampleSourceSet: Boolean =
+            this.file.path.contains("sample/", ignoreCase = true)
+        require(fileIsInSampleSourceSet) {
             "'${this.file.name}' file should be in a sample source set."
         }
     }
@@ -71,6 +73,11 @@ internal class SampleSourceFile private constructor(private val file: File) {
     }
 
     companion object {
+        /**
+         * Creates an instance of [SampleSourceFile] from the specified [file],
+         * or returns `null` if the [file] is not in the sample source set or is
+         * unsupported.
+         */
         fun orNull(file: File): SampleSourceFile? = try {
             SampleSourceFile(file)
         } catch (exception: IllegalArgumentException) {
