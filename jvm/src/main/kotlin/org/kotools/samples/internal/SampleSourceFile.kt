@@ -2,6 +2,12 @@ package org.kotools.samples.internal
 
 import java.io.File
 
+/**
+ * Represents a sample source file.
+ *
+ * See the [SampleSourceFile.Companion.orNull] method for creating an instance
+ * of this type.
+ */
 internal class SampleSourceFile private constructor(private val file: File) {
     init {
         val fileIsInSampleSourceSet: Boolean =
@@ -13,6 +19,10 @@ internal class SampleSourceFile private constructor(private val file: File) {
 
     private val language: ProgrammingLanguage = ProgrammingLanguage(this.file)
 
+    /**
+     * Checks that this sample source file contains a single class, and throws
+     * an [IllegalStateException] if this is not the case.
+     */
     fun checkSingleClass() {
         val numberOfClasses: Int = this.countClasses()
         if (numberOfClasses == 1) return
@@ -28,6 +38,7 @@ internal class SampleSourceFile private constructor(private val file: File) {
             lines.count { this.language.classHeaderRegex in it }
         }
 
+    /** Returns all samples present in this source file. */
     fun samples(): Set<Sample> {
         var identifier: MutableList<String> = mutableListOf()
         val body: MutableList<String> = mutableListOf()
@@ -72,6 +83,7 @@ internal class SampleSourceFile private constructor(private val file: File) {
         return samples.toSet()
     }
 
+    /** Contains static declarations for the [SampleSourceFile] type. */
     companion object {
         /**
          * Creates an instance of [SampleSourceFile] from the specified [file],
