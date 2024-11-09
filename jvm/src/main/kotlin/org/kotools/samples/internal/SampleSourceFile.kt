@@ -9,14 +9,6 @@ import java.io.File
  * of this type.
  */
 internal class SampleSourceFile private constructor(private val file: File) {
-    init {
-        val fileIsInSampleSourceSet: Boolean =
-            this.file.path.contains("sample/", ignoreCase = true)
-        require(fileIsInSampleSourceSet) {
-            "'${this.file.name}' file should be in a sample source set."
-        }
-    }
-
     private val language: ProgrammingLanguage = ProgrammingLanguage(this.file)
 
     /**
@@ -91,9 +83,23 @@ internal class SampleSourceFile private constructor(private val file: File) {
          * unsupported.
          */
         fun orNull(file: File): SampleSourceFile? = try {
-            SampleSourceFile(file)
+            this.orThrow(file)
         } catch (exception: IllegalArgumentException) {
             null
+        }
+
+        /**
+         * Creates an instance of [SampleSourceFile] from the specified [file],
+         * or throws an [IllegalArgumentException] if the [file] is not in the
+         * sample source set or is unsupported.
+         */
+        fun orThrow(file: File): SampleSourceFile {
+            val fileIsInSampleSourceSet: Boolean =
+                file.path.contains("sample/", ignoreCase = true)
+            require(fileIsInSampleSourceSet) {
+                "'${file.name}' file should be in a sample source set."
+            }
+            return SampleSourceFile(file)
         }
     }
 }
