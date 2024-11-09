@@ -6,6 +6,54 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.test.fail
+
+class SampleSourceFileTest {
+    @Test
+    fun `checkSingleClass should pass with a single class in it`() {
+        val name = "/sample/kotlin/Valid.kt"
+        this::class.java.getResource(name)
+            ?.toURI()
+            ?.let(::File)
+            ?.let(SampleSourceFile.Companion::orThrow)
+            ?.checkSingleClass()
+            ?: fail("'$name' file not found.")
+    }
+
+    @Test
+    fun `checkSingleClass should fail without a class`() {
+        val name = "/sample/kotlin/NoClass.kt"
+        val file: File = this::class.java.getResource(name)
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$name' file not found.")
+        val sampleSourceFile: SampleSourceFile = SampleSourceFile.orThrow(file)
+        val actual: String? = assertFailsWith<IllegalStateException>(
+            block = sampleSourceFile::checkSingleClass
+        ).message
+        val expected: String =
+            "The '${file.name}' file should have a single class.\n" +
+                    "File location: ${file.path}"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `checkSingleClass should fail with multiple classes in it`() {
+        val name = "/sample/kotlin/MultipleClasses.kt"
+        val file: File = this::class.java.getResource(name)
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$name' file not found.")
+        val sampleSourceFile: SampleSourceFile = SampleSourceFile.orThrow(file)
+        val actual: String? = assertFailsWith<IllegalStateException>(
+            block = sampleSourceFile::checkSingleClass
+        ).message
+        val expected: String =
+            "The '${file.name}' file should have a single class.\n" +
+                    "File location: ${file.path}"
+        assertEquals(expected, actual)
+    }
+}
 
 class SampleSourceFileCompanionTest {
     @Test
