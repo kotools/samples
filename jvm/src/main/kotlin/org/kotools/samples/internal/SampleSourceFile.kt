@@ -12,6 +12,8 @@ import java.io.File
 internal class SampleSourceFile private constructor(private val file: File) {
     private val language: ProgrammingLanguage = ProgrammingLanguage(this.file)
 
+    // ----------------------- File content's operations -----------------------
+
     /**
      * Checks that this sample source file contains a single class, and throws
      * an [IllegalStateException] if this is not the case.
@@ -73,6 +75,8 @@ internal class SampleSourceFile private constructor(private val file: File) {
         }
         return samples.toSet()
     }
+
+    // -------------------------------------------------------------------------
 
     /** Contains static declarations for the [SampleSourceFile] type. */
     companion object {

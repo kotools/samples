@@ -9,6 +9,8 @@ import kotlin.test.assertNull
 import kotlin.test.fail
 
 class SampleSourceFileTest {
+    // ----------------------- File content's operations -----------------------
+
     @Test
     fun `checkSingleClass should pass with a single class in it`() {
         val name = "/sample/kotlin/Valid.kt"
