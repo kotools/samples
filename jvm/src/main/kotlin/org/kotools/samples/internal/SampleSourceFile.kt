@@ -76,6 +76,12 @@ internal class SampleSourceFile private constructor(private val file: File) {
         return samples.toSet()
     }
 
+    // ------------------------------ Conversions ------------------------------
+
+    /** Returns the string representation of this sample source file. */
+    override fun toString(): String =
+        "Sample source file at '${this.file.path}'."
+
     // -------------------------------------------------------------------------
 
     /** Contains static declarations for the [SampleSourceFile] type. */

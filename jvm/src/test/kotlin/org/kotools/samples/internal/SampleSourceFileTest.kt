@@ -53,6 +53,21 @@ class SampleSourceFileTest {
             "The following file should have a single class: ${file.path}."
         assertEquals(expected, actual)
     }
+
+    // ------------------------------ Conversions ------------------------------
+
+    @Test
+    fun `toString should return an expressive string representation`() {
+        val name = "/sample/kotlin/Valid.kt"
+        val file: File = this::class.java.getResource(name)
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$name' file not found.")
+        val actual: String = SampleSourceFile.orThrow(file)
+            .toString()
+        val expected = "Sample source file at '${file.path}'."
+        assertEquals(expected, actual)
+    }
 }
 
 class SampleSourceFileCompanionTest {
