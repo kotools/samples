@@ -18,10 +18,8 @@ internal class SampleSourceFile private constructor(private val file: File) {
     fun checkSingleClass() {
         val numberOfClasses: Int = this.countClasses()
         if (numberOfClasses == 1) return
-        val message: String = listOf(
-            "The '${this.file.name}' file should have a single class.",
-            "File location: ${this.file.path}"
-        ).joinToString(separator = "\n")
+        val message =
+            "The following file should have a single class: ${this.file.path}."
         error(message)
     }
 
