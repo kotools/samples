@@ -27,7 +27,7 @@ internal sealed interface ProgrammingLanguage {
         }
     }
 
-    object Java : ProgrammingLanguage {
+    private object Java : ProgrammingLanguage {
         override val classKeyword: String = "class"
         override val classHeaderRegex: Regex =
             Regex("${this.classKeyword} [A-Z][A-Za-z]*")
@@ -41,7 +41,7 @@ internal sealed interface ProgrammingLanguage {
             Regex("^${this.packageKeyword} [a-z]+(?:\\.[a-z]+)*;\$")
     }
 
-    object Kotlin : ProgrammingLanguage {
+    private object Kotlin : ProgrammingLanguage {
         override val classKeyword: String = "class"
         override val classHeaderRegex: Regex =
             Regex("${this.classKeyword} [A-Z][A-Za-z]*")
