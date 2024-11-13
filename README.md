@@ -16,10 +16,6 @@ experience. Unlike many [Kotlin] libraries, such as Jetpack Compose, Kotools
 Samples ensures your examples are not only available online but also accessible
 directly in the IDE during development.
 
-Currently, Kotools Samples **supports only the Kotlin/JVM platform**. **Kotlin
-Multiplatform support is planned for future releases**, allowing for even more
-flexibility and broader application of the plugin.
-
 ## ⭐️ Key Features
 
 - **Readonly inlined code samples:** Displays your examples inlined in the
