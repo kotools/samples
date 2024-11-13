@@ -40,6 +40,22 @@ flexibility and broader application of the plugin.
 - **Seamless integration:** Works effortlessly with [Kotlin], Java, and [Dokka],
   smoothly integrating into your Gradle build process.
 
+## 🛠️ Installation
+
+For adding Kotools Samples to your Kotlin/JVM project, it is recommended to use
+the [Gradle] plugins DSL in [Kotlin]. Just replace the `$version` variable by
+the [latest version](#kotools-samples) or by another one available in the
+[changelog](CHANGELOG.md).
+
+```kotlin
+plugins {
+  id("org.kotools.samples.jvm") version "$version"
+}
+```
+
+See [this plugin on the Gradle Plugin Portal][kotools-samples-plugin] for more
+installation options.
+
 ## 🧑‍💻 Usage example
 
 Kotools Samples ensures that your code samples are integrated into your
@@ -149,4 +165,5 @@ This project is licensed under the [MIT License](LICENSE.txt).
 [kotlin-embedded-badge]: https://img.shields.io/badge/Embedded_Kotlin-v1.8.22-blue?logo=kotlin
 [kotools-samples-badge]: https://img.shields.io/gradle-plugin-portal/v/org.kotools.samples.jvm?label=Latest
 [kotools-samples-contributors]: https://github.com/kotools/samples/graphs/contributors
+[kotools-samples-plugin]: https://plugins.gradle.org/plugin/org.kotools.samples.jvm
 [kotools-samples-releases]: https://github.com/kotools/samples/releases
