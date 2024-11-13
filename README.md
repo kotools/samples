@@ -10,12 +10,6 @@ authors integrate **read-only, non-editable samples** into their documentation
 using [Dokka]. It addresses a limitation in [Dokka], which does not allow making
 code samples **non-editable** or **non-executable**.
 
-This plugin also ensures that code samples are **inlined directly in the
-documentation** and are **visible from the IDE**, enhancing the developer
-experience. Unlike many [Kotlin] libraries, such as Jetpack Compose, Kotools
-Samples ensures your examples are not only available online but also accessible
-directly in the IDE during development.
-
 ## ⭐️ Key Features
 
 - **Readonly inlined code samples:** Displays your examples inlined in the
