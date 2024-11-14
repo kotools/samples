@@ -2,6 +2,13 @@ package org.kotools.samples.internal
 
 import java.io.File
 
+/**
+ * Creates an instance of [ProgrammingLanguage] from the specified [file], or
+ * throws an [IllegalArgumentException] if the [file] is not supported.
+ *
+ * See the [ProgrammingLanguage.Companion.orNull] method for returning `null`
+ * instead of throwing an exception in case of invalid [file].
+ */
 internal fun ProgrammingLanguage(file: File): ProgrammingLanguage {
     val language: ProgrammingLanguage? = ProgrammingLanguage.orNull(file)
     return requireNotNull(language) {
