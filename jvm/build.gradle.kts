@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "org.kotools"
-version = "0.1.0-rc"
+version = "0.1.0"
 
 repositories.mavenCentral()
 
