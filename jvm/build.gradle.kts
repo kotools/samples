@@ -1,5 +1,6 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
     `kotlin-dsl`
@@ -15,6 +16,10 @@ repositories.mavenCentral()
 kotlin {
     explicitApi()
     jvmToolchain(17)
+    compilerOptions {
+        allWarningsAsErrors.set(true)
+        languageVersion.set(KotlinVersion.KOTLIN_1_8)
+    }
 }
 
 @Suppress("UnstableApiUsage")
