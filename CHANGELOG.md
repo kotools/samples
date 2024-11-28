@@ -16,6 +16,17 @@ All notable changes to this project will be documented in this file.
 
 ## 🚧 Unreleased
 
+### ✨ Added
+
+- Dependency compatibility documentation ([#11]).
+
+---
+
+Thanks to [@LVMVRQUXL] for contributing to this new release. 🙏
+
+[@LVMVRQUXL]: https://github.com/LVMVRQUXL
+[#11]: https://github.com/kotools/samples/issues/11
+
 ## 🔖 Releases
 
 | Version | Release date |
