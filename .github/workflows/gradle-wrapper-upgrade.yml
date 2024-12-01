@@ -17,14 +17,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4.2.2
       - name: Validate Gradle wrapper
-        uses: gradle/actions/wrapper-validation@v4.1.0
+        uses: gradle/actions/wrapper-validation@v4.2.1
       - name: Setup Java
         uses: actions/setup-java@v4.5.0
         with:
           distribution: temurin
           java-version: 17
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4.1.0
+        uses: gradle/actions/setup-gradle@v4.2.1
       - name: Update Gradle Wrapper
         uses: gradle-update/update-gradle-wrapper-action@v2.0.0
         with:
