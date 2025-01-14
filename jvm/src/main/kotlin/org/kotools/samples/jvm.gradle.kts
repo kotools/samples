@@ -33,9 +33,16 @@ java.sourceSets.named("test") { this.java.srcDir(javaSamples) }
 
 // ----------------------------------- Tasks -----------------------------------
 
+private val checkSampleKotlinSourceSet: TaskProvider<CheckSampleKotlinSourceSet>
+        by tasks.registering(CheckSampleKotlinSourceSet::class) {
+            this.description = "Checks the 'sample' Kotlin source set."
+            this.sourceDirectory = projectSources.dir("sample")
+        }
+
 private val checkSampleSources: TaskProvider<CheckSampleSources> by tasks
     .registering(CheckSampleSources::class) {
         this.description = "Checks the content of sample sources."
+        this.dependsOn(checkSampleKotlinSourceSet)
         this.sourceDirectory = projectSources
     }
 
