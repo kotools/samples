@@ -22,6 +22,12 @@ All notable changes to this project will be documented in this file.
   have a name suffixed by `Sample` for distinguishing them from test files.
 - Dependency compatibility documentation ([#11]).
 
+### 🗑️ Deprecated
+
+- The `sample` Kotlin source set with a **warning** level ([#23]). It is
+  recommended to move samples to the `test` Kotlin source set, while making sure
+  their name is suffixed by `Sample` for distinguishing them from test files.
+
 ---
 
 Thanks to [@LVMVRQUXL] for contributing to this new release. 🙏
@@ -29,6 +35,7 @@ Thanks to [@LVMVRQUXL] for contributing to this new release. 🙏
 [@LVMVRQUXL]: https://github.com/LVMVRQUXL
 [#11]: https://github.com/kotools/samples/issues/11
 [#22]: https://github.com/kotools/samples/issues/22
+[#23]: https://github.com/kotools/samples/issues/23
 
 ## 🔖 Releases
 
