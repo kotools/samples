@@ -27,9 +27,6 @@ jobs:
   checks:
     name: Checks
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project: [ jvm, jvm-demo ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.2.2
@@ -42,7 +39,7 @@ jobs:
         uses: gradle/actions/wrapper-validation@v4.1.0
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4.1.0
-      - name: Run all checks
-        run: ./gradlew :$PROJECT:check
-        env:
-          PROJECT: ${{ matrix.project }}
+      - name: Check 'jvm' Gradle project
+        run: ./gradlew :jvm:check
+      - name: Check 'jvm-demo' Gradle project
+        run: ./gradlew :jvm-demo:check
