@@ -17,9 +17,9 @@ class SampleSourceFileTest {
         this::class.java.getResource(name)
             ?.toURI()
             ?.let(::File)
-            ?.let(SampleSourceFile.Companion::orThrow)
+            ?.let(SampleSourceFile.Companion::orNull)
             ?.checkSingleClass()
-            ?: fail("'$name' file not found.")
+            ?: fail("'$name' sample source file not found.")
     }
 
     @Test
@@ -29,7 +29,8 @@ class SampleSourceFileTest {
             ?.toURI()
             ?.let(::File)
             ?: fail("'$name' file not found.")
-        val sampleSourceFile: SampleSourceFile = SampleSourceFile.orThrow(file)
+        val sampleSourceFile: SampleSourceFile = SampleSourceFile.orNull(file)
+            ?: fail("'$name' sample source file not found.")
         val actual: String? = assertFailsWith<IllegalStateException>(
             block = sampleSourceFile::checkSingleClass
         ).message
@@ -45,7 +46,8 @@ class SampleSourceFileTest {
             ?.toURI()
             ?.let(::File)
             ?: fail("'$name' file not found.")
-        val sampleSourceFile: SampleSourceFile = SampleSourceFile.orThrow(file)
+        val sampleSourceFile: SampleSourceFile = SampleSourceFile.orNull(file)
+            ?: fail("'$name' sample source file not found.")
         val actual: String? = assertFailsWith<IllegalStateException>(
             block = sampleSourceFile::checkSingleClass
         ).message
@@ -63,8 +65,9 @@ class SampleSourceFileTest {
             ?.toURI()
             ?.let(::File)
             ?: fail("'$name' file not found.")
-        val actual: String = SampleSourceFile.orThrow(file)
-            .toString()
+        val actual: String = SampleSourceFile.orNull(file)
+            ?.toString()
+            ?: fail("'$name' sample source file not found.")
         val expected = "Sample source file at '${file.path}'."
         assertEquals(expected, actual)
     }
@@ -97,37 +100,5 @@ class SampleSourceFileCompanionTest {
         val file = File("sample/Unsupported.txt")
         val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
         assertNull(actual)
-    }
-
-    @Test
-    fun `orThrow should pass with Java file in sample source set`() {
-        val file = File("sample/java/Hello.java")
-        SampleSourceFile.orThrow(file)
-    }
-
-    @Test
-    fun `orThrow should pass with Kotlin file in sample source set`() {
-        val file = File("sample/kotlin/Hello.kt")
-        SampleSourceFile.orThrow(file)
-    }
-
-    @Test
-    fun `orThrow should fail with file outside sample source set`() {
-        val file = File("Hello.kt")
-        val expected = "'${file.name}' file should be in a sample source set."
-        val actual: String? = assertFailsWith<IllegalArgumentException> {
-            SampleSourceFile.orThrow(file)
-        }.message
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `orThrow should fail with unsupported file in sample source set`() {
-        val file = File("sample/Unsupported.txt")
-        val expected = "'.${file.extension}' files are not supported."
-        val actual: String? = assertFailsWith<IllegalArgumentException> {
-            SampleSourceFile.orThrow(file)
-        }.message
-        assertEquals(expected, actual)
     }
 }

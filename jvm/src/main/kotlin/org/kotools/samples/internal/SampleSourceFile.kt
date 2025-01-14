@@ -5,9 +5,8 @@ import java.io.File
 /**
  * Represents a sample source file.
  *
- * See the [SampleSourceFile.Companion.orNull] or the
- * [SampleSourceFile.Companion.orThrow] methods for creating an instance of this
- * type.
+ * See the [SampleSourceFile.Companion.orNull] function for creating an instance
+ * of this type.
  */
 internal class SampleSourceFile private constructor(private val file: File) {
     private val language: ProgrammingLanguage = ProgrammingLanguage(this.file)
@@ -90,9 +89,6 @@ internal class SampleSourceFile private constructor(private val file: File) {
          * Creates an instance of [SampleSourceFile] from the specified [file],
          * or returns `null` if the [file] is not in the sample source set or is
          * unsupported.
-         *
-         * See the [orThrow] method for throwing an exception instead of
-         * returning `null` in case of invalid [file].
          */
         fun orNull(file: File): SampleSourceFile? = try {
             this.orThrow(file)
@@ -100,15 +96,7 @@ internal class SampleSourceFile private constructor(private val file: File) {
             null
         }
 
-        /**
-         * Creates an instance of [SampleSourceFile] from the specified [file],
-         * or throws an [IllegalArgumentException] if the [file] is not in the
-         * sample source set or is unsupported.
-         *
-         * See the [orNull] method for returning `null` instead of throwing an
-         * exception in case of invalid [file].
-         */
-        fun orThrow(file: File): SampleSourceFile {
+        private fun orThrow(file: File): SampleSourceFile {
             val fileIsInSampleSourceSet: Boolean =
                 file.path.contains("sample/", ignoreCase = true)
             require(fileIsInSampleSourceSet) {
