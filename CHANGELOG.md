@@ -22,6 +22,10 @@ All notable changes to this project will be documented in this file.
   have a name suffixed by `Sample` for distinguishing them from test files.
 - Dependency compatibility documentation ([#11]).
 
+### ♻️ Changed
+
+- Bump Gradle Wrapper from 8.10.2 to 8.11.1 ([#16]).
+
 ### 🗑️ Deprecated
 
 - The `sample` Kotlin source set with a **warning** level ([#23]). It is
@@ -34,6 +38,7 @@ Thanks to [@LVMVRQUXL] for contributing to this new release. 🙏
 
 [@LVMVRQUXL]: https://github.com/LVMVRQUXL
 [#11]: https://github.com/kotools/samples/issues/11
+[#16]: https://github.com/kotools/samples/pull/16
 [#22]: https://github.com/kotools/samples/issues/22
 [#23]: https://github.com/kotools/samples/issues/23
 
