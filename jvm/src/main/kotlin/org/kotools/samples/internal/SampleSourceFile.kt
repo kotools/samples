@@ -86,9 +86,10 @@ internal class SampleSourceFile private constructor(private val file: File) {
     /** Contains static declarations for the [SampleSourceFile] type. */
     companion object {
         /**
-         * Creates an instance of [SampleSourceFile] from the specified [file],
-         * or returns `null` if the [file] is not in the sample source set or is
-         * unsupported.
+         * Creates an instance of [SampleSourceFile] from the specified [file].
+         * Returns `null` if the [file] is not in a sample or test Kotlin source
+         * set, if it is in a test Kotlin source set but its name is not
+         * suffixed by `Sample`, or if it is unsupported.
          */
         fun orNull(file: File): SampleSourceFile? = try {
             this.orThrow(file)
@@ -99,8 +100,17 @@ internal class SampleSourceFile private constructor(private val file: File) {
         private fun orThrow(file: File): SampleSourceFile {
             val fileIsInSampleSourceSet: Boolean =
                 file.path.contains("sample/", ignoreCase = true)
-            require(fileIsInSampleSourceSet) {
-                "'${file.name}' file should be in a sample source set."
+            val fileIsInTestSourceSet: Boolean =
+                file.path.contains("test/", ignoreCase = true)
+            require(fileIsInSampleSourceSet || fileIsInTestSourceSet) {
+                "'${file.name}' file should be in a sample or test source set."
+            }
+            if (fileIsInSampleSourceSet) return SampleSourceFile(file)
+            val suffix = "Sample"
+            val fileNameHasValidSuffix: Boolean =
+                file.nameWithoutExtension.endsWith(suffix)
+            require(fileNameHasValidSuffix) {
+                "'${file.name}' file's name should be suffixed by '$suffix'."
             }
             return SampleSourceFile(file)
         }

@@ -75,29 +75,45 @@ class SampleSourceFileTest {
 
 class SampleSourceFileCompanionTest {
     @Test
-    fun `orNull should pass with Java file in sample source set`() {
-        val file = File("sample/java/Hello.java")
+    fun `orNull should pass with Java file in sample source set`(): Unit =
+        this.orNullShouldPassWith("sample/java/Hello.java")
+
+    @Test
+    fun `orNull should pass with Kotlin file in sample source set`(): Unit =
+        this.orNullShouldPassWith("sample/kotlin/Hello.kt")
+
+    @Test
+    fun `orNull should pass with Java file in test source set`(): Unit =
+        this.orNullShouldPassWith("test/java/HelloSample.java")
+
+    @Test
+    fun `orNull should pass with Kotlin file in test source set`(): Unit =
+        this.orNullShouldPassWith("test/kotlin/HelloSample.kt")
+
+    private fun orNullShouldPassWith(path: String) {
+        val file = File(path)
         val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
         assertNotNull(actual)
     }
 
     @Test
-    fun `orNull should pass with Kotlin file in sample source set`() {
-        val file = File("sample/kotlin/Hello.kt")
-        val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
-        assertNotNull(actual)
-    }
+    fun `orNull should fail with file outside of sample or test source sets`():
+            Unit = this.orNullShouldFailWith("Hello.kt")
 
     @Test
-    fun `orNull should fail with file outside sample source set`() {
-        val file = File("Hello.kt")
-        val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
-        assertNull(actual)
-    }
+    fun `orNull should fail with unsupported file in sample source set`():
+            Unit = this.orNullShouldFailWith("sample/Unsupported.txt")
 
     @Test
-    fun `orNull should fail with unsupported file in sample source set`() {
-        val file = File("sample/Unsupported.txt")
+    fun `orNull should fail with invalid file suffix in test source set`():
+            Unit = this.orNullShouldFailWith("test/kotlin/Unsupported.kt")
+
+    @Test
+    fun `orNull should fail with unsupported file in test source set`(): Unit =
+        this.orNullShouldFailWith("test/UnsupportedSample.txt")
+
+    private fun orNullShouldFailWith(path: String) {
+        val file = File(path)
         val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
         assertNull(actual)
     }
