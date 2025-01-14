@@ -28,9 +28,8 @@ All notable changes to this project will be documented in this file.
 
 ### 🗑️ Deprecated
 
-- The `sample` Kotlin source set with a **warning** level ([#23]). It is
-  recommended to move samples to the `test` Kotlin source set, while making sure
-  their name is suffixed by `Sample` for distinguishing them from test files.
+- The `sample` Kotlin source set with a **warning** level for using the `test`
+  Kotlin source set instead ([#23]).
 
 ---
 
