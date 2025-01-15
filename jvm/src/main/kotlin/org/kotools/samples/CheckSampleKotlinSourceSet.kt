@@ -32,11 +32,9 @@ public abstract class CheckSampleKotlinSourceSet : DefaultTask() {
             .any()
         if (!sourceSetHasFiles) return
         val logger: Logger = LoggerFactory.getLogger(this::class.java)
-        val deprecationNotice: String = listOf(
-            "The 'sample' Kotlin source set is deprecated.",
-            "Please move your samples to the 'test' Kotlin source set and",
-            "suffix their file name with 'Sample'."
-        ).joinToString(separator = " ")
+        val deprecationNotice = "The 'sample' Kotlin source set is " +
+                "deprecated. Please move your samples to the 'test' Kotlin " +
+                "source set and suffix their file name with 'Sample'."
         logger.warn(deprecationNotice)
     }
 }
