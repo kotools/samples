@@ -11,7 +11,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 private val projectSources: Directory = layout.projectDirectory.dir("src")
 private val javaSamples: Directory = projectSources.dir("sample/java")
 
-private val output: Provider<Directory> = layout.buildDirectory.dir("samples")
+private val output: Provider<Directory> =
+    layout.buildDirectory.dir("kotools-samples")
 private val sourcesBackup: Provider<Directory> =
     output.map { it.dir("sources-backup") }
 
