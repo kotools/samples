@@ -56,6 +56,14 @@ private val extractSamples: TaskProvider<ExtractSamples> by tasks.registering(
     this.outputDirectory = output.map { it.dir("extracted") }
 }
 
+tasks.register<Copy>("createKotoolsSamplesBuildDirectory").configure {
+    this.description =
+        "Creates the 'kotools-samples' build directory from the 'samples' one."
+    val source: Provider<Directory> = layout.buildDirectory.dir("samples")
+    this.from(source)
+    this.into(output)
+}
+
 private val checkSampleReferences: TaskProvider<CheckSampleReferences> by tasks
     .registering(CheckSampleReferences::class) {
         this.description = "Checks sample references from KDoc."
