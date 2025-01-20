@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 ### ♻️ Changed
 
 - Bump Gradle Wrapper from 8.10.2 to 8.11.1 ([#16]).
+- Rename the build output directory from `samples` as `kotools-samples` ([#27]).
 
 ### 🗑️ Deprecated
 
@@ -40,6 +41,7 @@ Thanks to [@LVMVRQUXL] for contributing to this new release. 🙏
 [#16]: https://github.com/kotools/samples/pull/16
 [#22]: https://github.com/kotools/samples/issues/22
 [#23]: https://github.com/kotools/samples/issues/23
+[#27]: https://github.com/kotools/samples/issues/27
 
 ## 🔖 Releases
 
