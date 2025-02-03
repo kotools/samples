@@ -16,37 +16,12 @@ All notable changes to this project will be documented in this file.
 
 ## 🚧 Unreleased
 
-### ✨ Added
-
-- Support samples from the `test` Kotlin source set ([#22]). These files must
-  have a name suffixed by `Sample` for distinguishing them from test files.
-- Dependency compatibility documentation ([#11]).
-
-### ♻️ Changed
-
-- Bump Gradle Wrapper from 8.10.2 to 8.11.1 ([#16]).
-- Rename the build output directory from `samples` as `kotools-samples` ([#27]).
-
-### 🗑️ Deprecated
-
-- The `sample` Kotlin source set with a **warning** level for using the `test`
-  Kotlin source set instead ([#23]).
-
----
-
-Thanks to [@LVMVRQUXL] for contributing to this new release. 🙏
-
-[@LVMVRQUXL]: https://github.com/LVMVRQUXL
-[#11]: https://github.com/kotools/samples/issues/11
-[#16]: https://github.com/kotools/samples/pull/16
-[#22]: https://github.com/kotools/samples/issues/22
-[#23]: https://github.com/kotools/samples/issues/23
-[#27]: https://github.com/kotools/samples/issues/27
-
 ## 🔖 Releases
 
 | Version | Release date |
 |---------|--------------|
+| [0.2.0] | 2025-02-03   |
 | [0.1.0] | 2024-11-17   |
 
+[0.2.0]: https://github.com/kotools/samples/releases/tag/0.2.0
 [0.1.0]: https://github.com/kotools/samples/releases/tag/0.1.0
