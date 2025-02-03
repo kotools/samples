@@ -13,7 +13,7 @@ Issues of the milestone corresponding to this version should be done before reso
 ## ✅ Checklist
 
 - [ ] 🔖 Set Gradle project's version to this new one.
-- [ ] 📝 Check the copyright notice in the [license] documentation.
+- [ ] 📄 Check the copyright notice in the [license] documentation.
 - [ ] 🚀 Deliver the plugin by running the [delivery workflow].
 - [ ] 📝 Move the unreleased changelog to a GitHub release draft.
 - [ ] 🔖 Publish the GitHub release.
