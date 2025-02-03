@@ -14,13 +14,13 @@ Issues of the milestone corresponding to this version should be done before reso
 
 - [ ] 🔖 Set Gradle project's version to this new one.
 - [ ] 📄 Check the copyright notice in the [license] documentation.
-- [ ] 🚀 Deliver the plugin by running the [delivery workflow].
+- [ ] 🚀 Publish the plugin by running the [deployment workflow].
 - [ ] 📝 Move the unreleased changelog to a GitHub release draft.
 - [ ] 🔖 Publish the GitHub release.
 - [ ] 🔖 Set Gradle project's version to the next snapshot.
 - [ ] 📝 Announce this release on [Reddit], [Slack] and [Twitter].
 
-[delivery workflow]: https://github.com/kotools/samples/actions/workflows/delivery.yml
+[deployment workflow]: https://github.com/kotools/samples/actions/workflows/deployment.yml
 [license]: https://github.com/kotools/samples/blob/main/LICENSE.txt
 [maven central]: https://s01.oss.sonatype.org
 [reddit]: https://www.reddit.com/r/Kotlin
