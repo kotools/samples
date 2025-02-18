@@ -8,8 +8,6 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
 import org.kotools.samples.internal.SampleSourceFile
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 /**
  * Task responsible for checking the content of the `sample` Kotlin source set.
@@ -31,10 +29,9 @@ public abstract class CheckSampleKotlinSourceSet : DefaultTask() {
             .mapNotNull(SampleSourceFile.Companion::orNull)
             .any()
         if (!sourceSetHasFiles) return
-        val logger: Logger = LoggerFactory.getLogger(this::class.java)
         val deprecationNotice = "The 'sample' Kotlin source set is " +
                 "deprecated. Please move your samples to the 'test' Kotlin " +
                 "source set and suffix their file name with 'Sample'."
-        logger.warn(deprecationNotice)
+        error(deprecationNotice)
     }
 }

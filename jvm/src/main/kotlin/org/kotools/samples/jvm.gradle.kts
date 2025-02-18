@@ -37,7 +37,9 @@ java.sourceSets.named("test") { this.java.srcDir(javaSamples) }
 private val checkSampleKotlinSourceSet: TaskProvider<CheckSampleKotlinSourceSet>
         by tasks.registering(CheckSampleKotlinSourceSet::class) {
             this.description = "Checks the 'sample' Kotlin source set."
-            this.sourceDirectory = projectSources.dir("sample")
+            val sampleDirectory: Directory = projectSources.dir("sample")
+            this.sourceDirectory = sampleDirectory
+            this.onlyIf { sampleDirectory.asFile.exists() }
         }
 
 private val checkSampleSources: TaskProvider<CheckSampleSources> by tasks
