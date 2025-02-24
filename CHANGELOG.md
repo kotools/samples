@@ -16,6 +16,10 @@ All notable changes to this project will be documented in this file.
 
 ## 🚧 Unreleased
 
+### ♻️ Changed
+
+- Bump Gradle Wrapper from 8.11.1 to 8.12.1 ([#29]).
+
 ### 🗑️ Deprecated
 
 - The `sample` Kotlin source set with an **error** level ([#24]).
@@ -26,6 +30,7 @@ Thanks to [@LVMVRQUXL] for contributing to this release. 🙏
 
 [@LVMVRQUXL]: https://github.com/LVMVRQUXL
 [#24]: https://github.com/kotools/samples/issues/24
+[#29]: https://github.com/kotools/samples/issues/29
 
 ## 🔖 Releases
 
