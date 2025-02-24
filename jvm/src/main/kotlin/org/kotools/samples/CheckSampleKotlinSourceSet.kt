@@ -22,7 +22,7 @@ public abstract class CheckSampleKotlinSourceSet : DefaultTask() {
     public abstract val sourceDirectory: DirectoryProperty
 
     @TaskAction
-    private fun execute() {
+    internal fun execute() {
         val sourceSetHasFiles: Boolean = this.sourceDirectory.asFileTree
             .asSequence()
             .filterNotNull()
