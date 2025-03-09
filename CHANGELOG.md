@@ -16,28 +16,14 @@ All notable changes to this project will be documented in this file.
 
 ## 🚧 Unreleased
 
-### ♻️ Changed
-
-- Bump Gradle Wrapper from 8.11.1 to 8.12.1 ([#29]).
-
-### 🗑️ Deprecated
-
-- The `sample` Kotlin source set with an **error** level ([#24]).
-
----
-
-Thanks to [@LVMVRQUXL] for contributing to this release. 🙏
-
-[@LVMVRQUXL]: https://github.com/LVMVRQUXL
-[#24]: https://github.com/kotools/samples/issues/24
-[#29]: https://github.com/kotools/samples/issues/29
-
 ## 🔖 Releases
 
 | Version | Release date |
 |---------|--------------|
+| [0.3.0] | 2025-03-09   |
 | [0.2.0] | 2025-02-03   |
 | [0.1.0] | 2024-11-17   |
 
+[0.3.0]: https://github.com/kotools/samples/releases/tag/0.3.0
 [0.2.0]: https://github.com/kotools/samples/releases/tag/0.2.0
 [0.1.0]: https://github.com/kotools/samples/releases/tag/0.1.0
