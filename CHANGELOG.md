@@ -16,6 +16,17 @@ All notable changes to this project will be documented in this file.
 
 ## 🚧 Unreleased
 
+### ♻️ Changed
+
+- Bump Gradle Wrapper from 8.12.1 to 8.13 ([#34]).
+
+---
+
+Thanks to [@LVMVRQUXL] for contributing to this release. 🙏
+
+[@LVMVRQUXL]: https://github.com/LVMVRQUXL
+[#34]: https://github.com/kotools/samples/pull/34
+
 ## 🔖 Releases
 
 | Version | Release date |
