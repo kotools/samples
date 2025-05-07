@@ -13,7 +13,7 @@ kotlin {
 
 dependencies {
     implementation(platform(libs.kotlin.bom))
-    sampleImplementation(libs.kotlin.test.junit5)
+    testImplementation(libs.kotlin.test.junit5)
 }
 
 tasks.test.configure(Test::useJUnitPlatform)

@@ -2,35 +2,16 @@ package org.kotools.samples
 
 import org.jetbrains.dokka.gradle.AbstractDokkaLeafTask
 import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 // ----------------------------- Script properties -----------------------------
 
 private val projectSources: Directory = layout.projectDirectory.dir("src")
-private val javaSamples: Directory = projectSources.dir("sample/java")
 
 private val output: Provider<Directory> =
     layout.buildDirectory.dir("kotools-samples")
 private val sourcesBackup: Provider<Directory> =
     output.map { it.dir("sources-backup") }
-
-// ----------------------------- Plugin extensions -----------------------------
-
-private val kotlin: KotlinJvmProjectExtension = extensions.findByType()
-    ?: error("Kotlin/JVM plugin wasn't applied to ${project}.")
-private val kotlinMain: KotlinSourceSet = kotlin.sourceSets.getByName("main")
-private val kotlinSample: KotlinSourceSet =
-    kotlin.sourceSets.create("sample") {
-        this.dependsOn(kotlinMain)
-        this.kotlin.srcDir(javaSamples)
-    }
-kotlin.sourceSets.getByName("test")
-    .dependsOn(kotlinSample)
-
-private val java: JavaPluginExtension = extensions.getByType()
-java.sourceSets.named("test") { this.java.srcDir(javaSamples) }
 
 // ----------------------------------- Tasks -----------------------------------
 
