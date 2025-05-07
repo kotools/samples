@@ -20,11 +20,17 @@ All notable changes to this project will be documented in this file.
 
 - Bump Gradle Wrapper from 8.12.1 to 8.13 ([#34]).
 
+### 🔥 Removed
+
+- The `sample` Kotlin source set and the `checkSampleKotlinSourceSet` Gradle
+  task ([#25]).
+
 ---
 
 Thanks to [@LVMVRQUXL] for contributing to this release. 🙏
 
 [@LVMVRQUXL]: https://github.com/LVMVRQUXL
+[#25]: https://github.com/kotools/samples/issues/25
 [#34]: https://github.com/kotools/samples/pull/34
 
 ## 🔖 Releases
