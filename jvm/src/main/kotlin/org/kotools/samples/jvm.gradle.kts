@@ -15,18 +15,9 @@ private val sourcesBackup: Provider<Directory> =
 
 // ----------------------------------- Tasks -----------------------------------
 
-private val checkSampleKotlinSourceSet: TaskProvider<CheckSampleKotlinSourceSet>
-        by tasks.registering(CheckSampleKotlinSourceSet::class) {
-            this.description = "Checks the 'sample' Kotlin source set."
-            val sampleDirectory: Directory = projectSources.dir("sample")
-            this.sourceDirectory = sampleDirectory
-            this.onlyIf { sampleDirectory.asFile.exists() }
-        }
-
 private val checkSampleSources: TaskProvider<CheckSampleSources> by tasks
     .registering(CheckSampleSources::class) {
         this.description = "Checks the content of sample sources."
-        this.dependsOn(checkSampleKotlinSourceSet)
         this.sourceDirectory = projectSources
     }
 
