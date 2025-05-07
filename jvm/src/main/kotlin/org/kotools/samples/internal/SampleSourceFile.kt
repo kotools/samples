@@ -5,8 +5,8 @@ import java.io.File
 /**
  * Represents a sample source file.
  *
- * See the [SampleSourceFile.Companion.orNull] function for creating an instance
- * of this type.
+ * For creating an instance of this type, see the factory functions provided by
+ * the [SampleSourceFile.Companion] type.
  */
 internal class SampleSourceFile private constructor(private val file: File) {
     private val language: ProgrammingLanguage = ProgrammingLanguage(this.file)
