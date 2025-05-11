@@ -13,7 +13,7 @@ class SampleSourceFileTest {
 
     @Test
     fun `checkSingleClass should pass with a single class in it`() {
-        val name = "/sample/kotlin/Valid.kt"
+        val name = "/test/kotlin/ValidSample.kt"
         this::class.java.getResource(name)
             ?.toURI()
             ?.let(::File)
@@ -24,7 +24,7 @@ class SampleSourceFileTest {
 
     @Test
     fun `checkSingleClass should fail without a class`() {
-        val name = "/sample/kotlin/NoClass.kt"
+        val name = "/test/kotlin/NoClassSample.kt"
         val file: File = this::class.java.getResource(name)
             ?.toURI()
             ?.let(::File)
@@ -41,7 +41,7 @@ class SampleSourceFileTest {
 
     @Test
     fun `checkSingleClass should fail with multiple classes in it`() {
-        val name = "/sample/kotlin/MultipleClasses.kt"
+        val name = "/test/kotlin/MultipleClassesSample.kt"
         val file: File = this::class.java.getResource(name)
             ?.toURI()
             ?.let(::File)
@@ -60,7 +60,7 @@ class SampleSourceFileTest {
 
     @Test
     fun `toString should return an expressive string representation`() {
-        val name = "/sample/kotlin/Valid.kt"
+        val name = "/test/kotlin/ValidSample.kt"
         val file: File = this::class.java.getResource(name)
             ?.toURI()
             ?.let(::File)
@@ -75,34 +75,24 @@ class SampleSourceFileTest {
 
 class SampleSourceFileCompanionTest {
     @Test
-    fun `orNull should pass with Java file in sample source set`(): Unit =
-        this.orNullShouldPassWith("sample/java/Hello.java")
-
-    @Test
-    fun `orNull should pass with Kotlin file in sample source set`(): Unit =
-        this.orNullShouldPassWith("sample/kotlin/Hello.kt")
-
-    @Test
-    fun `orNull should pass with Java file in test source set`(): Unit =
-        this.orNullShouldPassWith("test/java/HelloSample.java")
-
-    @Test
-    fun `orNull should pass with Kotlin file in test source set`(): Unit =
-        this.orNullShouldPassWith("test/kotlin/HelloSample.kt")
-
-    private fun orNullShouldPassWith(path: String) {
-        val file = File(path)
+    fun `orNull should pass with Java file in test source set`() {
+        val file = File("test/java/HelloSample.java")
         val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
-        assertNotNull(actual)
+        val message = "'${file.path}' is a sample source file."
+        assertNotNull(actual, message)
     }
 
     @Test
-    fun `orNull should fail with file outside of sample or test source sets`():
-            Unit = this.orNullShouldFailWith("Hello.kt")
+    fun `orNull should pass with Kotlin file in test source set`() {
+        val file = File("test/kotlin/HelloSample.kt")
+        val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
+        val message = "'${file.path}' is a sample source file."
+        assertNotNull(actual, message)
+    }
 
     @Test
-    fun `orNull should fail with unsupported file in sample source set`():
-            Unit = this.orNullShouldFailWith("sample/Unsupported.txt")
+    fun `orNull should fail with file outside of test source set`():
+            Unit = this.orNullShouldFailWith("Hello.kt")
 
     @Test
     fun `orNull should fail with invalid file suffix in test source set`():
@@ -115,6 +105,7 @@ class SampleSourceFileCompanionTest {
     private fun orNullShouldFailWith(path: String) {
         val file = File(path)
         val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
-        assertNull(actual)
+        val message = "'$path' is not a sample source file."
+        assertNull(actual, message)
     }
 }

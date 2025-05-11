@@ -8,8 +8,10 @@ import java.io.File
  * For creating an instance of this type, see the factory functions provided by
  * the [SampleSourceFile.Companion] type.
  */
-internal class SampleSourceFile private constructor(private val file: File) {
-    private val language: ProgrammingLanguage = ProgrammingLanguage(this.file)
+internal class SampleSourceFile private constructor(
+    private val file: File,
+    private val language: ProgrammingLanguage
+) {
 
     // ----------------------- File content's operations -----------------------
 
@@ -87,32 +89,17 @@ internal class SampleSourceFile private constructor(private val file: File) {
     companion object {
         /**
          * Creates an instance of [SampleSourceFile] from the specified [file].
-         * Returns `null` if the [file] is not in a sample or test Kotlin source
-         * set, if it is in a test Kotlin source set but its name is not
-         * suffixed by `Sample`, or if it is unsupported.
+         * Returns `null` if the [file] is not in a test Kotlin source set, if
+         * the [file]'s name is not suffixed by `Sample`, or if it is
+         * unsupported.
          */
-        fun orNull(file: File): SampleSourceFile? = try {
-            this.orThrow(file)
-        } catch (exception: IllegalArgumentException) {
-            null
-        }
-
-        private fun orThrow(file: File): SampleSourceFile {
-            val fileIsInSampleSourceSet: Boolean =
-                file.path.contains("sample/", ignoreCase = true)
-            val fileIsInTestSourceSet: Boolean =
-                file.path.contains("test/", ignoreCase = true)
-            require(fileIsInSampleSourceSet || fileIsInTestSourceSet) {
-                "'${file.name}' file should be in a sample or test source set."
-            }
-            if (fileIsInSampleSourceSet) return SampleSourceFile(file)
-            val suffix = "Sample"
-            val fileNameHasValidSuffix: Boolean =
-                file.nameWithoutExtension.endsWith(suffix)
-            require(fileNameHasValidSuffix) {
-                "'${file.name}' file's name should be suffixed by '$suffix'."
-            }
-            return SampleSourceFile(file)
+        fun orNull(file: File): SampleSourceFile? {
+            val language: ProgrammingLanguage = file
+                .takeIf { it.path.contains("test/", ignoreCase = true) }
+                ?.takeIf { it.nameWithoutExtension.endsWith("Sample") }
+                ?.let(ProgrammingLanguage.Companion::orNull)
+                ?: return null
+            return SampleSourceFile(file, language)
         }
     }
 }
