@@ -42,7 +42,7 @@ internal class SampleSourceFile private constructor(
         this.file.useLines { lines: Sequence<String> ->
             lines.forEach {
                 when {
-                    it matches this.language.packageRegex -> identifier +=
+                    this.language.isPackageDeclaration(it) -> identifier +=
                         it.substringAfter("${this.language.packageKeyword} ")
                             .substringBefore(';')
                             .split('.')

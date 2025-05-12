@@ -14,8 +14,19 @@ internal sealed interface ProgrammingLanguage {
     val functionHeaderRegex: Regex
     val functionKeyword: String
     val markdownIdentifier: String
+
+    // --------------------------- Package operations --------------------------
+
     val packageKeyword: String
     val packageRegex: Regex
+
+    /**
+     * Returns `true` if the specified [text] represents a package declaration,
+     * or returns `false` otherwise.
+     */
+    fun isPackageDeclaration(text: String): Boolean
+
+    // -------------------------------------------------------------------------
 
     /** Contains static declarations for the [ProgrammingLanguage] type. */
     companion object {
