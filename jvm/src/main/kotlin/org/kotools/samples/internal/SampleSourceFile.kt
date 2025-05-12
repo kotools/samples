@@ -12,7 +12,6 @@ internal class SampleSourceFile private constructor(
     private val file: File,
     private val language: ProgrammingLanguage
 ) {
-
     // ----------------------- File content's operations -----------------------
 
     /**
@@ -20,17 +19,12 @@ internal class SampleSourceFile private constructor(
      * an [IllegalStateException] if this is not the case.
      */
     fun checkSingleClass() {
-        val numberOfClasses: Int = this.countClasses()
-        if (numberOfClasses == 1) return
-        val message =
-            "The following file should have a single class: ${this.file.path}."
-        error(message)
-    }
-
-    private fun countClasses(): Int =
-        this.file.useLines { lines: Sequence<String> ->
+        val classCount: Int = this.file.useLines { lines: Sequence<String> ->
             lines.count { this.language.classHeaderRegex in it }
         }
+        if (classCount == 0) error("No class found in '${this.file}'.")
+        if (classCount > 1) error("Multiple classes found in '${this.file}'.")
+    }
 
     /** Returns all samples present in this source file. */
     fun samples(): Set<Sample> {

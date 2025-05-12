@@ -34,8 +34,7 @@ class SampleSourceFileTest {
         val actual: String? = assertFailsWith<IllegalStateException>(
             block = sampleSourceFile::checkSingleClass
         ).message
-        val expected =
-            "The following file should have a single class: ${file.path}."
+        val expected = "No class found in '$file'."
         assertEquals(expected, actual)
     }
 
@@ -51,8 +50,7 @@ class SampleSourceFileTest {
         val actual: String? = assertFailsWith<IllegalStateException>(
             block = sampleSourceFile::checkSingleClass
         ).message
-        val expected =
-            "The following file should have a single class: ${file.path}."
+        val expected = "Multiple classes found in '$file'."
         assertEquals(expected, actual)
     }
 
