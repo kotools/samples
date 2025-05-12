@@ -32,7 +32,7 @@ class JavaTest {
     }
 
     @Test
-    fun `isPackageDeclaration should fail with missing semi-colon`() {
+    fun `isPackageDeclaration should fail with missing semicolon`() {
         val text = "package org.kotools.samples"
         val actual: Boolean = Java()
             .isPackageDeclaration(text)
