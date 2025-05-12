@@ -17,11 +17,6 @@ internal class Kotlin : ProgrammingLanguage {
     override val packageRegex: Regex =
         Regex("^${this.packageKeyword} [a-z]+(?:\\.[a-z]+)*\$")
 
-    // --------------------------- Package operations --------------------------
-
-    override fun isPackageDeclaration(text: String): Boolean =
-        text matches this.packageRegex
-
     // -------------------- Structural equality operations ---------------------
 
     /**
