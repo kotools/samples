@@ -11,7 +11,6 @@ import java.io.File
 internal sealed interface ProgrammingLanguage {
     val classKeyword: String
     val classHeaderRegex: Regex
-    val fileExtension: String
     val functionHeaderRegex: Regex
     val functionKeyword: String
     val markdownIdentifier: String

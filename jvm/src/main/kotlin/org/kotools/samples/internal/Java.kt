@@ -9,7 +9,6 @@ internal class Java : ProgrammingLanguage {
     override val classKeyword: String = "class"
     override val classHeaderRegex: Regex =
         Regex("${this.classKeyword} [A-Z][A-Za-z]*")
-    override val fileExtension: String = "java"
     override val functionKeyword: String = "void"
     override val functionHeaderRegex: Regex =
         Regex("${this.functionKeyword} [A-Za-z_]+\\(\\) \\{\$")

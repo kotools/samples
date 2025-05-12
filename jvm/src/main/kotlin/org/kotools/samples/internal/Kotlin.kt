@@ -9,7 +9,6 @@ internal class Kotlin : ProgrammingLanguage {
     override val classKeyword: String = "class"
     override val classHeaderRegex: Regex =
         Regex("${this.classKeyword} [A-Z][A-Za-z]*")
-    override val fileExtension: String = "kt"
     override val functionKeyword: String = "fun"
     override val functionHeaderRegex: Regex =
         Regex("$functionKeyword [A-Za-z_]+\\(\\) \\{\$")
