@@ -18,7 +18,6 @@ All notable changes to this project will be documented in this file.
 
 ### ♻️ Changed
 
-- Bump Gradle Wrapper from 8.12.1 to 8.13 ([#34]).
 - Improve error messages of the `checkSampleSources` Gradle task ([e61f6da6]).
 
 ### 🔥 Removed
@@ -32,7 +31,6 @@ Thanks to [@LVMVRQUXL] for contributing to this release. 🙏
 
 [@LVMVRQUXL]: https://github.com/LVMVRQUXL
 [#25]: https://github.com/kotools/samples/issues/25
-[#34]: https://github.com/kotools/samples/pull/34
 [e61f6da6]: https://github.com/kotools/samples/commit/e61f6da6
 
 ## 🔖 Releases

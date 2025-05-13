@@ -9,7 +9,6 @@ Here's the compatibility of this plugin with [Gradle]:
 
 | Kotools Samples version | Gradle version |
 |-------------------------|----------------|
-| 0.4                     | 8.13           |
 | 0.3                     | 8.12.1         |
 | 0.2                     | 8.11.1         |
 | 0.1                     | 8.10.2         |

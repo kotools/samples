@@ -162,7 +162,7 @@ This project is licensed under the [MIT License](LICENSE.txt).
 [dokka]: https://kotl.in/dokka
 [dokka-badge]: https://img.shields.io/badge/Dokka-v1.8.20-blue
 [gradle]: https://gradle.org
-[gradle-badge]: https://img.shields.io/badge/Gradle-v8.13-blue
+[gradle-badge]: https://img.shields.io/badge/Gradle-v8.12.1-blue
 [kotlin]: https://kotlinlang.org
 [kotlin-badge]: https://img.shields.io/badge/Kotlin-v1.8.22-blue?logo=kotlin
 [kotools-samples-badge]: https://img.shields.io/gradle-plugin-portal/v/org.kotools.samples.jvm?label=Latest
