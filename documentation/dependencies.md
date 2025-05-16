@@ -9,7 +9,7 @@ Here's the compatibility of this plugin with [Gradle]:
 
 | Kotools Samples version | Gradle version |
 |-------------------------|----------------|
-| 0.3                     | 8.12.1         |
+| \>= 0.3                 | 8.12.1         |
 | 0.2                     | 8.11.1         |
 | 0.1                     | 8.10.2         |
 
@@ -20,6 +20,7 @@ version and its language version for source compatibility:
 
 | Kotools Samples version | Embedded Kotlin version | Kotlin Language version |
 |-------------------------|-------------------------|-------------------------|
+| 0.4                     | 1.9.25                  | 1.8                     |
 | <= 0.3                  | 1.8.22                  | 1.8                     |
 
 ## Dokka
@@ -28,6 +29,7 @@ Here's the compatibility of this plugin with [Dokka]:
 
 | Kotools Samples version | Dokka version |
 |-------------------------|---------------|
+| 0.4                     | 1.9.20        |
 | <= 0.3                  | 1.8.20        |
 
 <!-- Links -->
