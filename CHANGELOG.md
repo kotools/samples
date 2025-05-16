@@ -18,6 +18,8 @@ All notable changes to this project will be documented in this file.
 
 ### ♻️ Changed
 
+- Upgrade embedded Kotlin from 1.8.22 to 1.9.25, and Dokka from 1.8.20 to 1.9.20
+  ([#15]). 
 - Improve error messages of the `checkSampleSources` Gradle task ([e61f6da6]).
 
 ### 🔥 Removed
@@ -30,6 +32,7 @@ All notable changes to this project will be documented in this file.
 Thanks to [@LVMVRQUXL] for contributing to this release. 🙏
 
 [@LVMVRQUXL]: https://github.com/LVMVRQUXL
+[#15]: https://github.com/kotools/samples/issues/15
 [#25]: https://github.com/kotools/samples/issues/25
 [e61f6da6]: https://github.com/kotools/samples/commit/e61f6da6
 
