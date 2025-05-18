@@ -21,18 +21,11 @@ private val checkSampleSources: TaskProvider<CheckSampleSources> by tasks
         this.sourceDirectory = projectSources
     }
 
-private val cleanSamplesBuildDirectory: TaskProvider<Delete> by tasks
-    .registering(Delete::class) {
-        this.description = "Deletes the 'samples' build directory."
-        val target: Provider<Directory> = layout.buildDirectory.dir("samples")
-        this.setDelete(target)
-    }
-
 private val extractSamples: TaskProvider<ExtractSamples> by tasks.registering(
     ExtractSamples::class
 ) {
     this.description = "Extracts samples for KDoc."
-    this.dependsOn(checkSampleSources, cleanSamplesBuildDirectory)
+    this.dependsOn(checkSampleSources)
     this.sourceDirectory = projectSources
     this.outputDirectory = output.map { it.dir("extracted") }
 }
