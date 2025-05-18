@@ -21,19 +21,9 @@ private val checkSampleSources: TaskProvider<CheckSampleSources> by tasks
         this.sourceDirectory = projectSources
     }
 
-private val createKotoolsSamplesBuildDirectory: TaskProvider<Copy> by tasks
-    .registering(Copy::class) {
-        this.description = "Creates the 'kotools-samples' build directory " +
-                "from the 'samples' one."
-        val source: Provider<Directory> = layout.buildDirectory.dir("samples")
-        this.from(source)
-        this.into(output)
-    }
-
 private val cleanSamplesBuildDirectory: TaskProvider<Delete> by tasks
     .registering(Delete::class) {
         this.description = "Deletes the 'samples' build directory."
-        this.dependsOn(createKotoolsSamplesBuildDirectory)
         val target: Provider<Directory> = layout.buildDirectory.dir("samples")
         this.setDelete(target)
     }
