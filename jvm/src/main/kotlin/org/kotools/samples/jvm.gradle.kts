@@ -55,11 +55,18 @@ private val checkSampleReferences: TaskProvider<CheckSampleReferences> by tasks
             extractSamples.flatMap(ExtractSamples::outputDirectory)
     }
 
+private val cleanMainSourcesBackup: TaskProvider<Delete> by tasks.registering(
+    Delete::class
+) {
+    this.description = "Deletes main sources backup from the build directory."
+    this.setDelete(sourcesBackup)
+}
+
 private val backupMainSources: TaskProvider<Copy> by tasks.registering(
     Copy::class
 ) {
     this.description = "Copies main sources into the build directory."
-    this.dependsOn(checkSampleReferences)
+    this.dependsOn(checkSampleReferences, cleanMainSourcesBackup)
     this.from(projectSources) { exclude("api", "sample", "test") }
     this.into(sourcesBackup)
 }
