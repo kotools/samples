@@ -16,6 +16,11 @@ All notable changes to this project will be documented in this file.
 
 ## 🚧 Unreleased
 
+### ✨ Added
+
+- The `cleanMainSourcesBackup` Gradle task for making sure that main sources are
+  always backed-up ([2d249d2b]).
+
 ### ♻️ Changed
 
 - Upgrade embedded Kotlin from 1.8.22 to 1.9.25, and Dokka from 1.8.20 to 1.9.20
@@ -26,6 +31,9 @@ All notable changes to this project will be documented in this file.
 
 - The `sample` Kotlin source set and the `checkSampleKotlinSourceSet` Gradle
   task ([#25]).
+- The `createKotoolsSamplesBuildDirectory` and the `cleanSamplesBuildDirectory`
+  Gradle tasks, after migrating the output directory to `kotools-samples`
+  ([beda12d9] and [359c3522]).
 
 ---
 
@@ -34,6 +42,9 @@ Thanks to [@LVMVRQUXL] for contributing to this release. 🙏
 [@LVMVRQUXL]: https://github.com/LVMVRQUXL
 [#15]: https://github.com/kotools/samples/issues/15
 [#25]: https://github.com/kotools/samples/issues/25
+[2d249d2b]: https://github.com/kotools/samples/commit/2d249d2b
+[359c3522]: https://github.com/kotools/samples/commit/359c3522
+[beda12d9]: https://github.com/kotools/samples/commit/beda12d9
 [e61f6da6]: https://github.com/kotools/samples/commit/e61f6da6
 
 ## 🔖 Releases
