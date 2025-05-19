@@ -2,6 +2,7 @@ package org.kotools.samples
 
 import org.jetbrains.dokka.gradle.AbstractDokkaLeafTask
 import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
+import org.jetbrains.dokka.gradle.tasks.DokkaGenerateTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 // ----------------------------- Script properties -----------------------------
@@ -82,6 +83,12 @@ tasks.withType<AbstractDokkaLeafTask>().configureEach {
 
 rootProject.tasks.withType<DokkaMultiModuleTask>().configureEach {
     this.dependsOn(restoreMainSources)
+}
+
+tasks.withType<DokkaGenerateTask>().configureEach {
+    // Configuration for Dokka Gradle plugin v2
+    this.dependsOn(inlineSamples)
+    this.finalizedBy(restoreMainSources)
 }
 
 // ---------------------------- Kotlin integration -----------------------------
