@@ -1,6 +1,4 @@
-package sample.kotlin
-
-class ValidSample {
+class NoPackageValidSample {
     fun greet() {
         val name = "Sample"
         val greeting: String = greet(name)

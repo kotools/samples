@@ -54,6 +54,33 @@ class SampleSourceFileTest {
         assertEquals(expected, actual)
     }
 
+    // ----------------------- packageIdentifierOrNull() -----------------------
+
+    @Test
+    fun `packageIdentifierOrNull with package declaration in file`() {
+        val fileName = "ValidSample.kt"
+        val file: SampleSourceFile = this::class.java.getResource("/$fileName")
+            ?.toURI()
+            ?.let(::File)
+            ?.let(SampleSourceFile.Companion::orNull)
+            ?: fail("'$fileName' sample source file not found.")
+        val actual: String? = file.packageIdentifierOrNull()
+        val expected = "sample.kotlin"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `packageIdentifierOrNull without package declaration in file`() {
+        val fileName = "NoPackageValidSample.kt"
+        val file: SampleSourceFile = this::class.java.getResource("/$fileName")
+            ?.toURI()
+            ?.let(::File)
+            ?.let(SampleSourceFile.Companion::orNull)
+            ?: fail("'$fileName' sample source file not found.")
+        val actual: String? = file.packageIdentifierOrNull()
+        assertNull(actual)
+    }
+
     // ------------------------------ toString() -------------------------------
 
     @Test

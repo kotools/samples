@@ -28,7 +28,10 @@ internal class SampleSourceFile private constructor(
 
     /** Returns all samples present in this source file. */
     fun samples(): Set<Sample> {
-        var identifier: MutableList<String> = mutableListOf()
+        var identifier: MutableList<String> = this.packageIdentifierOrNull()
+            ?.split('.')
+            ?.toMutableList()
+            ?: mutableListOf()
         val body: MutableList<String> = mutableListOf()
         val samples: MutableList<Sample> = mutableListOf()
         var numberOfUnclosedBracketsInSample = 0
@@ -36,10 +39,6 @@ internal class SampleSourceFile private constructor(
         this.file.useLines { lines: Sequence<String> ->
             lines.forEach {
                 when {
-                    it matches this.language.packageRegex -> identifier +=
-                        it.substringAfter("${this.language.packageKeyword} ")
-                            .substringBefore(';')
-                            .split('.')
                     this.language.classHeaderRegex in it -> identifier += it
                         .substringAfter("${this.language.classKeyword} ")
                         .substringBefore(" {")
@@ -70,6 +69,15 @@ internal class SampleSourceFile private constructor(
         }
         return samples.toSet()
     }
+
+    /**
+     * Returns the package identifier specified in this sample source file, or
+     * returns `null` if no package identifier was found.
+     */
+    fun packageIdentifierOrNull(): String? = this.file
+        .useLines { it.firstOrNull(this.language.packageRegex::matches) }
+        ?.substringAfter("${this.language.packageKeyword} ")
+        ?.substringBefore(';')
 
     // ------------------------------ Conversions ------------------------------
 
