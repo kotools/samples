@@ -73,9 +73,8 @@ internal class SampleSourceFile private constructor(
 
     // ------------------------------ Conversions ------------------------------
 
-    /** Returns the string representation of this sample source file. */
-    override fun toString(): String =
-        "Sample source file at '${this.file.path}'."
+    /** Returns the path of this sample source file. */
+    override fun toString(): String = this.file.toString()
 
     // -------------------------------------------------------------------------
 

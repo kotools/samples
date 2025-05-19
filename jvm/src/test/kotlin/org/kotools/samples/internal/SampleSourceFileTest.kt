@@ -57,16 +57,12 @@ class SampleSourceFileTest {
     // ------------------------------ toString() -------------------------------
 
     @Test
-    fun `toString should return an expressive string representation`() {
-        val name = "/ValidSample.kt"
-        val file: File = this::class.java.getResource(name)
-            ?.toURI()
-            ?.let(::File)
-            ?: fail("'$name' file not found.")
-        val actual: String = SampleSourceFile.orNull(file)
-            ?.toString()
-            ?: fail("'$name' sample source file not found.")
-        val expected = "Sample source file at '${file.path}'."
+    fun `toString should behave like File`() {
+        val file = File("test/java/HelloSample.java")
+        val sampleSourceFile: SampleSourceFile = SampleSourceFile.orNull(file)
+            ?: fail("Invalid sample source file ($file).")
+        val actual: String = sampleSourceFile.toString()
+        val expected: String = file.toString()
         assertEquals(expected, actual)
     }
 
