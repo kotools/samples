@@ -29,8 +29,7 @@ class SampleSourceFileTest {
             ?.toURI()
             ?.let(::File)
             ?: fail("'$name' file not found.")
-        val sampleSourceFile: SampleSourceFile =
-            SampleSourceFile.orNull(file)
+        val sampleSourceFile: SampleSourceFile = SampleSourceFile.orNull(file)
             ?: fail("'$name' sample source file not found.")
         val actual: String? = assertFailsWith<IllegalStateException>(
             block = sampleSourceFile::checkSingleClass
