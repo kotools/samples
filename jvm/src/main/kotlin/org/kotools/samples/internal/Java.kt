@@ -9,7 +9,10 @@ internal class Java : ProgrammingLanguage {
     override val classKeyword: String = "class"
     override val classHeaderRegex: Regex =
         Regex("${this.classKeyword} [A-Z][A-Za-z]*")
+
+    // This is not a keyword but the type to return!
     override val functionKeyword: String = "void"
+
     override val functionHeaderRegex: Regex =
         Regex("${this.functionKeyword} [A-Za-z_]+\\(\\) \\{\$")
     override val markdownIdentifier: String = "java"
