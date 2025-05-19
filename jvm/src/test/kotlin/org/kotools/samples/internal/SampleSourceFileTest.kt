@@ -69,10 +69,8 @@ class SampleSourceFileTest {
         val expected = "Sample source file at '${file.path}'."
         assertEquals(expected, actual)
     }
-}
 
-class SampleSourceFileCompanionTest {
-    // ----------------------------- orNullFile() ------------------------------
+    // ------------------------ Companion.orNull(File) -------------------------
 
     @Test
     fun `orNull should pass with Java file in test source set`() {

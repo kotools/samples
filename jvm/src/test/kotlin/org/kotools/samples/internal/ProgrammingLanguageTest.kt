@@ -5,8 +5,8 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-class ProgrammingLanguageCompanionTest {
-    // ----------------------------- orNull(File) ------------------------------
+class ProgrammingLanguageTest {
+    // ------------------------ Companion.orNull(File) -------------------------
 
     @Test
     fun `orNull should pass with file having 'java' extension`() {
