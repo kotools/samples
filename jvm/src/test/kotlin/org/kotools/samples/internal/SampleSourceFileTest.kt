@@ -13,23 +13,24 @@ class SampleSourceFileTest {
 
     @Test
     fun `checkSingleClass should pass with a single class in it`() {
-        val name = "/test/kotlin/ValidSample.kt"
-        this::class.java.getResource(name)
+        val name = "/ValidSample.kt"
+        val file: SampleSourceFile = this::class.java.getResource(name)
             ?.toURI()
             ?.let(::File)
             ?.let(SampleSourceFile.Companion::orNull)
-            ?.checkSingleClass()
             ?: fail("'$name' sample source file not found.")
+        file.checkSingleClass()
     }
 
     @Test
     fun `checkSingleClass should fail without a class`() {
-        val name = "/test/kotlin/NoClassSample.kt"
+        val name = "/NoClassSample.kt"
         val file: File = this::class.java.getResource(name)
             ?.toURI()
             ?.let(::File)
             ?: fail("'$name' file not found.")
-        val sampleSourceFile: SampleSourceFile = SampleSourceFile.orNull(file)
+        val sampleSourceFile: SampleSourceFile =
+            SampleSourceFile.orNull(file)
             ?: fail("'$name' sample source file not found.")
         val actual: String? = assertFailsWith<IllegalStateException>(
             block = sampleSourceFile::checkSingleClass
@@ -40,7 +41,7 @@ class SampleSourceFileTest {
 
     @Test
     fun `checkSingleClass should fail with multiple classes in it`() {
-        val name = "/test/kotlin/MultipleClassesSample.kt"
+        val name = "/MultipleClassesSample.kt"
         val file: File = this::class.java.getResource(name)
             ?.toURI()
             ?.let(::File)
@@ -58,7 +59,7 @@ class SampleSourceFileTest {
 
     @Test
     fun `toString should return an expressive string representation`() {
-        val name = "/test/kotlin/ValidSample.kt"
+        val name = "/ValidSample.kt"
         val file: File = this::class.java.getResource(name)
             ?.toURI()
             ?.let(::File)
