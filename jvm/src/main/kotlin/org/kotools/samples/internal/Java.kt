@@ -6,10 +6,6 @@ package org.kotools.samples.internal
  * @constructor Returns the [Java] programming language.
  */
 internal class Java : ProgrammingLanguage {
-    override val classKeyword: String = "class"
-    override val classHeaderRegex: Regex =
-        Regex("${this.classKeyword} [A-Z][A-Za-z]*")
-
     // This is not a keyword but the type to return!
     override val functionKeyword: String = "void"
 
@@ -19,6 +15,15 @@ internal class Java : ProgrammingLanguage {
     override val packageKeyword: String = "package"
     override val packageRegex: Regex =
         Regex("^${this.packageKeyword} [a-z]+(?:\\.[a-z]+)*;\$")
+
+    // --------------------------- Class declaration ---------------------------
+
+    override val classKeyword: String = "class"
+    override val classHeaderRegex: Regex =
+        Regex("${this.classKeyword} [A-Z][A-Za-z]*")
+
+    override fun isPublicClassDeclaration(text: String): Boolean =
+        text.startsWith("public class ")
 
     // -------------------- Structural equality operations ---------------------
 
