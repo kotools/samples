@@ -25,7 +25,8 @@ All notable changes to this project will be documented in this file.
 
 - Upgrade embedded Kotlin from 1.8.22 to 2.0.21, Dokka from 1.8.20 to 2.0.0, and
   support Dokka Gradle plugin v2 alongside its v1 ([#15] and [#41]).
-- Improve error messages of the `checkSampleSources` Gradle task ([e61f6da6]).
+- The `checkSampleSources` Gradle task now has improved error messages and looks
+  for public classes in sample source files ([e61f6da6] and [c8450e5b]).
 
 ### 🔥 Removed
 
@@ -46,6 +47,7 @@ Thanks to [@LVMVRQUXL] for contributing to this release. 🙏
 [2d249d2b]: https://github.com/kotools/samples/commit/2d249d2b
 [359c3522]: https://github.com/kotools/samples/commit/359c3522
 [beda12d9]: https://github.com/kotools/samples/commit/beda12d9
+[c8450e5b]: https://github.com/kotools/samples/commit/c8450e5b
 [e61f6da6]: https://github.com/kotools/samples/commit/e61f6da6
 
 ## 🔖 Releases
