@@ -39,9 +39,10 @@ internal class SampleSourceFile private constructor(
         this.file.useLines { lines: Sequence<String> ->
             lines.forEach {
                 when {
-                    this.language.classHeaderRegex in it -> identifier += it
-                        .substringAfter("${this.language.classKeyword} ")
-                        .substringBefore(" {")
+                    this.language.isPublicClassDeclaration(it) ->
+                        identifier += it
+                            .substringAfter("${this.language.classKeyword} ")
+                            .substringBefore(" {")
                     this.language.functionHeaderRegex in it -> {
                         identifier += it.substringBefore('(')
                             .substringAfter("${this.language.functionKeyword} ")

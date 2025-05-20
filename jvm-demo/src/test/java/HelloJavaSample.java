@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("NewClassNamingConvention")
-class HelloJavaSample {
+public class HelloJavaSample {
     @Test
     void greet() {
         final String name = "Sample";
