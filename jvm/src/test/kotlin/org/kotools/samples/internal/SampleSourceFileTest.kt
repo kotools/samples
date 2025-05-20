@@ -24,7 +24,7 @@ class SampleSourceFileTest {
 
     @Test
     fun `checkSingleClass should fail without a class`() {
-        val name = "/NoClassSample.kt"
+        val name = "/NoPublicClassSample.kt"
         val file: File = this::class.java.getResource(name)
             ?.toURI()
             ?.let(::File)
@@ -40,7 +40,7 @@ class SampleSourceFileTest {
 
     @Test
     fun `checkSingleClass should fail with multiple classes in it`() {
-        val name = "/MultipleClassesSample.kt"
+        val name = "/MultiplePublicClassesSample.kt"
         val file: File = this::class.java.getResource(name)
             ?.toURI()
             ?.let(::File)

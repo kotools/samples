@@ -20,7 +20,7 @@ internal class SampleSourceFile private constructor(
      */
     fun checkSingleClass() {
         val classCount: Int = this.file.useLines { lines: Sequence<String> ->
-            lines.count { this.language.classHeaderRegex in it }
+            lines.count(this.language::isPublicClassDeclaration)
         }
         if (classCount == 0) error("No class found in '${this.file}'.")
         if (classCount > 1) error("Multiple classes found in '${this.file}'.")
