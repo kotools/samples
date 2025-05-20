@@ -18,7 +18,6 @@ internal sealed interface ProgrammingLanguage {
     // --------------------------- Class declaration ---------------------------
 
     val classKeyword: String
-    val classHeaderRegex: Regex
 
     /**
      * Returns `true` if the specified [text] represents a public class

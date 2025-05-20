@@ -19,8 +19,6 @@ internal class Java : ProgrammingLanguage {
     // --------------------------- Class declaration ---------------------------
 
     override val classKeyword: String = "class"
-    override val classHeaderRegex: Regex =
-        Regex("${this.classKeyword} [A-Z][A-Za-z]*")
 
     override fun isPublicClassDeclaration(text: String): Boolean =
         text.startsWith("public class ")
