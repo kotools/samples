@@ -12,7 +12,7 @@ class SampleSourceFileTest {
     // -------------------------- checkSingleClass() ---------------------------
 
     @Test
-    fun `checkSingleClass should pass with a single class in it`() {
+    fun `checkSingleClass passes with a single class in it`() {
         val name = "/ValidSample.kt"
         val file: SampleSourceFile = this::class.java.getResource(name)
             ?.toURI()
@@ -23,7 +23,7 @@ class SampleSourceFileTest {
     }
 
     @Test
-    fun `checkSingleClass should fail without a class`() {
+    fun `checkSingleClass fails without a class`() {
         val name = "/NoPublicClassSample.kt"
         val file: File = this::class.java.getResource(name)
             ?.toURI()
@@ -34,12 +34,12 @@ class SampleSourceFileTest {
         val actual: String? = assertFailsWith<IllegalStateException>(
             block = sampleSourceFile::checkSingleClass
         ).message
-        val expected = "No class found in '$file'."
+        val expected = "No public class found in '$file'."
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `checkSingleClass should fail with multiple classes in it`() {
+    fun `checkSingleClass fails with multiple classes in it`() {
         val name = "/MultiplePublicClassesSample.kt"
         val file: File = this::class.java.getResource(name)
             ?.toURI()
@@ -50,7 +50,23 @@ class SampleSourceFileTest {
         val actual: String? = assertFailsWith<IllegalStateException>(
             block = sampleSourceFile::checkSingleClass
         ).message
-        val expected = "Multiple classes found in '$file'."
+        val expected = "Multiple public classes found in '$file'."
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `checkSingleClass fails with nested public classes in it`() {
+        val name = "/NestedPublicClassSample.kt"
+        val file: File = this::class.java.getResource(name)
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$name' file not found.")
+        val sampleSourceFile: SampleSourceFile = SampleSourceFile.orNull(file)
+            ?: fail("'$name' sample source file not found.")
+        val actual: String? = assertFailsWith<IllegalStateException>(
+            block = sampleSourceFile::checkSingleClass
+        ).message
+        val expected = "Multiple public classes found in '$file'."
         assertEquals(expected, actual)
     }
 
