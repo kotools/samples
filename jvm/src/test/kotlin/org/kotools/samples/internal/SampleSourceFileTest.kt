@@ -97,6 +97,21 @@ class SampleSourceFileTest {
         assertNull(actual)
     }
 
+    // ------------------------------ className() ------------------------------
+
+    @Test
+    fun `className passes`() {
+        val fileName = "ValidSample.kt"
+        val file: SampleSourceFile = this::class.java.getResource("/$fileName")
+            ?.toURI()
+            ?.let(::File)
+            ?.let(SampleSourceFile.Companion::orNull)
+            ?: fail("'$fileName' sample source file not found.")
+        val actual: String = file.className()
+        val expected = "ValidSample"
+        assertEquals(expected, actual)
+    }
+
     // ------------------------------ toString() -------------------------------
 
     @Test

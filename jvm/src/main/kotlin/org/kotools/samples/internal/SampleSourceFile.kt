@@ -34,6 +34,7 @@ internal class SampleSourceFile private constructor(
             ?.split('.')
             ?.toMutableList()
             ?: mutableListOf()
+        identifier += this.className()
         val body: MutableList<String> = mutableListOf()
         val samples: MutableList<Sample> = mutableListOf()
         var numberOfUnclosedBracketsInSample = 0
@@ -41,10 +42,6 @@ internal class SampleSourceFile private constructor(
         this.file.useLines { lines: Sequence<String> ->
             lines.forEach {
                 when {
-                    this.language.isPublicClassDeclaration(it) ->
-                        identifier += it
-                            .substringAfter("${this.language.classKeyword} ")
-                            .substringBefore(" {")
                     this.language.functionHeaderRegex in it -> {
                         identifier += it.substringBefore('(')
                             .substringAfter("${this.language.functionKeyword} ")
@@ -81,6 +78,16 @@ internal class SampleSourceFile private constructor(
         .useLines { it.firstOrNull(this.language.packageRegex::matches) }
         ?.substringAfter("${this.language.packageKeyword} ")
         ?.substringBefore(';')
+
+    /**
+     * Returns the name of the public class contained in this sample source
+     * file.
+     */
+    fun className(): String = this.file.useLines {
+        it.first(this.language::isPublicClassDeclaration)
+            .substringAfter("${this.language.classKeyword} ")
+            .substringBefore(" {")
+    }
 
     // ------------------------------ Conversions ------------------------------
 
