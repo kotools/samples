@@ -9,7 +9,7 @@ class ProgrammingLanguageTest {
     // ------------------------ Companion.orNull(File) -------------------------
 
     @Test
-    fun `orNull should pass with file having 'java' extension`() {
+    fun `orNull passes with file having 'java' extension`() {
         val file = File("Hello.java")
         val actual: ProgrammingLanguage? = ProgrammingLanguage.orNull(file)
         val expected: ProgrammingLanguage = Java()
@@ -17,7 +17,7 @@ class ProgrammingLanguageTest {
     }
 
     @Test
-    fun `orNull should pass with file having 'kt' extension`() {
+    fun `orNull passes with file having 'kt' extension`() {
         val file = File("Hello.kt")
         val actual: ProgrammingLanguage? = ProgrammingLanguage.orNull(file)
         val expected: ProgrammingLanguage = Kotlin()
@@ -25,7 +25,7 @@ class ProgrammingLanguageTest {
     }
 
     @Test
-    fun `orNull should fail with unsupported file`() {
+    fun `orNull fails with unsupported file`() {
         val file = File("Unsupported.txt")
         val actual: ProgrammingLanguage? = ProgrammingLanguage.orNull(file)
         assertNull(actual)

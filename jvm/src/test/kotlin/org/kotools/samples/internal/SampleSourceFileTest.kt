@@ -73,7 +73,7 @@ class SampleSourceFileTest {
     // ----------------------- packageIdentifierOrNull() -----------------------
 
     @Test
-    fun `packageIdentifierOrNull with package declaration in file`() {
+    fun `packageIdentifierOrNull passes with package declaration in file`() {
         val fileName = "ValidSample.kt"
         val file: SampleSourceFile = this::class.java.getResource("/$fileName")
             ?.toURI()
@@ -86,7 +86,7 @@ class SampleSourceFileTest {
     }
 
     @Test
-    fun `packageIdentifierOrNull without package declaration in file`() {
+    fun `packageIdentifierOrNull fails without package declaration in file`() {
         val fileName = "NoPackageValidSample.kt"
         val file: SampleSourceFile = this::class.java.getResource("/$fileName")
             ?.toURI()
@@ -115,7 +115,7 @@ class SampleSourceFileTest {
     // ------------------------------ toString() -------------------------------
 
     @Test
-    fun `toString should behave like File`() {
+    fun `toString behaves like File`() {
         val file = File("test/java/HelloSample.java")
         val sampleSourceFile: SampleSourceFile = SampleSourceFile.orNull(file)
             ?: fail("Invalid sample source file ($file).")
@@ -127,35 +127,35 @@ class SampleSourceFileTest {
     // ------------------------ Companion.orNull(File) -------------------------
 
     @Test
-    fun `orNull should pass with Java file in test source set`() {
+    fun `orNull passes with Java file in test source set`() {
         val file = File("test/java/HelloSample.java")
         val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
         assertNotNull(actual)
     }
 
     @Test
-    fun `orNull should pass with Kotlin file in test source set`() {
+    fun `orNull passes with Kotlin file in test source set`() {
         val file = File("test/kotlin/HelloSample.kt")
         val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
         assertNotNull(actual)
     }
 
     @Test
-    fun `orNull should fail with file outside of test source set`() {
+    fun `orNull fails with file outside of test source set`() {
         val file = File("Hello.kt")
         val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
         assertNull(actual)
     }
 
     @Test
-    fun `orNull should fail with invalid file suffix in test source set`() {
+    fun `orNull fails with invalid file suffix in test source set`() {
         val file = File("test/kotlin/Unsupported.kt")
         val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
         assertNull(actual)
     }
 
     @Test
-    fun `orNull should fail with unsupported file in test source set`() {
+    fun `orNull fails with unsupported file in test source set`() {
         val file = File("test/UnsupportedSample.txt")
         val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
         assertNull(actual)
