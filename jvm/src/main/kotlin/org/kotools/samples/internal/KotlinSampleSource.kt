@@ -8,7 +8,38 @@ import java.io.File
  * For creating an instance of this type, see the factory functions provided by
  * the [KotlinSampleSource.Companion] type.
  */
-internal class KotlinSampleSource private constructor() {
+internal class KotlinSampleSource private constructor(private val file: File) {
+    /**
+     * Checks that this sample source file contains a single public class, and
+     * throws an [IllegalStateException] if this is not the case.
+     */
+    fun checkSinglePublicClass() {
+        val classCount: Int = this.file.useLines {
+            it.map(String::trim)
+                .count(this::isPublicClassDeclaration)
+        }
+        if (classCount == 0) error("No public class found in '${this.file}'.")
+        if (classCount > 1)
+            error("Multiple public classes found in '${this.file}'.")
+    }
+
+    private fun isPublicClassDeclaration(text: String): Boolean {
+        val firstPrefix = "public class "
+        val secondPrefix = "class "
+        if (!text.startsWith(firstPrefix) && !text.startsWith(secondPrefix))
+            return false
+        return text.removePrefix(firstPrefix)
+            .removePrefix(secondPrefix)
+            .split(' ')
+            .first()
+            .takeIf(String::isNotBlank)
+            ?.all(Char::isLetter)
+            ?: false
+    }
+
+    /** Returns the path of this sample source. */
+    override fun toString(): String = this.file.toString()
+
     /** Contains static declarations for the [KotlinSampleSource] type. */
     companion object {
         /**
@@ -21,7 +52,7 @@ internal class KotlinSampleSource private constructor() {
             val fileIsValid: Boolean = file.extension == "kt"
                     && file.path.contains("test/kotlin/", ignoreCase = true)
                     && file.nameWithoutExtension.endsWith("Sample")
-            return if (fileIsValid) KotlinSampleSource() else null
+            return if (fileIsValid) KotlinSampleSource(file) else null
         }
     }
 }
