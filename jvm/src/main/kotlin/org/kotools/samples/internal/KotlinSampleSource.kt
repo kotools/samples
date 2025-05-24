@@ -10,8 +10,8 @@ import java.io.File
  */
 internal class KotlinSampleSource private constructor(private val file: File) {
     /**
-     * Checks that this sample source file contains a single public class, and
-     * throws an [IllegalStateException] if this is not the case.
+     * Checks that this sample source contains a single public class, and throws
+     * an [IllegalStateException] if this is not the case.
      */
     fun checkSinglePublicClass() {
         val classCount: Int = this.file.useLines {
