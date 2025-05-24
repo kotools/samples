@@ -45,8 +45,8 @@ internal class KotlinSampleSource private constructor(private val file: File) {
         /**
          * Returns the specified [file] as a Kotlin sample source, or returns
          * `null` if the [file]'s extension is other than `kt`, if the [file] is
-         * not located in a test Kotlin source set, or the [file]'s name is not
-         * suffixed by `Sample`.
+         * not located in a test Kotlin source set, or if the [file]'s name is
+         * not suffixed by `Sample`.
          */
         fun orNull(file: File): KotlinSampleSource? {
             val fileIsValid: Boolean = file.extension == "kt"
