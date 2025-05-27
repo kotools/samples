@@ -6,7 +6,6 @@ import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
-import org.gradle.work.DisableCachingByDefault
 import org.kotools.samples.internal.SampleSourceFile
 
 /**
@@ -20,7 +19,6 @@ import org.kotools.samples.internal.SampleSourceFile
  * invalid content. For example, the sample source file's content is invalid if
  * it doesn't contain a single public class declaration.
  */
-@DisableCachingByDefault(because = "Only reading files doesn't worth caching.")
 public abstract class CheckSampleSources : DefaultTask() {
     /** The directory containing the sample source files to check. */
     @get:InputDirectory
