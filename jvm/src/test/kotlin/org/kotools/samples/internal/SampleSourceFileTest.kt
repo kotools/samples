@@ -127,36 +127,29 @@ class SampleSourceFileTest {
     // ------------------------ Companion.orNull(File) -------------------------
 
     @Test
-    fun `orNull passes with Java file in test source set`() {
-        val file = File("test/java/HelloSample.java")
+    fun `orNull passes with Java file`() {
+        val file = File("HelloSample.java")
         val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
         assertNotNull(actual)
     }
 
     @Test
-    fun `orNull passes with Kotlin file in test source set`() {
-        val file = File("test/kotlin/HelloSample.kt")
+    fun `orNull passes with Kotlin file`() {
+        val file = File("HelloSample.kt")
         val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
         assertNotNull(actual)
     }
 
     @Test
-    fun `orNull fails with file outside of test source set`() {
-        val file = File("Hello.kt")
+    fun `orNull fails with file name not suffixed by 'Sample'`() {
+        val file = File("Unsupported.kt")
         val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
         assertNull(actual)
     }
 
     @Test
-    fun `orNull fails with invalid file suffix in test source set`() {
-        val file = File("test/kotlin/Unsupported.kt")
-        val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
-        assertNull(actual)
-    }
-
-    @Test
-    fun `orNull fails with unsupported file in test source set`() {
-        val file = File("test/UnsupportedSample.txt")
+    fun `orNull fails with unsupported file`() {
+        val file = File("UnsupportedSample.txt")
         val actual: SampleSourceFile? = SampleSourceFile.orNull(file)
         assertNull(actual)
     }

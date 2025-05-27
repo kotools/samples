@@ -99,18 +99,13 @@ internal class SampleSourceFile private constructor(
     /** Contains static declarations for the [SampleSourceFile] type. */
     companion object {
         /**
-         * Creates an instance of [SampleSourceFile] from the specified [file].
-         * Returns `null` if the [file] is not in a test Kotlin source set, if
-         * the [file]'s name is not suffixed by `Sample`, or if it is
-         * unsupported.
+         * Returns the specified [file] as a sample source file, or returns
+         * `null` if the [file] is unsupported or if its name is not suffixed by
+         * `Sample`.
          */
-        fun orNull(file: File): SampleSourceFile? {
-            val language: ProgrammingLanguage = file
-                .takeIf { it.path.contains("test/", ignoreCase = true) }
-                ?.takeIf { it.nameWithoutExtension.endsWith("Sample") }
-                ?.let(ProgrammingLanguage.Companion::orNull)
-                ?: return null
-            return SampleSourceFile(file, language)
-        }
+        fun orNull(file: File): SampleSourceFile? = file
+            .takeIf { it.nameWithoutExtension.endsWith("Sample") }
+            ?.let(ProgrammingLanguage.Companion::orNull)
+            ?.let { SampleSourceFile(file, language = it) }
     }
 }
