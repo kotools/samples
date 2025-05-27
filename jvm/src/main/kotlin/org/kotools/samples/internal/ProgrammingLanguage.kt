@@ -9,10 +9,10 @@ import java.io.File
  * the [ProgrammingLanguage.Companion] type.
  */
 internal sealed interface ProgrammingLanguage {
-    val functionHeaderRegex: Regex
-    val functionKeyword: String
-    val markdownIdentifier: String
+    // -------------------------- Package declaration --------------------------
+
     val packageKeyword: String
+
     val packageRegex: Regex
 
     // --------------------------- Class declaration ---------------------------
@@ -25,6 +25,16 @@ internal sealed interface ProgrammingLanguage {
      * otherwise.
      */
     fun isPublicClassDeclaration(text: String): Boolean
+
+    // ------------------------- Function declaration --------------------------
+
+    val functionHeaderRegex: Regex
+
+    val functionKeyword: String
+
+    // -------------------------- Markdown operations --------------------------
+
+    val markdownIdentifier: String
 
     // -------------------------------------------------------------------------
 

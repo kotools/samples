@@ -6,14 +6,6 @@ package org.kotools.samples.internal
  * @constructor Returns the [Kotlin] programming language.
  */
 internal class Kotlin : ProgrammingLanguage {
-    override val functionKeyword: String = "fun"
-    override val functionHeaderRegex: Regex =
-        Regex("$functionKeyword [A-Za-z_]+\\(\\) \\{\$")
-    override val markdownIdentifier: String = "kotlin"
-    override val packageKeyword: String = "package"
-    override val packageRegex: Regex =
-        Regex("^${this.packageKeyword} [a-z]+(?:\\.[a-z]+)*\$")
-
     // -------------------- Structural equality operations ---------------------
 
     /**
@@ -26,12 +18,30 @@ internal class Kotlin : ProgrammingLanguage {
     override fun hashCode(): Int = this.toString()
         .hashCode()
 
+    // -------------------------- Package declaration --------------------------
+
+    override val packageKeyword: String = "package"
+
+    override val packageRegex: Regex =
+        Regex("^${this.packageKeyword} [a-z]+(?:\\.[a-z]+)*\$")
+
     // --------------------------- Class declaration ---------------------------
 
     override val classKeyword: String = "class"
 
     override fun isPublicClassDeclaration(text: String): Boolean =
         text.startsWith("public class ") || text.startsWith("class ")
+
+    // ------------------------- Function declaration --------------------------
+
+    override val functionKeyword: String = "fun"
+
+    override val functionHeaderRegex: Regex =
+        Regex("$functionKeyword [A-Za-z_]+\\(\\) \\{\$")
+
+    // -------------------------- Markdown operations --------------------------
+
+    override val markdownIdentifier: String = "kotlin"
 
     // ------------------------------ Conversions ------------------------------
 
