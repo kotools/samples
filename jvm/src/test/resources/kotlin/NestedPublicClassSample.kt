@@ -1,3 +1,0 @@
-class ParentClass {
-    class NestedClass
-}
