@@ -1,2 +1,1 @@
-internal class InternalClass
-private class PrivateClass
+internal class NoPublicClassSample
