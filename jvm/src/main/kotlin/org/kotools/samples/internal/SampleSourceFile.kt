@@ -20,18 +20,16 @@ internal class SampleSourceFile private constructor(
      * or no public class at all.
      */
     fun checkSinglePublicClass() {
-        val classDeclarations: List<String> =
-            this.file.useLines { lines: Sequence<String> ->
-                lines.map(String::trim)
-                    .filter { it.contains("class ") }
-                    .toList()
-            }
+        val classDeclarations: List<String> = this.file.useLines {
+            it.map(String::trim)
+                .filter(this.language::isClassDeclaration)
+                .toList()
+        }
         if (classDeclarations.count() > 1)
             error("Multiple classes found in '$this'.")
         val publicClassCount: Int =
             classDeclarations.count(this.language::isPublicClassDeclaration)
-        if (publicClassCount == 0)
-            error("No public class found in '${this.file}'.")
+        if (publicClassCount == 0) error("No public class found in '$this'.")
     }
 
     /** Returns all samples present in this source file. */
