@@ -25,11 +25,18 @@ internal class SampleSourceFile private constructor(
                 .filter(this.language::isClassDeclaration)
                 .toList()
         }
-        if (classDeclarations.count() > 1)
-            error("Multiple classes found in '$this'.")
+        if (classDeclarations.count() > 1) {
+            val message: ErrorMessage =
+                ErrorMessage.multipleClassesFoundIn(this.file)
+            error(message)
+        }
         val publicClassCount: Int =
             classDeclarations.count(this.language::isPublicClassDeclaration)
-        if (publicClassCount == 0) error("No public class found in '$this'.")
+        if (publicClassCount == 0) {
+            val message: ErrorMessage =
+                ErrorMessage.noPublicClassFoundIn(this.file)
+            error(message)
+        }
     }
 
     /** Returns all samples present in this source file. */

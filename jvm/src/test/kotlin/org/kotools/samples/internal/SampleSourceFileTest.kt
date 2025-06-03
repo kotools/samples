@@ -36,60 +36,68 @@ class SampleSourceFileTest {
     @Test
     fun `checkSinglePublicClass fails with multiple classes in Java file`() {
         val name = "MultipleClassesSample.java"
-        val file: SampleSourceFile = this::class.java.getResource("/$name")
+        val resource: File = this::class.java.getResource("/$name")
             ?.toURI()
             ?.let(::File)
-            ?.let(SampleSourceFile.Companion::orNull)
+            ?: fail("'$name' resource file not found.")
+        val sampleSource: SampleSourceFile = SampleSourceFile.orNull(resource)
             ?: fail("'$name' sample source file not found.")
         val actual: String? = assertFailsWith<IllegalStateException>(
-            block = file::checkSinglePublicClass
+            block = sampleSource::checkSinglePublicClass
         ).message
-        val expected = "Multiple classes found in '$file'."
+        val expected: String = ErrorMessage.multipleClassesFoundIn(resource)
+            .toString()
         assertEquals(expected, actual)
     }
 
     @Test
     fun `checkSinglePublicClass fails with multiple classes in Kotlin file`() {
         val name = "MultipleClassesSample.kt"
-        val file: SampleSourceFile = this::class.java.getResource("/$name")
+        val resource: File = this::class.java.getResource("/$name")
             ?.toURI()
             ?.let(::File)
-            ?.let(SampleSourceFile.Companion::orNull)
+            ?: fail("'$name' resource file not found.")
+        val sampleSource: SampleSourceFile = SampleSourceFile.orNull(resource)
             ?: fail("'$name' sample source file not found.")
         val actual: String? = assertFailsWith<IllegalStateException>(
-            block = file::checkSinglePublicClass
+            block = sampleSource::checkSinglePublicClass
         ).message
-        val expected = "Multiple classes found in '$file'."
+        val expected: String = ErrorMessage.multipleClassesFoundIn(resource)
+            .toString()
         assertEquals(expected, actual)
     }
 
     @Test
     fun `checkSinglePublicClass fails with no public class in Java file`() {
         val name = "NoPublicClassSample.java"
-        val file: SampleSourceFile = this::class.java.getResource("/$name")
+        val resource: File = this::class.java.getResource("/$name")
             ?.toURI()
             ?.let(::File)
-            ?.let(SampleSourceFile.Companion::orNull)
+            ?: fail("'$name' resource file not found.")
+        val sampleSource: SampleSourceFile = SampleSourceFile.orNull(resource)
             ?: fail("'$name' sample source file not found.")
         val actual: String? = assertFailsWith<IllegalStateException>(
-            block = file::checkSinglePublicClass
+            block = sampleSource::checkSinglePublicClass
         ).message
-        val expected = "No public class found in '$file'."
+        val expected: String = ErrorMessage.noPublicClassFoundIn(resource)
+            .toString()
         assertEquals(expected, actual)
     }
 
     @Test
     fun `checkSinglePublicClass fails with no public class in Kotlin file`() {
         val name = "NoPublicClassSample.kt"
-        val file: SampleSourceFile = this::class.java.getResource("/$name")
+        val resource: File = this::class.java.getResource("/$name")
             ?.toURI()
             ?.let(::File)
-            ?.let(SampleSourceFile.Companion::orNull)
+            ?: fail("'$name' resource file not found.")
+        val sampleSource: SampleSourceFile = SampleSourceFile.orNull(resource)
             ?: fail("'$name' sample source file not found.")
         val actual: String? = assertFailsWith<IllegalStateException>(
-            block = file::checkSinglePublicClass
+            block = sampleSource::checkSinglePublicClass
         ).message
-        val expected = "No public class found in '$file'."
+        val expected: String = ErrorMessage.noPublicClassFoundIn(resource)
+            .toString()
         assertEquals(expected, actual)
     }
 
