@@ -34,8 +34,10 @@ internal class Kotlin : ProgrammingLanguage {
         return regex in text
     }
 
-    override fun isPublicClassDeclaration(text: String): Boolean =
-        text.startsWith("public class ") || text.startsWith("class ")
+    override fun isPublicClassDeclaration(text: String): Boolean {
+        if (!this.isClassDeclaration(text)) return false
+        return text.startsWith("public class ") || text.startsWith("class ")
+    }
 
     // ------------------------- Function declaration --------------------------
 

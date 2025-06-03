@@ -43,7 +43,7 @@ class JavaTest {
 
     @Test
     fun `isPublicClassDeclaration passes with text starting with 'public class'`() {
-        val text = "public class Something"
+        val text = "public class Something {"
         val actual: Boolean = Java()
             .isPublicClassDeclaration(text)
         assertTrue(actual)
@@ -51,7 +51,7 @@ class JavaTest {
 
     @Test
     fun `isPublicClassDeclaration fails with text starting with 'class'`() {
-        val text = "class Something"
+        val text = "class Something {"
         val actual: Boolean = Java()
             .isPublicClassDeclaration(text)
         assertFalse(actual)
@@ -59,7 +59,7 @@ class JavaTest {
 
     @Test
     fun `isPublicClassDeclaration fails with text starting with 'private class'`() {
-        val text = "private class Something"
+        val text = "private class Something {"
         val actual: Boolean = Java()
             .isPublicClassDeclaration(text)
         assertFalse(actual)

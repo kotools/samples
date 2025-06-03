@@ -35,7 +35,7 @@ internal class Java : ProgrammingLanguage {
     }
 
     override fun isPublicClassDeclaration(text: String): Boolean =
-        text.startsWith("public class ")
+        this.isClassDeclaration(text) && text.startsWith("public class ")
 
     // ------------------------- Function declaration --------------------------
 
