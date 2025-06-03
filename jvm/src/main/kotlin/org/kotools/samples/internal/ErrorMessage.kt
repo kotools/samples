@@ -9,8 +9,12 @@ import java.io.File
  * the [ErrorMessage.Companion] type.
  */
 internal class ErrorMessage private constructor(private val text: String) {
+    // ------------------------------ Conversions ------------------------------
+
     /** Returns the string representation of this error message. */
     override fun toString(): String = this.text
+
+    // -------------------------------------------------------------------------
 
     /** Contains static declarations for the [ErrorMessage] type. */
     companion object {
