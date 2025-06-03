@@ -20,6 +20,12 @@ internal sealed interface ProgrammingLanguage {
     val classKeyword: String
 
     /**
+     * Returns `true` if the specified [text] represents a class declaration
+     * written in this programming language, or returns `false` otherwise.
+     */
+    fun isClassDeclaration(text: String): Boolean
+
+    /**
      * Returns `true` if the specified [text] represents a public class
      * declaration written in this programming language, or returns `false`
      * otherwise.

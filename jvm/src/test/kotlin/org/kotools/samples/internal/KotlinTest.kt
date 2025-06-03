@@ -5,6 +5,32 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class KotlinTest {
+    // ---------------------- isClassDeclaration(String) -----------------------
+
+    @Test
+    fun `isClassDeclaration passes with 'class' and class name in text`() {
+        val text = "class Something"
+        val actual: Boolean = Kotlin()
+            .isClassDeclaration(text)
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isClassDeclaration fails without 'class' keyword in text`() {
+        val text = "val one = 1"
+        val actual: Boolean = Kotlin()
+            .isClassDeclaration(text)
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isClassDeclaration fails without class name in text`() {
+        val text = "class"
+        val actual: Boolean = Kotlin()
+            .isClassDeclaration(text)
+        assertFalse(actual)
+    }
+
     // ------------------- isPublicClassDeclaration(String) --------------------
 
     @Test

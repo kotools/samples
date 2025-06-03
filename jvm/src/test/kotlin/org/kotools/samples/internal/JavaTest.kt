@@ -5,6 +5,40 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class JavaTest {
+    // ---------------------- isClassDeclaration(String) -----------------------
+
+    @Test
+    fun `isClassDeclaration passes with 'class', name and bracket in text`() {
+        val text = "class Something {"
+        val actual: Boolean = Java()
+            .isClassDeclaration(text)
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isClassDeclaration fails without 'class' keyword in text`() {
+        val text = "Something {"
+        val actual: Boolean = Java()
+            .isClassDeclaration(text)
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isClassDeclaration fails without class name in text`() {
+        val text = "class {"
+        val actual: Boolean = Java()
+            .isClassDeclaration(text)
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isClassDeclaration fails without open bracket in text`() {
+        val text = "class Something"
+        val actual: Boolean = Java()
+            .isClassDeclaration(text)
+        assertFalse(actual)
+    }
+
     // ------------------- isPublicClassDeclaration(String) --------------------
 
     @Test
