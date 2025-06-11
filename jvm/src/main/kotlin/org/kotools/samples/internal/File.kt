@@ -14,3 +14,9 @@ internal fun File.isSample(): Boolean =
  * otherwise.
  */
 internal fun File.isKotlin(): Boolean = this.extension == "kt"
+
+/**
+ * Returns `true` if this file's extension is `java`, or returns `false`
+ * otherwise.
+ */
+internal fun File.isJava(): Boolean = this.extension == "java"
