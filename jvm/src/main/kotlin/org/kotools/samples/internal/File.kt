@@ -8,3 +8,9 @@ import java.io.File
  */
 internal fun File.isSample(): Boolean =
     this.nameWithoutExtension.endsWith("Sample")
+
+/**
+ * Returns `true` if this file's extension is `kt`, or returns `false`
+ * otherwise.
+ */
+internal fun File.isKotlin(): Boolean = this.extension == "kt"
