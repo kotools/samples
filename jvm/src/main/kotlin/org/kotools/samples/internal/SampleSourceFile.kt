@@ -91,11 +91,7 @@ internal class SampleSourceFile private constructor(
         ?.substringAfter("${this.language.packageKeyword} ")
         ?.substringBefore(';')
 
-    /**
-     * Returns the name of the public class contained in this sample source
-     * file.
-     */
-    fun className(): String = this.file.useLines {
+    private fun className(): String = this.file.useLines {
         it.first(this.language::isPublicClassDeclaration)
             .substringAfter("${this.language.classKeyword} ")
             .substringBefore(" {")
