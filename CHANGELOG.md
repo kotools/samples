@@ -28,7 +28,9 @@ All notable changes to this project will be documented in this file.
 - The `checkSampleSources` Gradle task now has improved error messages and looks
   for public classes in sample source files ([e61f6da6] and [c8450e5b]). This
   task now also fails if a sample source file contains a public nested class in
-  a public class ([8a3eab89]).
+  a public class ([8a3eab89]). Finally, this task logs all errors encountered in
+  sample source files instead of logging only the first error encountered
+  ([ceed58c9]).
 
 ### 🔥 Removed
 
@@ -51,6 +53,7 @@ Thanks to [@LVMVRQUXL] for contributing to this release. 🙏
 [8a3eab89]: https://github.com/kotools/samples/commit/8a3eab89
 [beda12d9]: https://github.com/kotools/samples/commit/beda12d9
 [c8450e5b]: https://github.com/kotools/samples/commit/c8450e5b
+[ceed58c9]: https://github.com/kotools/samples/commit/ceed58c9
 [e61f6da6]: https://github.com/kotools/samples/commit/e61f6da6
 
 ## 🔖 Releases
