@@ -14,31 +14,6 @@ internal class SampleSourceFile private constructor(
 ) {
     // ----------------------- File content's operations -----------------------
 
-    /**
-     * Checks that this sample source file contains a single public class, and
-     * throws an [IllegalStateException] if this file contains multiple classes
-     * or no public class at all.
-     */
-    fun checkSinglePublicClass() {
-        val classDeclarations: List<String> = this.file.useLines {
-            it.map(String::trim)
-                .filter(this.language::isClassDeclaration)
-                .toList()
-        }
-        if (classDeclarations.count() > 1) {
-            val message: ErrorMessage =
-                ErrorMessage.multipleClassesFoundIn(this.file)
-            error(message)
-        }
-        val publicClassCount: Int =
-            classDeclarations.count(this.language::isPublicClassDeclaration)
-        if (publicClassCount == 0) {
-            val message: ErrorMessage =
-                ErrorMessage.noPublicClassFoundIn(this.file)
-            error(message)
-        }
-    }
-
     /** Returns all samples present in this source file. */
     fun samples(): Set<Sample> {
         var identifier: MutableList<String> = this.packageIdentifierOrNull()
