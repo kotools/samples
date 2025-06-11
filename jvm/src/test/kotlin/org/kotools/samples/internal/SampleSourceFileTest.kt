@@ -211,33 +211,6 @@ class SampleSourceFileTest {
         assertEquals(expected = Kotlin(), actual = sample.language)
     }
 
-    // ----------------------- packageIdentifierOrNull() -----------------------
-
-    @Test
-    fun `packageIdentifierOrNull passes with package declaration in file`() {
-        val fileName = "ValidSample.kt"
-        val file: SampleSourceFile = this::class.java.getResource("/$fileName")
-            ?.toURI()
-            ?.let(::File)
-            ?.let(SampleSourceFile.Companion::orNull)
-            ?: fail("'$fileName' sample source file not found.")
-        val actual: String? = file.packageIdentifierOrNull()
-        val expected = "sample.kotlin"
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `packageIdentifierOrNull fails without package declaration in file`() {
-        val fileName = "NoPackageValidSample.kt"
-        val file: SampleSourceFile = this::class.java.getResource("/$fileName")
-            ?.toURI()
-            ?.let(::File)
-            ?.let(SampleSourceFile.Companion::orNull)
-            ?: fail("'$fileName' sample source file not found.")
-        val actual: String? = file.packageIdentifierOrNull()
-        assertNull(actual)
-    }
-
     // ------------------------------ className() ------------------------------
 
     @Test

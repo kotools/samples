@@ -86,11 +86,7 @@ internal class SampleSourceFile private constructor(
         return samples.toSet()
     }
 
-    /**
-     * Returns the package identifier specified in this sample source file, or
-     * returns `null` if no package identifier was found.
-     */
-    fun packageIdentifierOrNull(): String? = this.file
+    private fun packageIdentifierOrNull(): String? = this.file
         .useLines { it.firstOrNull(this.language.packageRegex::matches) }
         ?.substringAfter("${this.language.packageKeyword} ")
         ?.substringBefore(';')
