@@ -40,6 +40,10 @@ internal fun String.isClassDeclaration(): Boolean {
  * public class PublicClassWithVisibilityModifier
  * ```
  *
+ * The [String.isPublicClassDeclarationInJava] function does a similar check on
+ * the specified string, but for code written in [Java](https://www.java.com)
+ * instead.
+ *
  * See the [String.isClassDeclaration] function for checking that the specified
  * string is a class declaration, independently of its visibility modifier.
  */
@@ -47,3 +51,26 @@ internal fun String.isPublicClassDeclarationInKotlin(): Boolean {
     if (!this.isClassDeclaration()) return false
     return this.startsWith("public class") || this.startsWith("class")
 }
+
+/**
+ * Returns `true` if this string represents a public class declaration in
+ * [Java](https://www.java.com), or returns `false` otherwise.
+ *
+ * In this programming language, a class declaration is public if it has the
+ * `public` access level modifier. See the
+ * [Java access level modifiers](https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html)
+ * documentation for more details about their usage.
+ *
+ * ```java
+ * public class PublicJavaClass {}
+ * ```
+ *
+ * The [String.isPublicClassDeclarationInKotlin] function does a similar check
+ * on the specified string, but for code written in
+ * [Kotlin](https://kotlinlang.org) instead.
+ *
+ * See the [String.isClassDeclaration] function for checking that the specified
+ * string is a class declaration, independently of its access level modifier.
+ */
+internal fun String.isPublicClassDeclarationInJava(): Boolean =
+    this.isClassDeclaration() && this.startsWith("public class")

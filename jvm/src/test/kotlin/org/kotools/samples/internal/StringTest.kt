@@ -54,4 +54,27 @@ class StringTest {
             "private class Something".isPublicClassDeclarationInKotlin()
         assertFalse(actual)
     }
+
+    // ---------------- String.isPublicClassDeclarationInJava() ----------------
+
+    @Test
+    fun `isPublicClassDeclarationInJava passes on String starting with 'public class'`() {
+        val actual: Boolean =
+            "public class Something {}".isPublicClassDeclarationInJava()
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isPublicClassDeclarationInJava fails on String starting with 'class'`() {
+        val actual: Boolean =
+            "class Something {}".isPublicClassDeclarationInJava()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isPublicClassDeclarationInJava fails on String starting with 'private class'`() {
+        val actual: Boolean =
+            "private class Something {}".isPublicClassDeclarationInJava()
+        assertFalse(actual)
+    }
 }
