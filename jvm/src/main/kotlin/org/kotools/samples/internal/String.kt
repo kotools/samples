@@ -6,7 +6,19 @@ package org.kotools.samples.internal
  *
  * This function is compatible with [Kotlin](https://kotlinlang.org) and
  * [Java](https://www.java.com), due to their similar syntax for declaring a
- * class.
+ * class. Here's an example of declaring a class in
+ * [Kotlin](https://kotlinlang.org):
+ *
+ * ```kotlin
+ * public class Something
+ * ```
+ *
+ * Here's an example of declaring the same class in
+ * [Java](https://www.java.com):
+ *
+ * ```java
+ * public class Something {}
+ * ```
  */
 internal fun String.isClassDeclaration(): Boolean {
     val regex = Regex("""class [A-Z][A-Za-z]*""")
