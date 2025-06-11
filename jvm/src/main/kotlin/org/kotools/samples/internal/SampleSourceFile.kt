@@ -65,9 +65,14 @@ internal class SampleSourceFile private constructor(
                         if (numberOfUnclosedBracketsInSample > 0) body += it
                         else {
                             readBody = false
+                            val sampleIdentifier: String =
+                                identifier.joinToString(separator = ".")
+                            val sampleBody: String = body
+                                .joinToString(separator = "\n")
+                                .trimIndent()
                             samples += Sample(
-                                identifier.toList(),
-                                body.toList(),
+                                sampleIdentifier,
+                                sampleBody,
                                 this.language
                             )
                             identifier = identifier.dropLast(1)

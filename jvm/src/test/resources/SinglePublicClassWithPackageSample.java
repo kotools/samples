@@ -1,10 +1,12 @@
+package sample;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
 @SuppressWarnings("NewClassNamingConvention")
-public class SinglePublicClassSample {
+public class SinglePublicClassWithPackageSample {
     @Test
     void isPositive() {
         final int number = new Random()

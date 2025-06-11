@@ -101,6 +101,116 @@ class SampleSourceFileTest {
         assertEquals(expected, actual)
     }
 
+    // ------------------------------- samples() -------------------------------
+
+    @Test
+    fun `samples passes with package declaration in Java file`() {
+        val name = "SinglePublicClassWithPackageSample.java"
+        val resource: File = this::class.java.getResource("/$name")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$name' resource file not found.")
+        val sampleSource: SampleSourceFile = SampleSourceFile.orNull(resource)
+            ?: fail("'$name' sample source file not found.")
+        val sample: Sample = sampleSource.samples()
+            .toList()
+            .first()
+        assertEquals(
+            expected = "sample.SinglePublicClassWithPackageSample.isPositive",
+            actual = sample.identifier
+        )
+        assertEquals(
+            expected = """
+                |final int number = new Random()
+                |        .nextInt(1, Integer.MAX_VALUE);
+                |Assertions.assertTrue(number > 0);
+            """.trimMargin(),
+            actual = sample.body
+        )
+        assertEquals(expected = Java(), actual = sample.language)
+    }
+
+    @Test
+    fun `samples passes without package declaration in Java file`() {
+        val name = "SinglePublicClassSample.java"
+        val resource: File = this::class.java.getResource("/$name")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$name' resource file not found.")
+        val sampleSource: SampleSourceFile = SampleSourceFile.orNull(resource)
+            ?: fail("'$name' sample source file not found.")
+        val sample: Sample = sampleSource.samples()
+            .toList()
+            .first()
+        assertEquals(
+            expected = "SinglePublicClassSample.isPositive",
+            actual = sample.identifier
+        )
+        assertEquals(
+            expected = """
+                |final int number = new Random()
+                |        .nextInt(1, Integer.MAX_VALUE);
+                |Assertions.assertTrue(number > 0);
+            """.trimMargin(),
+            actual = sample.body
+        )
+        assertEquals(expected = Java(), actual = sample.language)
+    }
+
+    @Test
+    fun `samples passes with package declaration in Kotlin file`() {
+        val name = "SinglePublicClassWithPackageSample.kt"
+        val resource: File = this::class.java.getResource("/$name")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$name' resource file not found.")
+        val sampleSource: SampleSourceFile = SampleSourceFile.orNull(resource)
+            ?: fail("'$name' sample source file not found.")
+        val sample: Sample = sampleSource.samples()
+            .toList()
+            .first()
+        assertEquals(
+            expected = "sample.SinglePublicClassWithPackageSample.isPositive",
+            actual = sample.identifier
+        )
+        assertEquals(
+            expected = """
+                |val number: Int = (1..Int.MAX_VALUE)
+                |    .random()
+                |assertTrue(number > 0)
+            """.trimMargin(),
+            actual = sample.body
+        )
+        assertEquals(expected = Kotlin(), actual = sample.language)
+    }
+
+    @Test
+    fun `samples passes without package declaration in Kotlin file`() {
+        val name = "SinglePublicClassSample.kt"
+        val resource: File = this::class.java.getResource("/$name")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$name' resource file not found.")
+        val sampleSource: SampleSourceFile = SampleSourceFile.orNull(resource)
+            ?: fail("'$name' sample source file not found.")
+        val sample: Sample = sampleSource.samples()
+            .toList()
+            .first()
+        assertEquals(
+            expected = "SinglePublicClassSample.isPositive",
+            actual = sample.identifier
+        )
+        assertEquals(
+            expected = """
+                |val number: Int = (1..Int.MAX_VALUE)
+                |    .random()
+                |assertTrue(number > 0)
+            """.trimMargin(),
+            actual = sample.body
+        )
+        assertEquals(expected = Kotlin(), actual = sample.language)
+    }
+
     // ----------------------- packageIdentifierOrNull() -----------------------
 
     @Test
