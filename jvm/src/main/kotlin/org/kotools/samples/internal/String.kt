@@ -1,5 +1,38 @@
 package org.kotools.samples.internal
 
+// ------------------------- Package-related functions -------------------------
+
+/**
+ * Returns `true` if this string starts with the `package` keyword followed by a
+ * package identifier, or returns `false` otherwise.
+ *
+ * A package identifier consists of one or multiple words separated by a dot
+ * (`.`).
+ *
+ * This function is compatible with [Kotlin](https://kotlinlang.org) and
+ * [Java](https://www.java.com), due to their similar syntax for declaring a
+ * package.
+ *
+ * Here's an example of declaring a package in [Kotlin](https://kotlinlang.org):
+ *
+ * ```kotlin
+ * package org.kotools.samples
+ * ```
+ *
+ * Here's an example of declaring the same package in
+ * [Java](https://www.java.com):
+ *
+ * ```java
+ * package org.kotools.samples;
+ * ```
+ */
+internal fun String.isPackageDeclaration(): Boolean {
+    val regex = Regex("""^package [a-z]+(?:\.[a-z]+)*;?$""")
+    return this matches regex
+}
+
+// -------------------------- Class-related functions --------------------------
+
 /**
  * Returns `true` if this string contains the `class` keyword followed by a
  * class name, or returns `false` otherwise.

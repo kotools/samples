@@ -5,6 +5,32 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class StringTest {
+    // --------------------- String.isPackageDeclaration() ---------------------
+
+    @Test
+    fun `isPackageDeclaration passes with package declaration`() {
+        val actual: Boolean = "package org.samples".isPackageDeclaration()
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isPackageDeclaration passes with package declaration and semicolon`() {
+        val actual: Boolean = "package org.samples;".isPackageDeclaration()
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isPackageDeclaration fails without 'package' keyword in String`() {
+        val actual: Boolean = "org.samples".isPackageDeclaration()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isPackageDeclaration fails without package identifier in String`() {
+        val actual: Boolean = "package".isPackageDeclaration()
+        assertFalse(actual)
+    }
+
     // ---------------------- String.isClassDeclaration() ----------------------
 
     @Test
