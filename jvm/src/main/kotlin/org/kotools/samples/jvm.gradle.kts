@@ -27,7 +27,7 @@ private val extractSamples: TaskProvider<ExtractSamples> by tasks.registering(
 ) {
     this.description = "Extracts samples for KDoc."
     this.dependsOn(checkSampleSources)
-    this.sourceDirectory = projectSources
+    this.sourceDirectory = projectSources.dir("test")
     this.outputDirectory = output.map { it.dir("extracted") }
 }
 
