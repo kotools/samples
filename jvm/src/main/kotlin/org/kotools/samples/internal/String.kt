@@ -185,3 +185,16 @@ internal fun String.isTestFunctionHeaderInJava(): Boolean {
     val regex = Regex("""void [A-Za-z_]+\(\) \{$""")
     return regex in this
 }
+
+/**
+ * Returns the name of the [Kotlin](https://kotlinlang.org) test function
+ * declared in this string, or returns `null` if this string doesn't represent a
+ * test function header written in this programming language.
+ *
+ * See the [String.isTestFunctionHeaderInKotlin] function for more details about
+ * test function headers represented as strings.
+ */
+internal fun String.testFunctionNameInKotlinOrNull(): String? =
+    if (!this.isTestFunctionHeaderInKotlin()) null
+    else this.substringBefore('(')
+        .substringAfter("fun ")
