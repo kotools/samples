@@ -144,11 +144,11 @@ internal fun String.classNameOrNull(): String? =
 // ------------------------ Function-related functions -------------------------
 
 /**
- * Returns `true` if this string represents a function header written in
+ * Returns `true` if this string represents a test function header written in
  * [Kotlin](https://kotlinlang.org), or returns `false` otherwise.
  *
- * In this programming language, a function header starts with the `fun` keyword
- * followed by the name of the function and its parameters.
+ * In this programming language, a function header starts with the `fun`
+ * keyword, followed by the name of the function and a pair of parentheses.
  *
  * ```kotlin
  * fun helloWorld() { // <- here's the function header
@@ -160,7 +160,7 @@ internal fun String.classNameOrNull(): String? =
  * [Kotlin functions](https://kotlinlang.org/docs/basic-syntax.html#functions)
  * documentation for more details about their syntax.
  */
-internal fun String.isFunctionHeaderInKotlin(): Boolean {
+internal fun String.isTestFunctionHeaderInKotlin(): Boolean {
     val regex = Regex("""fun [A-Za-z_]+\(\) \{$""")
     return regex in this
 }

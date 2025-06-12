@@ -136,23 +136,24 @@ class StringTest {
         assertNull(actual)
     }
 
-    // ------------------- String.isFunctionHeaderInKotlin() -------------------
+    // ------------------- String.isTestFunctionHeaderInKotlin() -------------------
 
     @Test
-    fun `isFunctionHeaderInKotlin passes on Kotlin function declaration`() {
-        val actual: Boolean = "fun helloWorld() {".isFunctionHeaderInKotlin()
+    fun `isTestFunctionHeaderInKotlin passes on Kotlin function declaration`() {
+        val actual: Boolean =
+            "fun helloWorld() {".isTestFunctionHeaderInKotlin()
         assertTrue(actual)
     }
 
     @Test
-    fun `isFunctionHeaderInKotlin fails on String missing 'fun' keyword`() {
-        val actual: Boolean = "helloWorld() {".isFunctionHeaderInKotlin()
+    fun `isTestFunctionHeaderInKotlin fails on String missing 'fun' keyword`() {
+        val actual: Boolean = "helloWorld() {".isTestFunctionHeaderInKotlin()
         assertFalse(actual)
     }
 
     @Test
-    fun `isFunctionHeaderInKotlin fails on String missing function name`() {
-        val actual: Boolean = "fun () {".isFunctionHeaderInKotlin()
+    fun `isTestFunctionHeaderInKotlin fails on String missing function name`() {
+        val actual: Boolean = "fun () {".isTestFunctionHeaderInKotlin()
         assertFalse(actual)
     }
 
