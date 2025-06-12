@@ -135,4 +135,24 @@ class StringTest {
         val actual: String? = "class".classNameOrNull()
         assertNull(actual)
     }
+
+    // ------------------- String.isFunctionHeaderInKotlin() -------------------
+
+    @Test
+    fun `isFunctionHeaderInKotlin passes on Kotlin function declaration`() {
+        val actual: Boolean = "fun helloWorld() {".isFunctionHeaderInKotlin()
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isFunctionHeaderInKotlin fails on String missing 'fun' keyword`() {
+        val actual: Boolean = "helloWorld() {".isFunctionHeaderInKotlin()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isFunctionHeaderInKotlin fails on String missing function name`() {
+        val actual: Boolean = "fun () {".isFunctionHeaderInKotlin()
+        assertFalse(actual)
+    }
 }

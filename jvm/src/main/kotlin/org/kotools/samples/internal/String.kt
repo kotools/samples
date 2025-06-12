@@ -140,3 +140,27 @@ internal fun String.classNameOrNull(): String? =
     if (!this.isClassDeclaration()) null
     else this.substringAfter("class ")
         .substringBefore(" {")
+
+// ------------------------ Function-related functions -------------------------
+
+/**
+ * Returns `true` if this string represents a function header written in
+ * [Kotlin](https://kotlinlang.org), or returns `false` otherwise.
+ *
+ * In this programming language, a function header starts with the `fun` keyword
+ * followed by the name of the function and its parameters.
+ *
+ * ```kotlin
+ * fun helloWorld() { // <- here's the function header
+ *     println("Hello World")
+ * }
+ * ```
+ *
+ * See the
+ * [Kotlin functions](https://kotlinlang.org/docs/basic-syntax.html#functions)
+ * documentation for more details about their syntax.
+ */
+internal fun String.isFunctionHeaderInKotlin(): Boolean {
+    val regex = Regex("""fun [A-Za-z_]+\(\) \{$""")
+    return regex in this
+}
