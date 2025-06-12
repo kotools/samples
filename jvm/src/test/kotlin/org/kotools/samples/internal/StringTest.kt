@@ -1,7 +1,9 @@
 package org.kotools.samples.internal
 
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class StringTest {
@@ -29,6 +31,21 @@ class StringTest {
     fun `isPackageDeclaration fails without package identifier in String`() {
         val actual: Boolean = "package".isPackageDeclaration()
         assertFalse(actual)
+    }
+
+    // ------------------- String.packageIdentifierOrNull() --------------------
+
+    @Test
+    fun `packageIdentifierOrNull passes on package declaration as String`() {
+        val expected = "org.samples"
+        val actual: String? = "package $expected".packageIdentifierOrNull()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `packageIdentifierOrNull fails on another String than package declaration`() {
+        val actual: String? = "package".packageIdentifierOrNull()
+        assertNull(actual)
     }
 
     // ---------------------- String.isClassDeclaration() ----------------------

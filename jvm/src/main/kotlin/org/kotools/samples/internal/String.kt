@@ -31,6 +31,22 @@ internal fun String.isPackageDeclaration(): Boolean {
     return this matches regex
 }
 
+/**
+ * Returns the package identifier specified in this string, or returns `null` if
+ * this string doesn't represent a package declaration.
+ *
+ * This function is compatible with [Kotlin](https://kotlinlang.org) and
+ * [Java](https://www.java.com), due to their similar syntax for declaring a
+ * package.
+ *
+ * See the [String.isPackageDeclaration] function for more details about package
+ * declarations represented with strings.
+ */
+internal fun String.packageIdentifierOrNull(): String? =
+    if (!this.isPackageDeclaration()) null
+    else this.substringAfter("package ")
+        .substringBefore(';')
+
 // -------------------------- Class-related functions --------------------------
 
 /**
