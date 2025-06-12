@@ -19,8 +19,8 @@ import java.io.File
  * Represents a Gradle task that checks the content of the sample source files
  * present in the specified [sourceDirectory].
  *
- * A sample source file is a Kotlin or Java file that has a name suffixed by
- * `Sample`.
+ * A sample source file is a [Kotlin](https://kotlinlang.org) or
+ * [Java](https://www.java.com) file that has a name suffixed by `Sample`.
  *
  * This task fails if a sample source file has an invalid content. For example,
  * the sample source file's content is invalid if it doesn't contain a single
