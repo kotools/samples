@@ -198,3 +198,16 @@ internal fun String.testFunctionNameInKotlinOrNull(): String? =
     if (!this.isTestFunctionHeaderInKotlin()) null
     else this.substringBefore('(')
         .substringAfter("fun ")
+
+/**
+ * Returns the name of the [Java](https://www.java.com) test function declared
+ * in this string, or returns `null` if this string doesn't represent a test
+ * function header written in this programming language.
+ *
+ * See the [String.isTestFunctionHeaderInJava] function for more details about
+ * test function headers represented as strings.
+ */
+internal fun String.testFunctionNameInJavaOrNull(): String? =
+    if (!this.isTestFunctionHeaderInJava()) null
+    else this.substringBefore('(')
+        .substringAfter("void ")

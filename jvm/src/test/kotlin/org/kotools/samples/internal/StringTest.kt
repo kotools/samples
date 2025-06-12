@@ -192,4 +192,20 @@ class StringTest {
         val actual: String? = "fun".testFunctionNameInKotlinOrNull()
         assertNull(actual)
     }
+
+    // ----------------- String.testFunctionNameInJavaOrNull() -----------------
+
+    @Test
+    fun `testFunctionNameInJavaOrNull passes on Java test function header`() {
+        val expected = "helloWorld"
+        val actual: String? =
+            "void $expected() {".testFunctionNameInJavaOrNull()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `testFunctionNameInJavaOrNull fails on another String than Java test function header`() {
+        val actual: String? = "void".testFunctionNameInJavaOrNull()
+        assertNull(actual)
+    }
 }
