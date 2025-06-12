@@ -177,6 +177,9 @@ internal fun String.isTestFunctionHeaderInKotlin(): Boolean {
  *     System.out.println("Hello World");
  * }
  * ```
+ *
+ * See the [Java functions](https://docs.oracle.com/javase/tutorial/java/javaOO/methods.html)
+ * documentation for more details about their syntax.
  */
 internal fun String.isTestFunctionHeaderInJava(): Boolean {
     val regex = Regex("""void [A-Za-z_]+\(\) \{$""")
