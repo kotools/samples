@@ -124,3 +124,19 @@ internal fun String.isPublicClassDeclarationInKotlin(): Boolean {
  */
 internal fun String.isPublicClassDeclarationInJava(): Boolean =
     this.isClassDeclaration() && this.startsWith("public class")
+
+/**
+ * Returns the name of the class declared in this string, or returns `null` if
+ * this string is not a class declaration.
+ *
+ * This function is compatible with [Kotlin](https://kotlinlang.org) and
+ * [Java](https://www.java.com), due to their similar syntax for declaring a
+ * class.
+ *
+ * See the [String.isClassDeclaration] function for more details about class
+ * declarations represented with strings.
+ */
+internal fun String.classNameOrNull(): String? =
+    if (!this.isClassDeclaration()) null
+    else this.substringAfter("class ")
+        .substringBefore(" {")

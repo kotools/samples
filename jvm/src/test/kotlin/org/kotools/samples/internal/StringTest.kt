@@ -120,4 +120,19 @@ class StringTest {
             "private class Something {}".isPublicClassDeclarationInJava()
         assertFalse(actual)
     }
+
+    // ----------------------- String.classNameOrNull() ------------------------
+
+    @Test
+    fun `classNameOrNull passes on class declaration`() {
+        val expected = "Something"
+        val actual: String? = "class $expected".classNameOrNull()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `classNameOrNull fails on another String than class declaration`() {
+        val actual: String? = "class".classNameOrNull()
+        assertNull(actual)
+    }
 }
