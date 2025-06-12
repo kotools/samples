@@ -156,8 +156,7 @@ internal fun String.classNameOrNull(): String? =
  * }
  * ```
  *
- * See the
- * [Kotlin functions](https://kotlinlang.org/docs/basic-syntax.html#functions)
+ * See the [Kotlin functions](https://kotlinlang.org/docs/functions.html)
  * documentation for more details about their syntax.
  */
 internal fun String.isTestFunctionHeaderInKotlin(): Boolean {
