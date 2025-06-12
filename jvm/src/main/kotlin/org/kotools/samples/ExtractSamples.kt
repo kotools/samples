@@ -11,15 +11,27 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
 import org.kotools.samples.internal.SampleSourceFile
 
-/** Gradle task responsible for extracting samples for KDoc. */
+/**
+ * Represents a Gradle task that extracts samples, from the sample source files
+ * present in the specified [sourceDirectory], to the specified
+ * [outputDirectory].
+ *
+ * A sample source file is a [Kotlin](https://kotlinlang.org) or
+ * [Java](https://www.java.com) file that has a name suffixed by `Sample`.
+ * Also, a sample is a Markdown file that contains one code block, written in
+ * [Kotlin](https://kotlinlang.org) or in [Java](https://www.java.com), ready to
+ * be inlined in the documentation.
+ */
 @DisableCachingByDefault(because = "Generating files doesn't worth caching.")
 public abstract class ExtractSamples : DefaultTask() {
-    /** The directory containing sample sources. */
+    /**
+     * The directory containing the sample source files to extract samples from.
+     */
     @get:InputDirectory
     @get:PathSensitive(PathSensitivity.NONE)
     public abstract val sourceDirectory: DirectoryProperty
 
-    /** The directory that will contain the extracted KDoc samples. */
+    /** The directory that will contain the extracted samples. */
     @get:OutputDirectory
     public abstract val outputDirectory: DirectoryProperty
 
