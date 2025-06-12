@@ -164,3 +164,21 @@ internal fun String.isFunctionHeaderInKotlin(): Boolean {
     val regex = Regex("""fun [A-Za-z_]+\(\) \{$""")
     return regex in this
 }
+
+/**
+ * Returns `true` if this string represents a test function header written in
+ * [Java](https://www.java.com), or returns `false` otherwise.
+ *
+ * In this programming language, a test function header starts with the `void`
+ * return type, followed by the name of the function and a pair of parentheses.
+ *
+ * ```java
+ * void helloWorld() { // <- here's the function header
+ *     System.out.println("Hello World");
+ * }
+ * ```
+ */
+internal fun String.isTestFunctionHeaderInJava(): Boolean {
+    val regex = Regex("""void [A-Za-z_]+\(\) \{$""")
+    return regex in this
+}

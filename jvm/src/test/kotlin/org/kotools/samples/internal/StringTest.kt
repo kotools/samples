@@ -155,4 +155,24 @@ class StringTest {
         val actual: Boolean = "fun () {".isFunctionHeaderInKotlin()
         assertFalse(actual)
     }
+
+    // -------------------- String.isTestFunctionHeaderInJava() --------------------
+
+    @Test
+    fun `isTestFunctionHeaderInJava passes on Java function declaration`() {
+        val actual: Boolean = "void helloWorld() {".isTestFunctionHeaderInJava()
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isTestFunctionHeaderInJava fails on String missing 'void' return type`() {
+        val actual: Boolean = "helloWorld() {".isTestFunctionHeaderInJava()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isTestFunctionHeaderInJava fails on String missing function name`() {
+        val actual: Boolean = "void () {".isTestFunctionHeaderInJava()
+        assertFalse(actual)
+    }
 }
