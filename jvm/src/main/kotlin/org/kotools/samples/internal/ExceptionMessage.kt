@@ -45,7 +45,7 @@ internal class ExceptionMessage private constructor(private val text: String) {
          * found in the specified [file].
          */
         fun multipleClassesFoundIn(file: File): ExceptionMessage =
-            ExceptionMessage("Multiple classes found in '$file'.")
+            this.orThrow("Multiple classes found in '$file'.")
 
         /**
          * Returns an exception message indicating that no public class was
