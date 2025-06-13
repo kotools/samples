@@ -32,6 +32,14 @@ internal sealed interface ProgrammingLanguage {
      */
     fun isPublicClassDeclaration(text: String): Boolean
 
+    /**
+     * Returns the name of the class declared in the specified [text], or
+     * returns `null` if the [text] doesn't represent a
+     * [class declaration][isClassDeclaration] written in this programming
+     * language.
+     */
+    fun classNameOrNull(text: String): String?
+
     // ------------------------- Function declaration --------------------------
 
     val functionHeaderRegex: Regex

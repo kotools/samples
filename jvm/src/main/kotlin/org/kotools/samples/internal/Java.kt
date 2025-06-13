@@ -37,6 +37,11 @@ internal class Java : ProgrammingLanguage {
     override fun isPublicClassDeclaration(text: String): Boolean =
         this.isClassDeclaration(text) && text.startsWith("public class ")
 
+    override fun classNameOrNull(text: String): String? =
+        if (!this.isClassDeclaration(text)) null
+        else text.substringAfter("class ")
+            .substringBefore(" {")
+
     // ------------------------- Function declaration --------------------------
 
     // This is not a keyword but the type to return!

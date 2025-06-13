@@ -1,7 +1,9 @@
 package org.kotools.samples.internal
 
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class JavaTest {
@@ -63,5 +65,22 @@ class JavaTest {
         val actual: Boolean = Java()
             .isPublicClassDeclaration(text)
         assertFalse(actual)
+    }
+
+    // ------------------------ classNameOrNull(String) ------------------------
+
+    @Test
+    fun `classNameOrNull passes with Java class declaration as text`() {
+        val expected = "Something"
+        val actual: String? = Java()
+            .classNameOrNull("class $expected {}")
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `classNameOrNull fails with another text than Java class declaration`() {
+        val actual: String? = Java()
+            .classNameOrNull("class")
+        assertNull(actual)
     }
 }

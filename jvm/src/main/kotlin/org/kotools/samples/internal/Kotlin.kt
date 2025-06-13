@@ -39,6 +39,11 @@ internal class Kotlin : ProgrammingLanguage {
         return text.startsWith("public class ") || text.startsWith("class ")
     }
 
+    override fun classNameOrNull(text: String): String? =
+        if (!this.isClassDeclaration(text)) null
+        else text.substringAfter("class ")
+            .substringBefore(" {")
+
     // ------------------------- Function declaration --------------------------
 
     override val functionKeyword: String = "fun"
