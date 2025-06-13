@@ -45,7 +45,7 @@ class SampleSourceFileTest {
         val actual: String? = assertFailsWith<IllegalStateException>(
             block = sampleSource::checkSinglePublicClass
         ).message
-        val expected: String = ErrorMessage.multipleClassesFoundIn(resource)
+        val expected: String = ExceptionMessage.multipleClassesFoundIn(resource)
             .toString()
         assertEquals(expected, actual)
     }
@@ -62,7 +62,7 @@ class SampleSourceFileTest {
         val actual: String? = assertFailsWith<IllegalStateException>(
             block = sampleSource::checkSinglePublicClass
         ).message
-        val expected: String = ErrorMessage.multipleClassesFoundIn(resource)
+        val expected: String = ExceptionMessage.multipleClassesFoundIn(resource)
             .toString()
         assertEquals(expected, actual)
     }
@@ -79,7 +79,7 @@ class SampleSourceFileTest {
         val actual: String? = assertFailsWith<IllegalStateException>(
             block = sampleSource::checkSinglePublicClass
         ).message
-        val expected: String = ErrorMessage.noPublicClassFoundIn(resource)
+        val expected: String = ExceptionMessage.noPublicClassFoundIn(resource)
             .toString()
         assertEquals(expected, actual)
     }
@@ -96,7 +96,7 @@ class SampleSourceFileTest {
         val actual: String? = assertFailsWith<IllegalStateException>(
             block = sampleSource::checkSinglePublicClass
         ).message
-        val expected: String = ErrorMessage.noPublicClassFoundIn(resource)
+        val expected: String = ExceptionMessage.noPublicClassFoundIn(resource)
             .toString()
         assertEquals(expected, actual)
     }

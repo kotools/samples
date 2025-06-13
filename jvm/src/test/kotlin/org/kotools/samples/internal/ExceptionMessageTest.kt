@@ -4,13 +4,13 @@ import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ErrorMessageTest {
+class ExceptionMessageTest {
     // ---------------- Companion.multipleClassesFoundIn(File) -----------------
 
     @Test
     fun `multipleClassesFoundIn returns meaningful error message`() {
         val file = File("Sample.kt")
-        val actual: String = ErrorMessage.multipleClassesFoundIn(file)
+        val actual: String = ExceptionMessage.multipleClassesFoundIn(file)
             .toString()
         val expected = "Multiple classes found in '$file'."
         assertEquals(expected, actual)
@@ -21,7 +21,7 @@ class ErrorMessageTest {
     @Test
     fun `noPublicClassFoundIn returns meaningful error message`() {
         val file = File("Sample.kt")
-        val actual: String = ErrorMessage.noPublicClassFoundIn(file)
+        val actual: String = ExceptionMessage.noPublicClassFoundIn(file)
             .toString()
         val expected = "No public class found in '$file'."
         assertEquals(expected, actual)

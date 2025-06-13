@@ -26,15 +26,15 @@ internal class SampleSourceFile private constructor(
                 .toList()
         }
         if (classDeclarations.count() > 1) {
-            val message: ErrorMessage =
-                ErrorMessage.multipleClassesFoundIn(this.file)
+            val message: ExceptionMessage =
+                ExceptionMessage.multipleClassesFoundIn(this.file)
             error(message)
         }
         val publicClassCount: Int =
             classDeclarations.count(this.language::isPublicClassDeclaration)
         if (publicClassCount == 0) {
-            val message: ErrorMessage =
-                ErrorMessage.noPublicClassFoundIn(this.file)
+            val message: ExceptionMessage =
+                ExceptionMessage.noPublicClassFoundIn(this.file)
             error(message)
         }
     }
