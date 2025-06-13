@@ -4,8 +4,51 @@ import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class ExceptionMessageTest {
+    // ----------------------------- equals(Any?) ------------------------------
+
+    @Test
+    fun `equals passes with same exception message`() {
+        val text = "Failed requirement."
+        val message: ExceptionMessage = ExceptionMessage.orThrow(text)
+        val other: ExceptionMessage = ExceptionMessage.orThrow(text)
+        val actual: Boolean = message == other
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `equals fails with another exception message`() {
+        val message: ExceptionMessage =
+            ExceptionMessage.orThrow("First problem.")
+        val other: ExceptionMessage =
+            ExceptionMessage.orThrow("Second problem.")
+        val actual: Boolean = message == other
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `equals fails with another type than ExceptionMessage`() {
+        val message: ExceptionMessage =
+            ExceptionMessage.orThrow("Failed requirement.")
+        val other = "oops"
+        val actual: Boolean = message.equals(other)
+        assertFalse(actual)
+    }
+
+    // ------------------------------ hashCode() -------------------------------
+
+    @Test
+    fun `hashCode passes`() {
+        val text = "Failed requirement."
+        val actual: Int = ExceptionMessage.orThrow(text)
+            .hashCode()
+        val expected: Int = text.hashCode()
+        assertEquals(expected, actual)
+    }
+
     // ------------------------------ toString() -------------------------------
 
     @Test
