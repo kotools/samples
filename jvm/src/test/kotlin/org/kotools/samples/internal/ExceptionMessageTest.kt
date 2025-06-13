@@ -3,8 +3,28 @@ package org.kotools.samples.internal
 import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class ExceptionMessageTest {
+    // ----------------------- Companion.orThrow(String) -----------------------
+
+    @Test
+    fun `orThrow passes with non-blank text`() {
+        val text = "Failed requirement."
+        ExceptionMessage.orThrow(text)
+    }
+
+    @Test
+    fun `orThrow fails with blank text`() {
+        val text = "   "
+        val exception: IllegalArgumentException = assertFailsWith {
+            ExceptionMessage.orThrow(text)
+        }
+        val actual: String? = exception.message
+        val expected = "Blank exception message ('$text')."
+        assertEquals(expected, actual)
+    }
+
     // ---------------- Companion.multipleClassesFoundIn(File) -----------------
 
     @Test

@@ -19,6 +19,15 @@ internal class ExceptionMessage private constructor(private val text: String) {
     /** Contains static declarations for the [ExceptionMessage] type. */
     companion object {
         /**
+         * Returns an exception message with the specified [text], or throws an
+         * [IllegalArgumentException] if the [text] is [blank][String.isBlank].
+         */
+        fun orThrow(text: String): ExceptionMessage {
+            require(text.isNotBlank()) { "Blank exception message ('$text')." }
+            return ExceptionMessage(text)
+        }
+
+        /**
          * Returns an exception message indicating that multiple classes were
          * found in the specified [file].
          */
