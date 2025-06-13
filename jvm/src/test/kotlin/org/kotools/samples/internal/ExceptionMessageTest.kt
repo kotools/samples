@@ -6,6 +6,16 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class ExceptionMessageTest {
+    // ------------------------------ toString() -------------------------------
+
+    @Test
+    fun `toString passes`() {
+        val expected = "Failed requirement."
+        val actual: String = ExceptionMessage.orThrow(expected)
+            .toString()
+        assertEquals(expected, actual)
+    }
+
     // ----------------------- Companion.orThrow(String) -----------------------
 
     @Test
