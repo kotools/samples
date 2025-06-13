@@ -44,7 +44,6 @@ signing {
 dependencies {
     implementation(platform(libs.kotlin.bom))
     implementation(libs.kotlin.gradle.plugin)
-    implementation(libs.kotlin.coroutines.core)
     implementation(libs.dokka.gradle.plugin)
 
     testImplementation(libs.kotlin.test.junit5)
