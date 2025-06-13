@@ -3,11 +3,104 @@ package org.kotools.samples.internal
 import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.fail
 
 class SampleSourceFileTest {
+    // ----------------------- checkSinglePublicClass() ------------------------
+
+    @Test
+    fun `checkSinglePublicClass passes with single public class in Java file`() {
+        val name = "SinglePublicClassSample.java"
+        val file: SampleSourceFile = this::class.java.getResource("/$name")
+            ?.toURI()
+            ?.let(::File)
+            ?.let(SampleSourceFile.Companion::orNull)
+            ?: fail("'$name' sample source file not found.")
+        file.checkSinglePublicClass()
+    }
+
+    @Test
+    fun `checkSinglePublicClass passes with single public class in Kotlin file`() {
+        val name = "SinglePublicClassSample.kt"
+        val file: SampleSourceFile = this::class.java.getResource("/$name")
+            ?.toURI()
+            ?.let(::File)
+            ?.let(SampleSourceFile.Companion::orNull)
+            ?: fail("'$name' sample source file not found.")
+        file.checkSinglePublicClass()
+    }
+
+    @Test
+    fun `checkSinglePublicClass fails with multiple classes in Java file`() {
+        val name = "MultipleClassesSample.java"
+        val resource: File = this::class.java.getResource("/$name")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$name' resource file not found.")
+        val sampleSource: SampleSourceFile = SampleSourceFile.orNull(resource)
+            ?: fail("'$name' sample source file not found.")
+        val actual: String? = assertFailsWith<IllegalStateException>(
+            block = sampleSource::checkSinglePublicClass
+        ).message
+        val expected: String = ErrorMessage.multipleClassesFoundIn(resource)
+            .toString()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `checkSinglePublicClass fails with multiple classes in Kotlin file`() {
+        val name = "MultipleClassesSample.kt"
+        val resource: File = this::class.java.getResource("/$name")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$name' resource file not found.")
+        val sampleSource: SampleSourceFile = SampleSourceFile.orNull(resource)
+            ?: fail("'$name' sample source file not found.")
+        val actual: String? = assertFailsWith<IllegalStateException>(
+            block = sampleSource::checkSinglePublicClass
+        ).message
+        val expected: String = ErrorMessage.multipleClassesFoundIn(resource)
+            .toString()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `checkSinglePublicClass fails with no public class in Java file`() {
+        val name = "NoPublicClassSample.java"
+        val resource: File = this::class.java.getResource("/$name")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$name' resource file not found.")
+        val sampleSource: SampleSourceFile = SampleSourceFile.orNull(resource)
+            ?: fail("'$name' sample source file not found.")
+        val actual: String? = assertFailsWith<IllegalStateException>(
+            block = sampleSource::checkSinglePublicClass
+        ).message
+        val expected: String = ErrorMessage.noPublicClassFoundIn(resource)
+            .toString()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `checkSinglePublicClass fails with no public class in Kotlin file`() {
+        val name = "NoPublicClassSample.kt"
+        val resource: File = this::class.java.getResource("/$name")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$name' resource file not found.")
+        val sampleSource: SampleSourceFile = SampleSourceFile.orNull(resource)
+            ?: fail("'$name' sample source file not found.")
+        val actual: String? = assertFailsWith<IllegalStateException>(
+            block = sampleSource::checkSinglePublicClass
+        ).message
+        val expected: String = ErrorMessage.noPublicClassFoundIn(resource)
+            .toString()
+        assertEquals(expected, actual)
+    }
+
     // ------------------------------- samples() -------------------------------
 
     @Test
