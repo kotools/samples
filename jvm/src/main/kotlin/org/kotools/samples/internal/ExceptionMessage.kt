@@ -52,6 +52,6 @@ internal class ExceptionMessage private constructor(private val text: String) {
          * found in the specified [file].
          */
         fun noPublicClassFoundIn(file: File): ExceptionMessage =
-            ExceptionMessage("No public class found in '$file'.")
+            this.orThrow("No public class found in '$file'.")
     }
 }
