@@ -93,8 +93,8 @@ internal class SampleSourceFile private constructor(
 
     private fun className(): String = this.file.useLines {
         it.first(this.language::isPublicClassDeclaration)
-            .substringAfter("${this.language.classKeyword} ")
-            .substringBefore(" {")
+            .let(this.language::classNameOrNull)
+            ?: error("Class name not found in '$this'.")
     }
 
     // ------------------------------ Conversions ------------------------------
