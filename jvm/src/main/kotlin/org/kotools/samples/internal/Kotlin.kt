@@ -27,8 +27,6 @@ internal class Kotlin : ProgrammingLanguage {
 
     // --------------------------- Class declaration ---------------------------
 
-    override val classKeyword: String = "class"
-
     override fun isClassDeclaration(text: String): Boolean {
         val regex = Regex("""class [A-Z][A-Za-z]*""")
         return regex in text

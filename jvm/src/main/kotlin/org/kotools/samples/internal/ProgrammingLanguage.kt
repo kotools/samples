@@ -17,8 +17,6 @@ internal sealed interface ProgrammingLanguage {
 
     // --------------------------- Class declaration ---------------------------
 
-    val classKeyword: String
-
     /**
      * Returns `true` if the specified [text] represents a class declaration
      * written in this programming language, or returns `false` otherwise.
