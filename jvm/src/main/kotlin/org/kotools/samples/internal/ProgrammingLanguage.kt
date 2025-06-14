@@ -15,6 +15,12 @@ internal sealed interface ProgrammingLanguage {
 
     val packageRegex: Regex
 
+    /**
+     * Returns `true` if the specified [text] represents a package declaration
+     * written in this programming language, or returns `false` otherwise.
+     */
+    fun isPackageDeclaration(text: String): Boolean
+
     // --------------------------- Class declaration ---------------------------
 
     /**

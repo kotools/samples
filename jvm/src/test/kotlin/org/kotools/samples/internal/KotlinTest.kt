@@ -7,6 +7,32 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class KotlinTest {
+    // --------------------- isPackageDeclaration(String) ----------------------
+
+    @Test
+    fun `isPackageDeclaration passes with Kotlin package declaration as text`() {
+        val text = "package org.kotools.samples"
+        val actual: Boolean = Kotlin()
+            .isPackageDeclaration(text)
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isPackageDeclaration fails without 'package' keyword in text`() {
+        val text = "org.kotools.samples"
+        val actual: Boolean = Kotlin()
+            .isPackageDeclaration(text)
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isPackageDeclaration fails without package identifier in text`() {
+        val text = "package"
+        val actual: Boolean = Kotlin()
+            .isPackageDeclaration(text)
+        assertFalse(actual)
+    }
+
     // ---------------------- isClassDeclaration(String) -----------------------
 
     @Test

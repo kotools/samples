@@ -7,6 +7,40 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class JavaTest {
+    // --------------------- isPackageDeclaration(String) ----------------------
+
+    @Test
+    fun `isPackageDeclaration passes with Java package declaration as text`() {
+        val text = "package org.kotools.samples;"
+        val actual: Boolean = Java()
+            .isPackageDeclaration(text)
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isPackageDeclaration fails without 'package' keyword in text`() {
+        val text = "org.kotools.samples;"
+        val actual: Boolean = Java()
+            .isPackageDeclaration(text)
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isPackageDeclaration fails without package identifier in text`() {
+        val text = "package ;"
+        val actual: Boolean = Java()
+            .isPackageDeclaration(text)
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isPackageDeclaration fails without semicolon at the end of text`() {
+        val text = "package org.kotools.samples"
+        val actual: Boolean = Java()
+            .isPackageDeclaration(text)
+        assertFalse(actual)
+    }
+
     // ---------------------- isClassDeclaration(String) -----------------------
 
     @Test
