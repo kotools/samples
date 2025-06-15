@@ -22,9 +22,6 @@ internal class Java : ProgrammingLanguage {
 
     override val packageKeyword: String = "package"
 
-    override val packageRegex: Regex =
-        Regex("^${this.packageKeyword} [a-z]+(?:\\.[a-z]+)*;\$")
-
     override fun isPackageDeclaration(text: String): Boolean =
         Regex("""^package [a-z]+(?:\.[a-z]+)*;$""")
             .matches(text)
