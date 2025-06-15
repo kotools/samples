@@ -87,7 +87,7 @@ internal class SampleSourceFile private constructor(
     }
 
     private fun packageIdentifierOrNull(): String? = this.file
-        .useLines { it.firstOrNull(this.language.packageRegex::matches) }
+        .useLines { it.firstOrNull(this.language::isPackageDeclaration) }
         ?.substringAfter("${this.language.packageKeyword} ")
         ?.substringBefore(';')
 
