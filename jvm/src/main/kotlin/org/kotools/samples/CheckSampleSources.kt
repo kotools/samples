@@ -31,5 +31,6 @@ public abstract class CheckSampleSources : DefaultTask() {
     internal fun execute(): Unit = this.sourceDirectory.asFileTree.asSequence()
         .filterNotNull()
         .mapNotNull(SampleSourceFile.Companion::orNull)
-        .forEach(SampleSourceFile::checkSinglePublicClass)
+        .onEach(SampleSourceFile::checkSinglePublicClass)
+        .forEach(SampleSourceFile::checkNoSingleExpressionKotlinFunction)
 }
