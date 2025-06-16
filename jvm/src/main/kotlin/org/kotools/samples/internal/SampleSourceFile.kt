@@ -39,6 +39,25 @@ internal class SampleSourceFile private constructor(
         }
     }
 
+    /**
+     * Checks that this sample source file doesn't contain a single-expression
+     * [Kotlin] function, or throws an [IllegalStateException] if this is the
+     * case. Does nothing if this sample source is a [Java] file.
+     *
+     * See the [single-expression Kotlin functions](https://kotlinlang.org/docs/functions.html#single-expression-functions)
+     * documentation for more details about their syntax.
+     */
+    fun checkNoSingleExpressionKotlinFunction() {
+        if (this.language is Java) return
+        val regex = Regex("""^fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
+        val fileHasSingleExpressionFunction: Boolean = this.file.useLines {
+            it.map(String::trim)
+                .any(regex::matches)
+        }
+        if (!fileHasSingleExpressionFunction) return
+        error("Single-expression function found in '${this.file}'.")
+    }
+
     /** Returns all samples present in this source file. */
     fun samples(): Set<Sample> {
         var identifier: MutableList<String> = this.packageIdentifierOrNull()

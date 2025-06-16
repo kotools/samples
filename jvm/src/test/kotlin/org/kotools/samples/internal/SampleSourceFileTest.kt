@@ -101,6 +101,45 @@ class SampleSourceFileTest {
         assertEquals(expected, actual)
     }
 
+    // ---------------- checkNoSingleExpressionKotlinFunction() ----------------
+
+    @Test
+    fun `checkNoSingleExpressionKotlinFunction passes with Java file`() {
+        val fileName = "SinglePublicClassSample.java"
+        val file: SampleSourceFile = this::class.java.getResource("/$fileName")
+            ?.toURI()
+            ?.let(::File)
+            ?.let(SampleSourceFile.Companion::orNull)
+            ?: fail("'$fileName' sample source file not found.")
+        file.checkNoSingleExpressionKotlinFunction()
+    }
+
+    @Test
+    fun `checkNoSingleExpressionKotlinFunction passes with no single-expression function in Kotlin file`() {
+        val fileName = "SinglePublicClassSample.kt"
+        val file: SampleSourceFile = this::class.java.getResource("/$fileName")
+            ?.toURI()
+            ?.let(::File)
+            ?.let(SampleSourceFile.Companion::orNull)
+            ?: fail("'$fileName' sample source file not found.")
+        file.checkNoSingleExpressionKotlinFunction()
+    }
+
+    @Test
+    fun `checkNoSingleExpressionKotlinFunction fails with single-expression function in Kotlin file`() {
+        val fileName = "SingleExpressionFunctionSample.kt"
+        val file: SampleSourceFile = this::class.java.getResource("/$fileName")
+            ?.toURI()
+            ?.let(::File)
+            ?.let(SampleSourceFile.Companion::orNull)
+            ?: fail("'$fileName' sample source file not found.")
+        val exception: IllegalStateException =
+            assertFailsWith(block = file::checkNoSingleExpressionKotlinFunction)
+        val actual: String? = exception.message
+        val expected = "Single-expression function found in '$file'."
+        assertEquals(expected, actual)
+    }
+
     // ------------------------------- samples() -------------------------------
 
     @Test
