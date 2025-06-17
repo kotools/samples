@@ -109,4 +109,27 @@ class KotlinTest {
             .classNameOrNull("class")
         assertNull(actual)
     }
+
+    // ------------------ isSingleExpressionFunction(String) -------------------
+
+    @Test
+    fun `isSingleExpressionFunction passes with single-expression function and return-type`() {
+        val actual: Boolean = Kotlin()
+            .isSingleExpressionFunction("fun test(): Unit = assertTrue(true)")
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isSingleExpressionFunction passes with single-expression function but without return-type`() {
+        val actual: Boolean = Kotlin()
+            .isSingleExpressionFunction("fun test() = assertTrue(true)")
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isSingleExpressionFunction fails with another text than single-expression function`() {
+        val actual: Boolean = Kotlin()
+            .isSingleExpressionFunction("fun test() {")
+        assertFalse(actual)
+    }
 }
