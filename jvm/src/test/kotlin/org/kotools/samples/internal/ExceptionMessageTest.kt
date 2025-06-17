@@ -99,4 +99,16 @@ class ExceptionMessageTest {
         val expected = "No public class found in '$file'."
         assertEquals(expected, actual)
     }
+
+    // --------- Companion.singleExpressionKotlinFunctionFoundIn(File) ---------
+
+    @Test
+    fun `singleExpressionKotlinFunctionFoundIn returns meaningful message`() {
+        val file = File("Sample.kt")
+        val actual: String = ExceptionMessage
+            .singleExpressionKotlinFunctionFoundIn(file)
+            .toString()
+        val expected = "Single-expression Kotlin function found in '$file'."
+        assertEquals(expected, actual)
+    }
 }

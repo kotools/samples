@@ -40,6 +40,8 @@ internal class ExceptionMessage private constructor(private val text: String) {
             return ExceptionMessage(text)
         }
 
+        // ------------------------- Class exceptions --------------------------
+
         /**
          * Returns an exception message indicating that multiple classes were
          * found in the specified [file].
@@ -53,5 +55,17 @@ internal class ExceptionMessage private constructor(private val text: String) {
          */
         fun noPublicClassFoundIn(file: File): ExceptionMessage =
             this.orThrow("No public class found in '$file'.")
+
+        // ------------------------ Function exceptions ------------------------
+
+        /**
+         * Returns an exception message indicating that a single-expression
+         * Kotlin function was found in the specified [file].
+         */
+        fun singleExpressionKotlinFunctionFoundIn(
+            file: File
+        ): ExceptionMessage = ExceptionMessage(
+            "Single-expression Kotlin function found in '$file'."
+        )
     }
 }
