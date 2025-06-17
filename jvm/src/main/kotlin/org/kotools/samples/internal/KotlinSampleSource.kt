@@ -15,10 +15,31 @@ internal class KotlinSampleSource private constructor() {
          * Returns a Kotlin sample source from the specified [file], or returns
          * `null` if the [file]'s name is not suffixed by `Sample`, or if the
          * [file] has another extension than `kt`.
+         *
+         * For throwing an exception instead of returning `null` in case of
+         * invalid [file], see the [orThrow] function instead.
          */
         fun orNull(file: File): KotlinSampleSource? {
             if (!file.nameWithoutExtension.endsWith("Sample")) return null
             if (file.extension != "kt") return null
+            return KotlinSampleSource()
+        }
+
+        /**
+         * Returns a Kotlin sample source from the specified [file], or throws
+         * an [IllegalArgumentException] if the [file]'s name is not suffixed by
+         * `Sample`, or if the [file] has another extension than `kt`.
+         *
+         * For returning `null` instead of throwing an exception in case of
+         * invalid [file], see the [orNull] function instead.
+         */
+        fun orThrow(file: File): KotlinSampleSource {
+            require(file.nameWithoutExtension.endsWith("Sample")) {
+                "'${file.nameWithoutExtension}' must ends with 'Sample'."
+            }
+            require(file.extension == "kt") {
+                "'${file.extension}' must be 'kt'."
+            }
             return KotlinSampleSource()
         }
     }
