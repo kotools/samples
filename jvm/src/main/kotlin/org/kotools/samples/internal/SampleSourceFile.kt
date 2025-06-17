@@ -48,11 +48,11 @@ internal class SampleSourceFile private constructor(
      * documentation for more details about their syntax.
      */
     fun checkNoSingleExpressionKotlinFunction() {
-        if (this.language is Java) return
-        val regex = Regex("""^fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
+        val kotlin: Kotlin = this.language as? Kotlin
+            ?: return
         val fileHasSingleExpressionFunction: Boolean = this.file.useLines {
             it.map(String::trim)
-                .any(regex::matches)
+                .any(kotlin::isSingleExpressionFunction)
         }
         if (!fileHasSingleExpressionFunction) return
         error("Single-expression function found in '${this.file}'.")
