@@ -55,7 +55,9 @@ internal class SampleSourceFile private constructor(
                 .any(kotlin::isSingleExpressionFunction)
         }
         if (!fileHasSingleExpressionFunction) return
-        error("Single-expression function found in '${this.file}'.")
+        val message: ExceptionMessage =
+            ExceptionMessage.singleExpressionKotlinFunctionFoundIn(this.file)
+        error(message)
     }
 
     /** Returns all samples present in this source file. */

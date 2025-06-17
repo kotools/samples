@@ -128,15 +128,19 @@ class SampleSourceFileTest {
     @Test
     fun `checkNoSingleExpressionKotlinFunction fails with single-expression function in Kotlin file`() {
         val fileName = "SingleExpressionFunctionSample.kt"
-        val file: SampleSourceFile = this::class.java.getResource("/$fileName")
+        val file: File = this::class.java.getResource("/$fileName")
             ?.toURI()
             ?.let(::File)
-            ?.let(SampleSourceFile.Companion::orNull)
+            ?: fail("'$fileName' resource file not found.")
+        val sampleSourceFile: SampleSourceFile = SampleSourceFile.orNull(file)
             ?: fail("'$fileName' sample source file not found.")
-        val exception: IllegalStateException =
-            assertFailsWith(block = file::checkNoSingleExpressionKotlinFunction)
+        val exception: IllegalStateException = assertFailsWith(
+            block = sampleSourceFile::checkNoSingleExpressionKotlinFunction
+        )
         val actual: String? = exception.message
-        val expected = "Single-expression function found in '$file'."
+        val expected: String = ExceptionMessage
+            .singleExpressionKotlinFunctionFoundIn(file)
+            .toString()
         assertEquals(expected, actual)
     }
 
