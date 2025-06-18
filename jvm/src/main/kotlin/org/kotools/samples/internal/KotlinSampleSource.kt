@@ -14,6 +14,9 @@ internal class KotlinSampleSource private constructor(private val file: File) {
     /** Returns the string representation of this Kotlin sample source. */
     override fun toString(): String = "'${this.file.name}' Kotlin sample source"
 
+    /** Returns the file corresponding to this Kotlin sample source. */
+    fun toFile(): File = this.file
+
     // -------------------------------------------------------------------------
 
     /** Contains static declarations for the [KotlinSampleSource] type. */

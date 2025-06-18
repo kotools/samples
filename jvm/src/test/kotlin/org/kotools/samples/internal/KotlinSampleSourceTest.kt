@@ -19,6 +19,16 @@ class KotlinSampleSourceTest {
         assertEquals(expected, actual)
     }
 
+    // ------------------------------- toFile() --------------------------------
+
+    @Test
+    fun `toFile returns original file`() {
+        val file = File("Sample.kt")
+        val actual: File = KotlinSampleSource.orThrow(file)
+            .toFile()
+        assertEquals(expected = file, actual)
+    }
+
     // ------------------------ Companion.orNull(File) -------------------------
 
     @Test
