@@ -19,11 +19,10 @@ internal class KotlinSampleSource private constructor() {
          * For throwing an exception instead of returning `null` in case of
          * invalid [file], see the [orThrow] function instead.
          */
-        fun orNull(file: File): KotlinSampleSource? {
-            if (!file.nameWithoutExtension.endsWith("Sample")) return null
-            if (file.extension != "kt") return null
-            return KotlinSampleSource()
-        }
+        fun orNull(file: File): KotlinSampleSource? = file
+            .takeIf { it.nameWithoutExtension.endsWith("Sample") }
+            ?.takeIf { it.extension == "kt" }
+            ?.let { KotlinSampleSource() }
 
         /**
          * Returns a Kotlin sample source from the specified [file], or throws
