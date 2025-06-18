@@ -8,7 +8,14 @@ import java.io.File
  * For creating an instance of this type, see the factory functions provided by
  * the [KotlinSampleSource.Companion] type.
  */
-internal class KotlinSampleSource private constructor() {
+internal class KotlinSampleSource private constructor(private val file: File) {
+    // ------------------------------ Conversions ------------------------------
+
+    /** Returns the string representation of this Kotlin sample source. */
+    override fun toString(): String = "'${this.file.name}' Kotlin sample source"
+
+    // -------------------------------------------------------------------------
+
     /** Contains static declarations for the [KotlinSampleSource] type. */
     companion object {
         /**
@@ -22,7 +29,7 @@ internal class KotlinSampleSource private constructor() {
         fun orNull(file: File): KotlinSampleSource? = file
             .takeIf { it.nameWithoutExtension.endsWith("Sample") }
             ?.takeIf { it.extension == "kt" }
-            ?.let { KotlinSampleSource() }
+            ?.let(::KotlinSampleSource)
 
         /**
          * Returns a Kotlin sample source from the specified [file], or throws
@@ -39,7 +46,7 @@ internal class KotlinSampleSource private constructor() {
             }
             val fileExtension: String = file.extension
             require(fileExtension == "kt") { "'$fileExtension' must be 'kt'." }
-            return KotlinSampleSource()
+            return KotlinSampleSource(file)
         }
     }
 }
