@@ -8,6 +8,17 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class JavaSampleSourceTest {
+    // ------------------------------ toString() -------------------------------
+
+    @Test
+    fun `toString returns meaningful string representation`() {
+        val file = File("Sample.java")
+        val actual: String = JavaSampleSource.orThrow(file)
+            .toString()
+        val expected = "'${file.name}' Java sample source"
+        assertEquals(expected, actual)
+    }
+
     // ------------------------ Companion.orNull(File) -------------------------
 
     @Test

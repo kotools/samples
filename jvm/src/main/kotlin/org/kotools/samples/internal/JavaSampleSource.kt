@@ -8,7 +8,14 @@ import java.io.File
  * For creating an instance of this type, see the methods provided by the
  * [JavaSampleSource.Companion] type.
  */
-internal class JavaSampleSource private constructor() {
+internal class JavaSampleSource private constructor(private val file: File) {
+    // ------------------------------ Conversions ------------------------------
+
+    /** Returns the string representation of this Java sample source. */
+    override fun toString(): String = "'${this.file.name}' Java sample source"
+
+    // -------------------------------------------------------------------------
+
     /** Contains static declarations for the [JavaSampleSource] type. */
     companion object {
         /**
@@ -22,7 +29,7 @@ internal class JavaSampleSource private constructor() {
         fun orNull(file: File): JavaSampleSource? = file
             .takeIf { it.nameWithoutExtension.endsWith("Sample") }
             ?.takeIf { it.extension == "java" }
-            ?.let { JavaSampleSource() }
+            ?.let(::JavaSampleSource)
 
         /**
          * Returns a Java sample source from the specified [file], or throws an
@@ -43,7 +50,7 @@ internal class JavaSampleSource private constructor() {
                 "Java sample source file extension must be 'java' (input: " +
                         "'$fileExtension')."
             }
-            return JavaSampleSource()
+            return JavaSampleSource(file)
         }
     }
 }
