@@ -100,10 +100,14 @@ internal class KotlinSampleSource private constructor(private val file: File) {
         fun orThrow(file: File): KotlinSampleSource {
             val fileName: String = file.nameWithoutExtension
             require(fileName.endsWith("Sample")) {
-                "'$fileName' must ends with 'Sample'."
+                "Kotlin sample source file name must end with 'Sample' " +
+                        "(input: '$fileName')."
             }
             val fileExtension: String = file.extension
-            require(fileExtension == "kt") { "'$fileExtension' must be 'kt'." }
+            require(fileExtension == "kt") {
+                "Kotlin sample source file extension must be 'kt' (input: " +
+                        "'$fileExtension')."
+            }
             return KotlinSampleSource(file)
         }
     }

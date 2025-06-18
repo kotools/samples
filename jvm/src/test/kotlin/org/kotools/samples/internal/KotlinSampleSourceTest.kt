@@ -165,7 +165,8 @@ class KotlinSampleSourceTest {
         val exception: IllegalArgumentException =
             assertFailsWith { KotlinSampleSource.orThrow(file) }
         val actual: String? = exception.message
-        val expected = "'${file.nameWithoutExtension}' must ends with 'Sample'."
+        val expected = "Kotlin sample source file name must end with " +
+                "'Sample' (input: '${file.nameWithoutExtension}')."
         assertEquals(expected, actual)
     }
 
@@ -175,7 +176,8 @@ class KotlinSampleSourceTest {
         val exception: IllegalArgumentException =
             assertFailsWith { KotlinSampleSource.orThrow(file) }
         val actual: String? = exception.message
-        val expected = "'${file.extension}' must be 'kt'."
+        val expected = "Kotlin sample source file extension must be 'kt' " +
+                "(input: '${file.extension}')."
         assertEquals(expected, actual)
     }
 }
