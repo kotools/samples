@@ -4,10 +4,52 @@ import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class JavaSampleSourceTest {
+    // ----------------------------- equals(Any?) ------------------------------
+
+    @Test
+    fun `equals passes with JavaSampleSource corresponding to same file`() {
+        val file = File("Sample.java")
+        val sampleSource: JavaSampleSource = JavaSampleSource.orThrow(file)
+        val other: JavaSampleSource = JavaSampleSource.orThrow(file)
+        val actual: Boolean = sampleSource == other
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `equals fails with another type than JavaSampleSource`() {
+        val file = File("Sample.java")
+        val sampleSource: JavaSampleSource = JavaSampleSource.orThrow(file)
+        val actual: Boolean = sampleSource.equals(file)
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `equals fails with JavaSampleSource corresponding to another file`() {
+        val file1 = File("FirstSample.java")
+        val sampleSource: JavaSampleSource = JavaSampleSource.orThrow(file1)
+        val file2 = File("SecondSample.java")
+        val other: JavaSampleSource = JavaSampleSource.orThrow(file2)
+        val actual: Boolean = sampleSource == other
+        assertFalse(actual)
+    }
+
+    // ------------------------------ hashCode() -------------------------------
+
+    @Test
+    fun `hashCode returns hash code value of corresponding file`() {
+        val file = File("Sample.java")
+        val actual: Int = JavaSampleSource.orThrow(file)
+            .hashCode()
+        val expected: Int = file.hashCode()
+        assertEquals(expected, actual)
+    }
+
     // ------------------------------ toString() -------------------------------
 
     @Test
