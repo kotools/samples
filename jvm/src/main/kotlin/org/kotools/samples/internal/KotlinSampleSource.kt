@@ -5,8 +5,8 @@ import java.io.File
 /**
  * Represents a sample source written in [Kotlin](https://kotlinlang.org).
  *
- * For creating an instance of this type, see the factory functions provided by
- * the [KotlinSampleSource.Companion] type.
+ * For creating an instance of this type, see the methods provided by the
+ * [KotlinSampleSource.Companion] type.
  */
 internal class KotlinSampleSource private constructor(private val file: File) {
     // -------------------- Structural equality operations ---------------------
