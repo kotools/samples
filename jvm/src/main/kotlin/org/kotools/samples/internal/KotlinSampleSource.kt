@@ -81,7 +81,7 @@ internal class KotlinSampleSource private constructor(private val file: File) {
          * `null` if the [file]'s name is not suffixed by `Sample`, or if the
          * [file] has another extension than `kt`.
          *
-         * See also the [orThrow] method for throwing an exception instead of
+         * See the [orThrow] method for throwing an exception instead of
          * returning `null` in case of invalid [file].
          */
         fun orNull(file: File): KotlinSampleSource? = file
