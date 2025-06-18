@@ -19,6 +19,16 @@ class JavaSampleSourceTest {
         assertEquals(expected, actual)
     }
 
+    // ------------------------------- toFile() --------------------------------
+
+    @Test
+    fun `toFile returns original file`() {
+        val file = File("Sample.java")
+        val actual: File = JavaSampleSource.orThrow(file)
+            .toFile()
+        assertEquals(expected = file, actual)
+    }
+
     // ------------------------ Companion.orNull(File) -------------------------
 
     @Test

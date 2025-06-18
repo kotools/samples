@@ -14,6 +14,9 @@ internal class JavaSampleSource private constructor(private val file: File) {
     /** Returns the string representation of this Java sample source. */
     override fun toString(): String = "'${this.file.name}' Java sample source"
 
+    /** Returns the file corresponding to this Java sample source. */
+    fun toFile(): File = this.file
+
     // -------------------------------------------------------------------------
 
     /** Contains static declarations for the [JavaSampleSource] type. */
