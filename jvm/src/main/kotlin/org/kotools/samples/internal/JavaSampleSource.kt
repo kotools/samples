@@ -31,6 +31,31 @@ internal class JavaSampleSource private constructor(private val file: File) {
      */
     override fun hashCode(): Int = this.file.hashCode()
 
+    // ----------------------- File's content operations -----------------------
+
+    /**
+     * Returns the message of the first exception found in the file
+     * corresponding to this Java sample source, or returns `null` if no content
+     * exception was found.
+     *
+     * See the [toFile] method for accessing the file corresponding to this Java
+     * sample source.
+     */
+    fun contentExceptionOrNull(): ExceptionMessage? {
+        val classDeclarations: List<String> = this.file.useLines {
+            val regex = Regex("""class [A-Z][A-Za-z]* \{""")
+            it.map(String::trim)
+                .filter(regex::containsMatchIn)
+                .toList()
+        }
+        if (classDeclarations.count() > 1)
+            return ExceptionMessage.multipleClassesFoundIn(this.file)
+        val publicClassCount: Int =
+            classDeclarations.count { it.startsWith("public class ") }
+        return if (publicClassCount == 1) null
+        else ExceptionMessage.noPublicClassFoundIn(this.file)
+    }
+
     // ------------------------------ Conversions ------------------------------
 
     /** Returns the string representation of this Java sample source. */
