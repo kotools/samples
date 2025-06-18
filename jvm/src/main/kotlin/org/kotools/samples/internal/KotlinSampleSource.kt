@@ -34,12 +34,12 @@ internal class KotlinSampleSource private constructor() {
          * invalid [file], see the [orNull] function instead.
          */
         fun orThrow(file: File): KotlinSampleSource {
-            require(file.nameWithoutExtension.endsWith("Sample")) {
-                "'${file.nameWithoutExtension}' must ends with 'Sample'."
+            val fileName: String = file.nameWithoutExtension
+            require(fileName.endsWith("Sample")) {
+                "'$fileName' must ends with 'Sample'."
             }
-            require(file.extension == "kt") {
-                "'${file.extension}' must be 'kt'."
-            }
+            val fileExtension: String = file.extension
+            require(fileExtension == "kt") { "'$fileExtension' must be 'kt'." }
             return KotlinSampleSource()
         }
     }
