@@ -31,6 +31,39 @@ internal class KotlinSampleSource private constructor(private val file: File) {
      */
     override fun hashCode(): Int = this.file.hashCode()
 
+    // ----------------------- File's content operations -----------------------
+
+    /**
+     * Returns the message of the first exception found in the file
+     * corresponding to this Kotlin sample source, or returns `null` if no
+     * content exception was found.
+     *
+     * See the [toFile] method for accessing the file corresponding to this
+     * Kotlin sample source.
+     */
+    fun contentExceptionOrNull(): ExceptionMessage? {
+        val classDeclarations: List<String> = this.file.useLines {
+            val regex = Regex("""class [A-Z][A-Za-z]*""")
+            it.map(String::trim)
+                .filter(regex::containsMatchIn)
+                .toList()
+        }
+        if (classDeclarations.count() > 1)
+            return ExceptionMessage.multipleClassesFoundIn(this.file)
+        val publicClassCount: Int = classDeclarations.count {
+            it.startsWith("public class ") || it.startsWith("class ")
+        }
+        if (publicClassCount == 0)
+            return ExceptionMessage.noPublicClassFoundIn(this.file)
+        val fileHasSingleExpressionFunction: Boolean = this.file.useLines {
+            val regex = Regex("""^fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
+            it.map(String::trim)
+                .any(regex::matches)
+        }
+        return if (!fileHasSingleExpressionFunction) null
+        else ExceptionMessage.singleExpressionKotlinFunctionFoundIn(this.file)
+    }
+
     // ------------------------------ Conversions ------------------------------
 
     /** Returns the string representation of this Kotlin sample source. */
