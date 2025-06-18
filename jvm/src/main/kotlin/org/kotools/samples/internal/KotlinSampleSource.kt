@@ -94,8 +94,8 @@ internal class KotlinSampleSource private constructor(private val file: File) {
          * an [IllegalArgumentException] if the [file]'s name is not suffixed by
          * `Sample`, or if the [file] has another extension than `kt`.
          *
-         * See also the [orNull] method for returning `null` instead of throwing
-         * an exception in case of invalid [file].
+         * See the [orNull] method for returning `null` instead of throwing an
+         * exception in case of invalid [file].
          */
         fun orThrow(file: File): KotlinSampleSource {
             val fileName: String = file.nameWithoutExtension
