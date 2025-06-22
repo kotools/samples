@@ -14,52 +14,6 @@ internal class SampleSourceFile private constructor(
 ) {
     // ----------------------- File content's operations -----------------------
 
-    /**
-     * Checks that this sample source file contains a single public class, and
-     * throws an [IllegalStateException] if this file contains multiple classes
-     * or no public class at all.
-     */
-    fun checkSinglePublicClass() {
-        val classDeclarations: List<String> = this.file.useLines {
-            it.map(String::trim)
-                .filter(this.language::isClassDeclaration)
-                .toList()
-        }
-        if (classDeclarations.count() > 1) {
-            val message: ExceptionMessage =
-                ExceptionMessage.multipleClassesFoundIn(this.file)
-            error(message)
-        }
-        val publicClassCount: Int =
-            classDeclarations.count(this.language::isPublicClassDeclaration)
-        if (publicClassCount == 0) {
-            val message: ExceptionMessage =
-                ExceptionMessage.noPublicClassFoundIn(this.file)
-            error(message)
-        }
-    }
-
-    /**
-     * Checks that this sample source file doesn't contain a single-expression
-     * [Kotlin] function, or throws an [IllegalStateException] if this is the
-     * case. Does nothing if this sample source is a [Java] file.
-     *
-     * See the [single-expression Kotlin functions](https://kotlinlang.org/docs/functions.html#single-expression-functions)
-     * documentation for more details about their syntax.
-     */
-    fun checkNoSingleExpressionKotlinFunction() {
-        val kotlin: Kotlin = this.language as? Kotlin
-            ?: return
-        val fileHasSingleExpressionFunction: Boolean = this.file.useLines {
-            it.map(String::trim)
-                .any(kotlin::isSingleExpressionFunction)
-        }
-        if (!fileHasSingleExpressionFunction) return
-        val message: ExceptionMessage =
-            ExceptionMessage.singleExpressionKotlinFunctionFoundIn(this.file)
-        error(message)
-    }
-
     /** Returns all samples present in this source file. */
     fun samples(): Set<Sample> {
         var identifier: MutableList<String> = this.packageIdentifierOrNull()

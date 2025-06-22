@@ -50,17 +50,6 @@ internal class Kotlin : ProgrammingLanguage {
     override val functionHeaderRegex: Regex =
         Regex("$functionKeyword [A-Za-z_]+\\(\\) \\{\$")
 
-    /**
-     * Returns `true` if the specified [text] is a declaration of a
-     * [single-expression Kotlin function](https://kotlinlang.org/docs/functions.html#single-expression-functions),
-     * or returns `false` otherwise.
-     *
-     * The represented function may specify explicitly the return type or not.
-     */
-    fun isSingleExpressionFunction(text: String): Boolean =
-        Regex("""^fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
-            .matches(text)
-
     // -------------------------- Markdown operations --------------------------
 
     override val markdownIdentifier: String = "kotlin"

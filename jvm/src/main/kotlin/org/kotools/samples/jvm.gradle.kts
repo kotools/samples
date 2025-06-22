@@ -18,7 +18,7 @@ private val sourcesBackup: Provider<Directory> =
 
 private val checkSampleSources: TaskProvider<CheckSampleSources> by tasks
     .registering(CheckSampleSources::class) {
-        this.description = "Checks the content of sample source files."
+        this.description = "Checks the content of sample sources."
         this.sourceDirectory = projectSources.dir("test")
     }
 
