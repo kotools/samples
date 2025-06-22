@@ -30,6 +30,7 @@ All notable changes to this project will be documented in this file.
   task now also fails if a sample source file contains a public nested class in
   a public class ([8a3eab89]). For Kotlin files, this task also checks that
   sample sources don't contain single-expression functions ([d5c73ada]).
+  Finally, this task now logs all errors before failing the build ([605a1f5]).
 
 ### 🔥 Removed
 
@@ -49,6 +50,7 @@ Thanks to [@LVMVRQUXL] for contributing to this release. 🙏
 [#41]: https://github.com/kotools/samples/issues/41
 [2d249d2b]: https://github.com/kotools/samples/commit/2d249d2b
 [359c3522]: https://github.com/kotools/samples/commit/359c3522
+[605a1f5]: https://github.com/kotools/samples/commit/605a1f5
 [8a3eab89]: https://github.com/kotools/samples/commit/8a3eab89
 [beda12d9]: https://github.com/kotools/samples/commit/beda12d9
 [c8450e5b]: https://github.com/kotools/samples/commit/c8450e5b
