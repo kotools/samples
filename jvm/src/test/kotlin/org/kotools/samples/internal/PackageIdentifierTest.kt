@@ -1,6 +1,8 @@
 package org.kotools.samples.internal
 
 import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
@@ -35,5 +37,51 @@ class PackageIdentifierTest {
     fun `orNull fails with words not having only lowercase letters`() {
         val actual: PackageIdentifier? = PackageIdentifier.orNull("My.Sample1_")
         assertNull(actual)
+    }
+
+    // ----------------------- Companion.orThrow(String) -----------------------
+
+    @Test
+    fun orThrowPassesWithWordHavingLowercaseLetters() {
+        PackageIdentifier.orThrow("sample")
+    }
+
+    @Test
+    fun orThrowPassesWithWordsHavingLowercaseLettersSeparatedByDot() {
+        PackageIdentifier.orThrow("my.sample")
+    }
+
+    @Test
+    fun orThrowFailsWithEmptyText() {
+        val exception: IllegalArgumentException = assertFailsWith {
+            PackageIdentifier.orThrow("")
+        }
+        val actual: String? = exception.message
+        val expected = "Package identifier must be non-empty."
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun orThrowFailsWithWordNotHavingOnlyLowercaseLetters() {
+        val text = "Sample1_"
+        val exception: IllegalArgumentException = assertFailsWith {
+            PackageIdentifier.orThrow(text)
+        }
+        val actual: String? = exception.message
+        val expected = "Package identifier's characters must be lowercase " +
+                "letters (input: '$text')."
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun orThrowFailsWithWordsNotHavingOnlyLowercaseLetters() {
+        val text = "My.Sample1_"
+        val exception: IllegalArgumentException = assertFailsWith {
+            PackageIdentifier.orThrow(text)
+        }
+        val actual: String? = exception.message
+        val expected = "Package identifier's characters must be lowercase " +
+                "letters (input: '$text')."
+        assertEquals(expected, actual)
     }
 }
