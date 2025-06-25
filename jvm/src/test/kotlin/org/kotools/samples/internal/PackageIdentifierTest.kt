@@ -10,31 +10,31 @@ class PackageIdentifierTest {
     // ----------------------- Companion.orNull(String) ------------------------
 
     @Test
-    fun `orNull passes with word having lowercase letters`() {
+    fun orNullPassesWithWordHavingLowercaseLetters() {
         val actual: PackageIdentifier? = PackageIdentifier.orNull("sample")
         assertNotNull(actual)
     }
 
     @Test
-    fun `orNull passes with words having lowercase letters separated by dot`() {
+    fun orNullPassesWithWordsHavingLowercaseLettersSeparatedByDot() {
         val actual: PackageIdentifier? = PackageIdentifier.orNull("my.sample")
         assertNotNull(actual)
     }
 
     @Test
-    fun `orNull fails with empty text`() {
+    fun orNullFailsWithEmptyText() {
         val actual: PackageIdentifier? = PackageIdentifier.orNull("")
         assertNull(actual)
     }
 
     @Test
-    fun `orNull fails with word not having only lowercase letters`() {
+    fun orNullFailsWithWordNotHavingOnlyLowercaseLetters() {
         val actual: PackageIdentifier? = PackageIdentifier.orNull("Sample1_")
         assertNull(actual)
     }
 
     @Test
-    fun `orNull fails with words not having only lowercase letters`() {
+    fun orNullFailsWithWordsNotHavingOnlyLowercaseLetters() {
         val actual: PackageIdentifier? = PackageIdentifier.orNull("My.Sample1_")
         assertNull(actual)
     }

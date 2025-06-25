@@ -23,9 +23,10 @@ internal class PackageIdentifier private constructor() {
          */
         fun orNull(text: String): PackageIdentifier? {
             if (text.isEmpty()) return null
-            val textIsValid: Boolean = text.split('.')
+            val textHasOnlyLowercaseLetters: Boolean = text.split('.')
                 .all { it.all(Char::isLowerCase) }
-            return if (textIsValid) PackageIdentifier() else null
+            return if (textHasOnlyLowercaseLetters) PackageIdentifier()
+            else null
         }
 
         /**
