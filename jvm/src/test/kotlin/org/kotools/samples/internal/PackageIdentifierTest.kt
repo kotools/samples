@@ -7,6 +7,16 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class PackageIdentifierTest {
+    // ------------------------------ toString() -------------------------------
+
+    @Test
+    fun toStringReturnsOriginalText() {
+        val expected = "sample"
+        val actual: String = PackageIdentifier.orThrow(text = expected)
+            .toString()
+        assertEquals(expected, actual)
+    }
+
     // ----------------------- Companion.orNull(String) ------------------------
 
     @Test

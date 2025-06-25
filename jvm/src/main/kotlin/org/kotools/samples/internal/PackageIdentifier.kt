@@ -10,7 +10,14 @@ package org.kotools.samples.internal
  * For creating an instance of this type, see the methods provided by the
  * [PackageIdentifier.Companion] type.
  */
-internal class PackageIdentifier private constructor() {
+internal class PackageIdentifier private constructor(private val text: String) {
+    // ------------------------------ Conversions ------------------------------
+
+    /** Returns the string representation of this package identifier. */
+    override fun toString(): String = this.text
+
+    // -------------------------------------------------------------------------
+
     /** Contains static declarations for the [PackageIdentifier] type. */
     companion object {
         /**
@@ -25,7 +32,7 @@ internal class PackageIdentifier private constructor() {
             if (text.isEmpty()) return null
             val textHasOnlyLowercaseLetters: Boolean = text.split('.')
                 .all { it.all(Char::isLowerCase) }
-            return if (textHasOnlyLowercaseLetters) PackageIdentifier()
+            return if (textHasOnlyLowercaseLetters) PackageIdentifier(text)
             else null
         }
 
@@ -48,7 +55,7 @@ internal class PackageIdentifier private constructor() {
                 "Package identifier's characters must be lowercase letters " +
                         "(input: '$text')."
             }
-            return PackageIdentifier()
+            return PackageIdentifier(text)
         }
     }
 }
