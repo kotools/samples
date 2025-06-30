@@ -107,6 +107,33 @@ class KotlinSampleSourceTest {
         assertEquals(expected, actual)
     }
 
+    // ----------------------- packageIdentifierOrNull() -----------------------
+
+    @Test
+    fun packageIdentifierOrNullPassesWithPackageDeclarationInSampleSource() {
+        val fileName = "SinglePublicClassWithPackageSample.kt"
+        val file: File = this::class.java.getResource("/$fileName")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$fileName' resource file not found.")
+        val actual: PackageIdentifier? = KotlinSampleSource.orThrow(file)
+            .packageIdentifierOrNull()
+        val expected: PackageIdentifier = PackageIdentifier.orThrow("sample")
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun packageIdentifierOrNullFailsWithoutPackageDeclarationInSampleSource() {
+        val fileName = "SinglePublicClassSample.kt"
+        val file: File = this::class.java.getResource("/$fileName")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$fileName' resource file not found.")
+        val actual: PackageIdentifier? = KotlinSampleSource.orThrow(file)
+            .packageIdentifierOrNull()
+        assertNull(actual)
+    }
+
     // ------------------------------ toString() -------------------------------
 
     @Test
