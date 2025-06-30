@@ -3,10 +3,50 @@ package org.kotools.samples.internal
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class PackageIdentifierTest {
+    // ----------------------------- equals(Any?) ------------------------------
+
+    @Test
+    fun equalsPassesWithPackageIdentifierHavingSameStringRepresentation() {
+        val text = "sample"
+        val identifier: PackageIdentifier = PackageIdentifier.orThrow(text)
+        val other: PackageIdentifier = PackageIdentifier.orThrow(text)
+        val actual: Boolean = identifier == other
+        assertTrue(actual)
+    }
+
+    @Test
+    fun equalsFailsWithAnotherTypeThanPackageIdentifier() {
+        val identifier: PackageIdentifier = PackageIdentifier.orThrow("sample")
+        val other = "oops"
+        val actual: Boolean = identifier.equals(other)
+        assertFalse(actual)
+    }
+
+    @Test
+    fun equalsFailsWithPackageIdentifierHavingAnotherStringRepresentation() {
+        val identifier: PackageIdentifier = PackageIdentifier.orThrow("sample")
+        val other: PackageIdentifier = PackageIdentifier.orThrow("my.sample")
+        val actual: Boolean = identifier == other
+        assertFalse(actual)
+    }
+
+    // ------------------------------ hashCode() -------------------------------
+
+    @Test
+    fun hashCodeReturnsHashCodeValueOfStringRepresentation() {
+        val text = "sample"
+        val actual: Int = PackageIdentifier.orThrow(text)
+            .hashCode()
+        val expected: Int = text.hashCode()
+        assertEquals(expected, actual)
+    }
+
     // ------------------------------ toString() -------------------------------
 
     @Test

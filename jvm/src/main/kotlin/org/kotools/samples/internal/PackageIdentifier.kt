@@ -11,6 +11,28 @@ package org.kotools.samples.internal
  * [PackageIdentifier.Companion] type.
  */
 internal class PackageIdentifier private constructor(private val text: String) {
+    // -------------------- Structural equality operations ---------------------
+
+    /**
+     * Returns `true` if the [other] object is a package identifier with the
+     * same string representation as this one, or returns `false` otherwise.
+     *
+     * See the [toString] method for accessing the string representation of this
+     * package identifier.
+     */
+    override fun equals(other: Any?): Boolean =
+        other is PackageIdentifier && other.text == this.text
+
+    /**
+     * Returns a hash code value for this package identifier.
+     *
+     * The returned hash code value is computed from the string representation
+     * of this package identifier. See the [toString] method for accessing this
+     * string representation, and the [String.hashCode] method for more details
+     * about its hash code value.
+     */
+    override fun hashCode(): Int = this.text.hashCode()
+
     // ------------------------------ Conversions ------------------------------
 
     /** Returns the string representation of this package identifier. */
