@@ -43,16 +43,14 @@ internal class KotlinSampleSource private constructor(private val file: File) {
      */
     fun contentExceptionOrNull(): ExceptionMessage? {
         val classDeclarations: List<String> = this.file.useLines {
-            val regex = Regex("""class [A-Z][A-Za-z]*""")
             it.map(String::trim)
-                .filter(regex::containsMatchIn)
+                .filter(String::isKotlinClass)
                 .toList()
         }
         if (classDeclarations.count() > 1)
             return ExceptionMessage.multipleClassesFoundIn(this.file)
-        val publicClassCount: Int = classDeclarations.count {
-            it.startsWith("public class ") || it.startsWith("class ")
-        }
+        val publicClassCount: Int =
+            classDeclarations.count(String::isKotlinPublicClass)
         if (publicClassCount == 0)
             return ExceptionMessage.noPublicClassFoundIn(this.file)
         val fileHasSingleExpressionFunction: Boolean = this.file.useLines {
@@ -74,6 +72,20 @@ internal class KotlinSampleSource private constructor(private val file: File) {
             ?.substringAfter("package ")
             ?.substringBefore(';')
             ?.let(PackageIdentifier.Companion::orThrow)
+    }
+
+    /**
+     * Returns the name of the public class declared in this Kotlin sample
+     * source.
+     */
+    fun className(): ClassName {
+        val publicClassDeclaration: String = this.file.useLines {
+            it.map(String::trim)
+                .first(String::isKotlinPublicClass)
+        }
+        return publicClassDeclaration.substringAfter("class ")
+            .substringBefore(" {")
+            .let(ClassName.Companion::orThrow)
     }
 
     // ------------------------------ Conversions ------------------------------
@@ -123,4 +135,13 @@ internal class KotlinSampleSource private constructor(private val file: File) {
             return KotlinSampleSource(file)
         }
     }
+}
+
+private fun String.isKotlinClass(): Boolean =
+    Regex("""class (?:[A-Z][a-z]*)+""")
+        .containsMatchIn(this)
+
+private fun String.isKotlinPublicClass(): Boolean {
+    if (!this.isKotlinClass()) return false
+    return this.startsWith("public class ") || this.startsWith("class ")
 }
