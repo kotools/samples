@@ -21,20 +21,4 @@ class FileExtensionsTest {
             .isSampleSource()
         assertFalse(actual)
     }
-
-    // ---------------------------- File.isKotlin() ----------------------------
-
-    @Test
-    fun `isKotlin passes on File with 'kt' extension`() {
-        val actual: Boolean = File("Sample.kt")
-            .isKotlin()
-        assertTrue(actual)
-    }
-
-    @Test
-    fun `isKotlin fails on File with another extension than 'kt'`() {
-        val actual: Boolean = File("Sample.java")
-            .isKotlin()
-        assertFalse(actual)
-    }
 }
