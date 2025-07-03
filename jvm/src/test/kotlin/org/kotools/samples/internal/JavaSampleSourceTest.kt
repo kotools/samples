@@ -93,6 +93,33 @@ class JavaSampleSourceTest {
         assertEquals(expected, actual)
     }
 
+    // ----------------------- packageIdentifierOrNull() -----------------------
+
+    @Test
+    fun `packageIdentifierOrNull passes with package declaration`() {
+        val fileName = "SinglePublicClassWithPackageSample.java"
+        val file: File = this::class.java.getResource("/$fileName")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$fileName' resource file not found.")
+        val actual: PackageIdentifier? = JavaSampleSource.orThrow(file)
+            .packageIdentifierOrNull()
+        val expected: PackageIdentifier = PackageIdentifier.orThrow("sample")
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `packageIdentifierOrNull fails without package declaration`() {
+        val fileName = "SinglePublicClassSample.java"
+        val file: File = this::class.java.getResource("/$fileName")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$fileName' resource file not found.")
+        val actual: PackageIdentifier? = JavaSampleSource.orThrow(file)
+            .packageIdentifierOrNull()
+        assertNull(actual)
+    }
+
     // ------------------------------ toString() -------------------------------
 
     @Test
