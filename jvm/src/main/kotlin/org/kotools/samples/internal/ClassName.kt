@@ -11,7 +11,14 @@ package org.kotools.samples.internal
  * For creating an instance of this type, see the methods provided by the
  * [ClassName.Companion] type.
  */
-internal class ClassName private constructor() {
+internal class ClassName private constructor(private val text: String) {
+    // ------------------------------ Conversions ------------------------------
+
+    /** Returns the string representation of this class name. */
+    override fun toString(): String = this.text
+
+    // -------------------------------------------------------------------------
+
     /** Contains static declarations for the [ClassName] type. */
     companion object {
         /**
@@ -21,7 +28,7 @@ internal class ClassName private constructor() {
          */
         fun orNull(text: String): ClassName? {
             val regex = Regex("""^(?:[A-Z][a-z]*)+$""")
-            return if (text matches regex) ClassName() else null
+            return if (text matches regex) ClassName(text) else null
         }
 
         /**
@@ -40,7 +47,7 @@ internal class ClassName private constructor() {
             require(text matches regex) {
                 "Class name must be written in Pascal case (input: '$text')."
             }
-            return ClassName()
+            return ClassName(text)
         }
     }
 }

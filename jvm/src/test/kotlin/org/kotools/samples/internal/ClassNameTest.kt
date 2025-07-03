@@ -7,6 +7,16 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class ClassNameTest {
+    // ------------------------------ toString() -------------------------------
+
+    @Test
+    fun `toString returns original text`() {
+        val text = "MyClass"
+        val actual: String = ClassName.orThrow(text)
+            .toString()
+        assertEquals(expected = text, actual)
+    }
+
     // ----------------------- Companion.orNull(String) ------------------------
 
     @Test
