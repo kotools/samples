@@ -23,5 +23,24 @@ internal class ClassName private constructor() {
             val regex = Regex("""^(?:[A-Z][a-z]*)+$""")
             return if (text matches regex) ClassName() else null
         }
+
+        /**
+         * Returns a class name from the specified [text], or throws an
+         * [IllegalArgumentException] if the [text] is empty or blank, or if it
+         * doesn't contain only letters in
+         * [Pascal case](https://en.wikipedia.org/wiki/Camel_case).
+         */
+        fun orThrow(text: String): ClassName {
+            require(text.isNotEmpty()) { "Class name must be non-empty." }
+            require(text.isNotBlank()) { "Class name must be non-blank." }
+            require(text.all(Char::isLetter)) {
+                "Class name must contain letters only (input: '$text')."
+            }
+            val regex = Regex("""^(?:[A-Z][a-z]*)+$""")
+            require(text matches regex) {
+                "Class name must be written in Pascal case (input: '$text')."
+            }
+            return ClassName()
+        }
     }
 }
