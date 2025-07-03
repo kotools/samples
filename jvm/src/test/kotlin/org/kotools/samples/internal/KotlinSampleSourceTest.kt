@@ -110,7 +110,7 @@ class KotlinSampleSourceTest {
     // ----------------------- packageIdentifierOrNull() -----------------------
 
     @Test
-    fun packageIdentifierOrNullPassesWithPackageDeclarationInSampleSource() {
+    fun `packageIdentifierOrNull passes with package declaration`() {
         val fileName = "SinglePublicClassWithPackageSample.kt"
         val file: File = this::class.java.getResource("/$fileName")
             ?.toURI()
@@ -123,7 +123,7 @@ class KotlinSampleSourceTest {
     }
 
     @Test
-    fun packageIdentifierOrNullFailsWithoutPackageDeclarationInSampleSource() {
+    fun `packageIdentifierOrNull fails without package declaration`() {
         val fileName = "SinglePublicClassSample.kt"
         val file: File = this::class.java.getResource("/$fileName")
             ?.toURI()
