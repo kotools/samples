@@ -43,15 +43,14 @@ internal class JavaSampleSource private constructor(private val file: File) {
      */
     fun contentExceptionOrNull(): ExceptionMessage? {
         val classDeclarations: List<String> = this.file.useLines {
-            val regex = Regex("""class [A-Z][A-Za-z]* \{""")
             it.map(String::trim)
-                .filter(regex::containsMatchIn)
+                .filter(String::isJavaClass)
                 .toList()
         }
         if (classDeclarations.count() > 1)
             return ExceptionMessage.multipleClassesFoundIn(this.file)
         val publicClassCount: Int =
-            classDeclarations.count { it.startsWith("public class ") }
+            classDeclarations.count(String::isJavaPublicClass)
         return if (publicClassCount == 1) null
         else ExceptionMessage.noPublicClassFoundIn(this.file)
     }
@@ -66,6 +65,19 @@ internal class JavaSampleSource private constructor(private val file: File) {
             ?.substringAfter("package ")
             ?.substringBefore(';')
             ?.let(PackageIdentifier.Companion::orThrow)
+    }
+
+    /**
+     * Returns the name of the public class declared in this Java sample source.
+     */
+    fun className(): ClassName {
+        val publicClassDeclaration: String = this.file.useLines {
+            it.map(String::trim)
+                .first(String::isJavaPublicClass)
+        }
+        return publicClassDeclaration.substringAfter("class ")
+            .substringBefore(" {")
+            .let(ClassName.Companion::orThrow)
     }
 
     // ------------------------------ Conversions ------------------------------
@@ -116,3 +128,10 @@ internal class JavaSampleSource private constructor(private val file: File) {
         }
     }
 }
+
+private fun String.isJavaClass(): Boolean =
+    Regex("""class (?:[A-Z][a-z]*)+ \{""")
+        .containsMatchIn(this)
+
+private fun String.isJavaPublicClass(): Boolean =
+    this.isJavaClass() && this.startsWith("public class ")

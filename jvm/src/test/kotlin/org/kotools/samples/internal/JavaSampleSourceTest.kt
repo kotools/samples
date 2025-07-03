@@ -120,6 +120,21 @@ class JavaSampleSourceTest {
         assertNull(actual)
     }
 
+    // ------------------------------ className() ------------------------------
+
+    @Test
+    fun `className returns name of public class declared in sample source`() {
+        val expected: ClassName = ClassName.orThrow("SinglePublicClassSample")
+        val fileName = "${expected}.java"
+        val file: File = this::class.java.getResource("/$fileName")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$fileName' resource file not found.")
+        val actual: ClassName = JavaSampleSource.orThrow(file)
+            .className()
+        assertEquals(expected, actual)
+    }
+
     // ------------------------------ toString() -------------------------------
 
     @Test
