@@ -12,6 +12,28 @@ package org.kotools.samples.internal
  * [ClassName.Companion] type.
  */
 internal class ClassName private constructor(private val text: String) {
+    // -------------------- Structural equality operations ---------------------
+
+    /**
+     * Returns `true` if the [other] object is a class name with the same string
+     * representation as this one, or returns `false` otherwise.
+     *
+     * See the [toString] method for accessing the string representation of this
+     * class name.
+     */
+    override fun equals(other: Any?): Boolean =
+        other is ClassName && this.text == other.text
+
+    /**
+     * Returns a hash code value for this class name.
+     *
+     * The returned hash code value is computed from the string representation
+     * of this class name. See the [toString] method for accessing this string
+     * representation, and the [String.hashCode] method for more details about
+     * its hash code value.
+     */
+    override fun hashCode(): Int = this.text.hashCode()
+
     // ------------------------------ Conversions ------------------------------
 
     /** Returns the string representation of this class name. */

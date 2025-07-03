@@ -3,10 +3,50 @@ package org.kotools.samples.internal
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class ClassNameTest {
+    // ----------------------------- equals(Any?) ------------------------------
+
+    @Test
+    fun `equals passes with ClassName having same string representation`() {
+        val text = "MyClass"
+        val className: ClassName = ClassName.orThrow(text)
+        val other: ClassName = ClassName.orThrow(text)
+        val actual: Boolean = className == other
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `equals fails with another type than ClassName`() {
+        val className: ClassName = ClassName.orThrow("MyClass")
+        val other = "oops"
+        val actual: Boolean = className.equals(other)
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `equals fails with ClassName having another string representation`() {
+        val className: ClassName = ClassName.orThrow("FirstClass")
+        val other: ClassName = ClassName.orThrow("SecondClass")
+        val actual: Boolean = className == other
+        assertFalse(actual)
+    }
+
+    // ------------------------------ hashCode() -------------------------------
+
+    @Test
+    fun `hashCode returns hash code value of its string representation`() {
+        val text = "MyClass"
+        val actual: Int = ClassName.orThrow(text)
+            .hashCode()
+        val expected: Int = text.hashCode()
+        assertEquals(expected, actual)
+    }
+
     // ------------------------------ toString() -------------------------------
 
     @Test
