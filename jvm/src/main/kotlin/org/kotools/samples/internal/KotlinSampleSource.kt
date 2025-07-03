@@ -64,6 +64,18 @@ internal class KotlinSampleSource private constructor(private val file: File) {
         else ExceptionMessage.singleExpressionKotlinFunctionFoundIn(this.file)
     }
 
+    /**
+     * Returns the package identifier declared in this Kotlin sample source, or
+     * returns `null` if not found.
+     */
+    fun packageIdentifierOrNull(): PackageIdentifier? {
+        val regex = Regex("""^package [a-z]+(?:\.[a-z]+)*;?$""")
+        return this.file.useLines { it.firstOrNull(regex::matches) }
+            ?.substringAfter("package ")
+            ?.substringBefore(';')
+            ?.let(PackageIdentifier.Companion::orThrow)
+    }
+
     // ------------------------------ Conversions ------------------------------
 
     /** Returns the string representation of this Kotlin sample source. */
