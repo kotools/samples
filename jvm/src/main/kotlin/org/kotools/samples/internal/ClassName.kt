@@ -23,8 +23,8 @@ internal class ClassName private constructor(private val text: String) {
     companion object {
         /**
          * Returns a class name from the specified [text], or returns `null` if
-         * the [text] is empty or doesn't contain only letters in
-         * [Pascal case](https://en.wikipedia.org/wiki/Camel_case).
+         * the [text] is empty or blank, or if it doesn't contain only letters
+         * in [Pascal case](https://en.wikipedia.org/wiki/Camel_case).
          */
         fun orNull(text: String): ClassName? {
             val regex = Regex("""^(?:[A-Z][a-z]*)+$""")
