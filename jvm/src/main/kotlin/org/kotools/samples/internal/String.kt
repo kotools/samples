@@ -1,14 +1,22 @@
 package org.kotools.samples.internal
 
-internal fun String.isKotlinClass(): Boolean =
-    Regex("""class (?:[A-Z][a-z]*)+""")
-        .containsMatchIn(this)
+// ------------------------ Kotlin & Java declarations -------------------------
+
+internal fun String.isClass(): Boolean = Regex("""class (?:[A-Z][a-z]*)+""")
+    .containsMatchIn(this)
+
+// ---------------------------- Kotlin declarations ----------------------------
 
 internal fun String.isKotlinPublicClass(): Boolean {
-    if (!this.isKotlinClass()) return false
+    if (!this.isClass()) return false
     return this.startsWith("public class ") || this.startsWith("class ")
 }
 
 internal fun String.isKotlinSingleExpressionFunction(): Boolean =
     Regex("""^fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
         .matches(this)
+
+// ----------------------------- Java declarations -----------------------------
+
+internal fun String.isJavaPublicClass(): Boolean =
+    this.isClass() && this.startsWith("public class ")

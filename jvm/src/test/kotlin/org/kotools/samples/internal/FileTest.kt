@@ -37,4 +37,20 @@ class FileTest {
             .isKotlin()
         assertFalse(actual)
     }
+
+    // ----------------------------- File.isJava() -----------------------------
+
+    @Test
+    fun `isJava passes on File with 'java' extension`() {
+        val actual: Boolean = File("Sample.java")
+            .isJava()
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isJava fails on File having another extension than 'java'`() {
+        val actual: Boolean = File("Sample.kt")
+            .isJava()
+        assertFalse(actual)
+    }
 }

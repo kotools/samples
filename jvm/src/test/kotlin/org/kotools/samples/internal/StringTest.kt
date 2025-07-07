@@ -5,23 +5,23 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class StringTest {
-    // ------------------------ String.isKotlinClass() -------------------------
+    // --------------------------- String.isClass() ----------------------------
 
     @Test
-    fun `isKotlinClass passes on String with 'class' keyword and class name`() {
-        val actual: Boolean = "class A".isKotlinClass()
+    fun `isClass passes on String with 'class' keyword and class name`() {
+        val actual: Boolean = "class A".isClass()
         assertTrue(actual)
     }
 
     @Test
-    fun `isKotlinClass fails on String missing 'class' keyword`() {
-        val actual: Boolean = "A".isKotlinClass()
+    fun `isClass fails on String missing 'class' keyword`() {
+        val actual: Boolean = "A".isClass()
         assertFalse(actual)
     }
 
     @Test
-    fun `isKotlinClass fails on String missing class name`() {
-        val actual: Boolean = "class".isKotlinClass()
+    fun `isClass fails on String missing class name`() {
+        val actual: Boolean = "class".isClass()
         assertFalse(actual)
     }
 
@@ -69,6 +69,32 @@ class StringTest {
     @Test
     fun `isKotlinSingleExpressionFunction fails on regular Kotlin function`() {
         val actual: Boolean = "fun test() {".isKotlinSingleExpressionFunction()
+        assertFalse(actual)
+    }
+
+    // ---------------------- String.isJavaPublicClass() -----------------------
+
+    @Test
+    fun `isJavaPublicClass passes on Java class with 'public' modifier`() {
+        val actual: Boolean = "public class A".isJavaPublicClass()
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isJavaPublicClass fails on String not being Java class`() {
+        val actual: Boolean = "final int x = 1".isJavaPublicClass()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isJavaPublicClass fails on Java class with package visibility`() {
+        val actual: Boolean = "class A".isJavaPublicClass()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isJavaPublicClass fails on Java class with private visibility`() {
+        val actual: Boolean = "private class A".isJavaPublicClass()
         assertFalse(actual)
     }
 }

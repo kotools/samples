@@ -34,28 +34,6 @@ internal class JavaSampleSource private constructor(private val file: File) {
     // ----------------------- File's content operations -----------------------
 
     /**
-     * Returns the message of the first exception found in the file
-     * corresponding to this Java sample source, or returns `null` if no content
-     * exception was found.
-     *
-     * See the [toFile] method for accessing the file corresponding to this Java
-     * sample source.
-     */
-    fun contentExceptionOrNull(): ExceptionMessage? {
-        val classDeclarations: List<String> = this.file.useLines {
-            it.map(String::trim)
-                .filter(String::isJavaClass)
-                .toList()
-        }
-        if (classDeclarations.count() > 1)
-            return ExceptionMessage.multipleClassesFoundIn(this.file)
-        val publicClassCount: Int =
-            classDeclarations.count(String::isJavaPublicClass)
-        return if (publicClassCount == 1) null
-        else ExceptionMessage.noPublicClassFoundIn(this.file)
-    }
-
-    /**
      * Returns the package identifier declared in this Java sample source, or
      * returns `null` if not found.
      */
@@ -128,10 +106,3 @@ internal class JavaSampleSource private constructor(private val file: File) {
         }
     }
 }
-
-private fun String.isJavaClass(): Boolean =
-    Regex("""class (?:[A-Z][a-z]*)+ \{""")
-        .containsMatchIn(this)
-
-private fun String.isJavaPublicClass(): Boolean =
-    this.isJavaClass() && this.startsWith("public class ")

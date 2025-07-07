@@ -7,10 +7,10 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
-import org.kotools.samples.internal.ExceptionMessage
-import org.kotools.samples.internal.JavaSampleSource
+import org.kotools.samples.internal.isClass
+import org.kotools.samples.internal.isJava
+import org.kotools.samples.internal.isJavaPublicClass
 import org.kotools.samples.internal.isKotlin
-import org.kotools.samples.internal.isKotlinClass
 import org.kotools.samples.internal.isKotlinPublicClass
 import org.kotools.samples.internal.isKotlinSingleExpressionFunction
 import org.kotools.samples.internal.isSample
@@ -44,14 +44,14 @@ public abstract class CheckSampleSources : DefaultTask() {
             .onEach(this.logger::error)
             .toSet()
             .any()
-        val errorFoundInJavaSampleSources: Boolean = files
-            .mapNotNull(JavaSampleSource.Companion::orNull)
-            .mapNotNull(JavaSampleSource::contentExceptionOrNull)
-            .map(ExceptionMessage::toString)
-            .onEach(logger::error)
+        val javaContentErrorFound: Boolean = files.filter(File::isSample)
+            .filter(File::isJava)
+            .mapNotNull(File::findJavaContentError)
+            .mapNotNull(IllegalStateException::message)
+            .onEach(this.logger::error)
             .toSet()
             .any()
-        if (!kotlinContentErrorFound && !errorFoundInJavaSampleSources) return
+        if (!kotlinContentErrorFound && !javaContentErrorFound) return
         error("Errors found while checking the content of sample sources.")
     }
 }
@@ -59,7 +59,7 @@ public abstract class CheckSampleSources : DefaultTask() {
 private fun File.findKotlinContentError(): IllegalStateException? {
     val classes: List<String> = this.useLines {
         it.map(String::trim)
-            .filter(String::isKotlinClass)
+            .filter(String::isClass)
             .toList()
     }
     if (classes.count() > 1)
@@ -75,4 +75,17 @@ private fun File.findKotlinContentError(): IllegalStateException? {
     else IllegalStateException(
         "Single-expression Kotlin function found in '$this'."
     )
+}
+
+private fun File.findJavaContentError(): IllegalStateException? {
+    val classes: List<String> = this.useLines {
+        it.map(String::trim)
+            .filter(String::isClass)
+            .toList()
+    }
+    if (classes.count() > 1)
+        return IllegalStateException("Multiple classes found in '$this'.")
+    val publicClassCount: Int = classes.count(String::isJavaPublicClass)
+    return if (publicClassCount == 1) null
+    else IllegalStateException("No public class found in '$this'.")
 }

@@ -51,48 +51,6 @@ class JavaSampleSourceTest {
         assertEquals(expected, actual)
     }
 
-    // ----------------------- contentExceptionOrNull() ------------------------
-
-    @Test
-    fun `contentExceptionOrNull passes with no content exception`() {
-        val fileName = "SinglePublicClassSample.java"
-        val file: File = this::class.java.getResource("/$fileName")
-            ?.toURI()
-            ?.let(::File)
-            ?: fail("'$fileName' resource file not found.")
-        val actual: ExceptionMessage? = JavaSampleSource.orThrow(file)
-            .contentExceptionOrNull()
-        assertNull(actual)
-    }
-
-    @Test
-    fun `contentExceptionOrNull fails with multiple classes`() {
-        val fileName = "MultipleClassesSample.java"
-        val file: File = this::class.java.getResource("/$fileName")
-            ?.toURI()
-            ?.let(::File)
-            ?: fail("'$fileName' resource file not found.")
-        val actual: ExceptionMessage? = JavaSampleSource.orThrow(file)
-            .contentExceptionOrNull()
-        val expected: ExceptionMessage =
-            ExceptionMessage.multipleClassesFoundIn(file)
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `contentExceptionOrNull fails with no public class`() {
-        val fileName = "NoPublicClassSample.java"
-        val file: File = this::class.java.getResource("/$fileName")
-            ?.toURI()
-            ?.let(::File)
-            ?: fail("'$fileName' resource file not found.")
-        val actual: ExceptionMessage? = JavaSampleSource.orThrow(file)
-            .contentExceptionOrNull()
-        val expected: ExceptionMessage =
-            ExceptionMessage.noPublicClassFoundIn(file)
-        assertEquals(expected, actual)
-    }
-
     // ----------------------- packageIdentifierOrNull() -----------------------
 
     @Test
