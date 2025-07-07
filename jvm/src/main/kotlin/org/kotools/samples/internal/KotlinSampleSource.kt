@@ -34,35 +34,6 @@ internal class KotlinSampleSource private constructor(private val file: File) {
     // ----------------------- File's content operations -----------------------
 
     /**
-     * Returns the message of the first exception found in the file
-     * corresponding to this Kotlin sample source, or returns `null` if no
-     * content exception was found.
-     *
-     * See the [toFile] method for accessing the file corresponding to this
-     * Kotlin sample source.
-     */
-    fun contentExceptionOrNull(): ExceptionMessage? {
-        val classDeclarations: List<String> = this.file.useLines {
-            it.map(String::trim)
-                .filter(String::isKotlinClass)
-                .toList()
-        }
-        if (classDeclarations.count() > 1)
-            return ExceptionMessage.multipleClassesFoundIn(this.file)
-        val publicClassCount: Int =
-            classDeclarations.count(String::isKotlinPublicClass)
-        if (publicClassCount == 0)
-            return ExceptionMessage.noPublicClassFoundIn(this.file)
-        val fileHasSingleExpressionFunction: Boolean = this.file.useLines {
-            val regex = Regex("""^fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
-            it.map(String::trim)
-                .any(regex::matches)
-        }
-        return if (!fileHasSingleExpressionFunction) null
-        else ExceptionMessage.singleExpressionKotlinFunctionFoundIn(this.file)
-    }
-
-    /**
      * Returns the package identifier declared in this Kotlin sample source, or
      * returns `null` if not found.
      */
@@ -135,13 +106,4 @@ internal class KotlinSampleSource private constructor(private val file: File) {
             return KotlinSampleSource(file)
         }
     }
-}
-
-private fun String.isKotlinClass(): Boolean =
-    Regex("""class (?:[A-Z][a-z]*)+""")
-        .containsMatchIn(this)
-
-private fun String.isKotlinPublicClass(): Boolean {
-    if (!this.isKotlinClass()) return false
-    return this.startsWith("public class ") || this.startsWith("class ")
 }
