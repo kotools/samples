@@ -7,6 +7,7 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
+import org.kotools.samples.internal.Error
 import org.kotools.samples.internal.isClass
 import org.kotools.samples.internal.isJava
 import org.kotools.samples.internal.isJavaPublicClass
@@ -62,19 +63,15 @@ private fun File.findKotlinContentError(): IllegalStateException? {
             .filter(String::isClass)
             .toList()
     }
-    if (classes.count() > 1)
-        return IllegalStateException("Multiple classes found in '$this'.")
+    if (classes.count() > 1) return Error.multipleClassesFoundIn(this)
     val publicClassCount: Int = classes.count(String::isKotlinPublicClass)
-    if (publicClassCount == 0)
-        return IllegalStateException("No public class found in '$this'.")
+    if (publicClassCount == 0) return Error.noPublicClassFoundIn(this)
     val singleExpressionFunctionFound: Boolean = this.useLines {
         it.map(String::trim)
             .any(String::isKotlinSingleExpressionFunction)
     }
     return if (!singleExpressionFunctionFound) null
-    else IllegalStateException(
-        "Single-expression Kotlin function found in '$this'."
-    )
+    else Error.singleExpressionKotlinFunctionFoundIn(this)
 }
 
 private fun File.findJavaContentError(): IllegalStateException? {
@@ -83,9 +80,8 @@ private fun File.findJavaContentError(): IllegalStateException? {
             .filter(String::isClass)
             .toList()
     }
-    if (classes.count() > 1)
-        return IllegalStateException("Multiple classes found in '$this'.")
+    if (classes.count() > 1) return Error.multipleClassesFoundIn(this)
     val publicClassCount: Int = classes.count(String::isJavaPublicClass)
-    return if (publicClassCount == 1) null
-    else IllegalStateException("No public class found in '$this'.")
+    return if (publicClassCount == 0) Error.noPublicClassFoundIn(this)
+    else null
 }
