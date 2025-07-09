@@ -2,16 +2,11 @@ package org.kotools.samples.internal
 
 import java.io.File
 
-internal object Error {
-    fun multipleClassesFoundIn(file: File): IllegalStateException =
-        IllegalStateException("Multiple classes found in '$file'.")
+internal fun File.multipleClassesFound(): IllegalStateException =
+    IllegalStateException("Multiple classes found in '$this'.")
 
-    fun noPublicClassFoundIn(file: File): IllegalStateException =
-        IllegalStateException("No public class found in '$file'.")
+internal fun File.noPublicClassFound(): IllegalStateException =
+    IllegalStateException("No public class found in '$this'.")
 
-    fun singleExpressionKotlinFunctionFoundIn(
-        file: File
-    ): IllegalStateException = IllegalStateException(
-        "Single-expression Kotlin function found in '$file'."
-    )
-}
+internal fun File.singleExpressionKotlinFunctionFound(): IllegalStateException =
+    IllegalStateException("Single-expression Kotlin function found in '$this'.")

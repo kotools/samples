@@ -5,34 +5,34 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ErrorTest {
-    // --------------------- multipleClassesFoundIn(File) ----------------------
+    // ---------------------- File.multipleClassesFound() ----------------------
 
     @Test
-    fun `multipleClassesFoundIn passes`() {
+    fun `multipleClassesFound passes on File`() {
         val file = File("Sample.kt")
-        val actual: String? = Error.multipleClassesFoundIn(file)
+        val actual: String? = file.multipleClassesFound()
             .message
         val expected = "Multiple classes found in '$file'."
         assertEquals(expected, actual)
     }
 
-    // ---------------------- noPublicClassFoundIn(File) -----------------------
+    // ----------------------- File.noPublicClassFound() -----------------------
 
     @Test
-    fun `noPublicClassFoundIn passes`() {
+    fun `noPublicClassFound passes on File`() {
         val file = File("Sample.kt")
-        val actual: String? = Error.noPublicClassFoundIn(file)
+        val actual: String? = file.noPublicClassFound()
             .message
         val expected = "No public class found in '$file'."
         assertEquals(expected, actual)
     }
 
-    // -------------- singleExpressionKotlinFunctionFoundIn(File) --------------
+    // -------------- File.singleExpressionKotlinFunctionFound() ---------------
 
     @Test
-    fun `singleExpressionKotlinFunctionFoundIn passes`() {
+    fun `singleExpressionKotlinFunctionFound passes on File`() {
         val file = File("Sample.kt")
-        val actual: String? = Error.singleExpressionKotlinFunctionFoundIn(file)
+        val actual: String? = file.singleExpressionKotlinFunctionFound()
             .message
         val expected = "Single-expression Kotlin function found in '$file'."
         assertEquals(expected, actual)
