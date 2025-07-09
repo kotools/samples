@@ -40,31 +40,36 @@ public abstract class CheckSampleSources : DefaultTask() {
     internal fun execute() {
         val files: Sequence<File> = this.sourceDirectory.asFileTree.asSequence()
             .filterNotNull()
-        val kotlinContentErrorFound: Boolean = files.filter(File::isSample)
+            .filter(File::isSample)
+        val kotlinContentErrors: Sequence<IllegalStateException> = files
             .filter(File::isKotlin)
             .mapNotNull(File::findKotlinContentError)
-            .mapNotNull(IllegalStateException::message)
-            .onEach(this.logger::error)
-            .toSet()
-            .any()
-        val javaContentErrorFound: Boolean = files.filter(File::isSample)
+        val javaContentErrors: Sequence<IllegalStateException> = files
             .filter(File::isJava)
             .mapNotNull(File::findJavaContentError)
+        val contentErrorFound: Boolean = kotlinContentErrors
+            .plus(javaContentErrors)
             .mapNotNull(IllegalStateException::message)
             .onEach(this.logger::error)
             .toSet()
             .any()
-        if (!kotlinContentErrorFound && !javaContentErrorFound) return
+        if (!contentErrorFound) return
         error("Errors found while checking the content of sample sources.")
     }
 }
 
+// ------------------------------- Kotlin & Java -------------------------------
+
+private fun File.classes(): List<String> = this.useLines {
+    it.map(String::trim)
+        .filter(String::isClass)
+        .toList()
+}
+
+// ---------------------------------- Kotlin -----------------------------------
+
 private fun File.findKotlinContentError(): IllegalStateException? {
-    val classes: List<String> = this.useLines {
-        it.map(String::trim)
-            .filter(String::isClass)
-            .toList()
-    }
+    val classes: List<String> = this.classes()
     if (classes.count() > 1) return this.multipleClassesFound()
     val publicClassCount: Int = classes.count(String::isKotlinPublicClass)
     if (publicClassCount == 0) return this.noPublicClassFound()
@@ -76,12 +81,10 @@ private fun File.findKotlinContentError(): IllegalStateException? {
     else this.singleExpressionKotlinFunctionFound()
 }
 
+// ----------------------------------- Java ------------------------------------
+
 private fun File.findJavaContentError(): IllegalStateException? {
-    val classes: List<String> = this.useLines {
-        it.map(String::trim)
-            .filter(String::isClass)
-            .toList()
-    }
+    val classes: List<String> = this.classes()
     if (classes.count() > 1) return this.multipleClassesFound()
     val publicClassCount: Int = classes.count(String::isJavaPublicClass)
     return if (publicClassCount == 0) this.noPublicClassFound()
