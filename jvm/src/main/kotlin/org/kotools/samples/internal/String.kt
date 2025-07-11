@@ -13,8 +13,7 @@ internal fun String.isKotlinPublicClass(): Boolean {
 }
 
 internal fun String.isKotlinSingleExpressionFunction(): Boolean =
-    Regex("""^fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
-        .matches(this)
+    this matches Regex("""^fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
 
 // ----------------------------- Java declarations -----------------------------
 
