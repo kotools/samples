@@ -14,6 +14,7 @@ import org.kotools.samples.internal.isJava
 import org.kotools.samples.internal.isJavaPublicClass
 import org.kotools.samples.internal.isKotlin
 import org.kotools.samples.internal.isKotlinPublicClass
+import org.kotools.samples.internal.isPackage
 import org.kotools.samples.internal.isSample
 import java.io.File
 
@@ -121,10 +122,8 @@ private fun String.toJavaMarkdownCodeBlock(): String = """
 // ------------------------------- Kotlin & Java -------------------------------
 
 private fun File.packageIdentifierOrNull(): String? {
-    val packageDeclaration: String? = this.useLines {
-        val regex = Regex("""^package [a-z]+(?:\.[a-z]+)*;?$""")
-        it.firstOrNull(regex::matches)
-    }
+    val packageDeclaration: String? =
+        this.useLines { it.firstOrNull(String::isPackage) }
     return packageDeclaration?.substringAfter("package ")
         ?.substringBefore(';')
 }

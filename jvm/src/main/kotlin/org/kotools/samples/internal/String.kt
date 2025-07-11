@@ -2,6 +2,9 @@ package org.kotools.samples.internal
 
 // ------------------------ Kotlin & Java declarations -------------------------
 
+internal fun String.isPackage(): Boolean =
+    this matches Regex("""^package [a-z]+(?:\.[a-z]+)*;?$""")
+
 internal fun String.isClass(): Boolean =
     Regex("""class (?:[A-Z][a-z]*)+""") in this
 
