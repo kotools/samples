@@ -2,8 +2,8 @@ package org.kotools.samples.internal
 
 // ------------------------ Kotlin & Java declarations -------------------------
 
-internal fun String.isClass(): Boolean = Regex("""class (?:[A-Z][a-z]*)+""")
-    .containsMatchIn(this)
+internal fun String.isClass(): Boolean =
+    Regex("""class (?:[A-Z][a-z]*)+""") in this
 
 // ---------------------------- Kotlin declarations ----------------------------
 
