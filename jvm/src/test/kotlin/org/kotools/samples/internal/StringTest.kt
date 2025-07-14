@@ -1,6 +1,8 @@
 package org.kotools.samples.internal
 
 import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -29,6 +31,32 @@ class StringTest {
     fun `isPackage fails on String missing package identifier`() {
         val actual: Boolean = "package".isPackage()
         assertFalse(actual)
+    }
+
+    // ---------------------- String.packageIdentifier() -----------------------
+
+    @Test
+    fun `packageIdentifier passes on package declaration with semicolon`() {
+        val expected = "samples"
+        val actual: String = "package $expected;".packageIdentifier()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `packageIdentifier passes on package declaration without semicolon`() {
+        val expected = "samples"
+        val actual: String = "package $expected".packageIdentifier()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `packageIdentifier fails on another String than package declaration`() {
+        val text = "package"
+        val exception: IllegalArgumentException =
+            assertFailsWith(block = text::packageIdentifier)
+        val actual: String? = exception.message
+        val expected = "String is not a package declaration (input: '$text')."
+        assertEquals(expected, actual)
     }
 
     // --------------------------- String.isClass() ----------------------------

@@ -16,6 +16,7 @@ import org.kotools.samples.internal.isKotlin
 import org.kotools.samples.internal.isKotlinPublicClass
 import org.kotools.samples.internal.isPackage
 import org.kotools.samples.internal.isSample
+import org.kotools.samples.internal.packageIdentifier
 import java.io.File
 
 /** Gradle task responsible for extracting samples for KDoc. */
@@ -121,12 +122,9 @@ private fun String.toJavaMarkdownCodeBlock(): String = """
 
 // ------------------------------- Kotlin & Java -------------------------------
 
-private fun File.packageIdentifierOrNull(): String? {
-    val packageDeclaration: String? =
-        this.useLines { it.firstOrNull(String::isPackage) }
-    return packageDeclaration?.substringAfter("package ")
-        ?.substringBefore(';')
-}
+private fun File.packageIdentifierOrNull(): String? = this
+    .useLines { it.firstOrNull(String::isPackage) }
+    ?.packageIdentifier()
 
 private fun File.functionBodyLines(name: String): List<String> =
     this.useLines { lines: Sequence<String> ->

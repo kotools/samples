@@ -5,6 +5,14 @@ package org.kotools.samples.internal
 internal fun String.isPackage(): Boolean =
     this matches Regex("""^package [a-z]+(?:\.[a-z]+)*;?$""")
 
+internal fun String.packageIdentifier(): String {
+    require(this.isPackage()) {
+        "String is not a package declaration (input: '$this')."
+    }
+    return this.substringAfter("package ")
+        .substringBefore(';')
+}
+
 internal fun String.isClass(): Boolean =
     Regex("""class (?:[A-Z][a-z]*)+""") in this
 
