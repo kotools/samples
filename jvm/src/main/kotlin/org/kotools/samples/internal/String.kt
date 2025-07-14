@@ -1,6 +1,6 @@
 package org.kotools.samples.internal
 
-// ------------------------ Kotlin & Java declarations -------------------------
+// ------------------------------- Kotlin & Java -------------------------------
 
 internal fun String.isPackage(): Boolean =
     this matches Regex("""^package [a-z]+(?:\.[a-z]+)*;?$""")
@@ -16,7 +16,15 @@ internal fun String.packageIdentifier(): String {
 internal fun String.isClass(): Boolean =
     Regex("""class (?:[A-Z][a-z]*)+""") in this
 
-// ---------------------------- Kotlin declarations ----------------------------
+internal fun String.className(): String {
+    require(this.isClass()) {
+        "String is not a class declaration (input: '$this')."
+    }
+    return this.substringAfter("class ")
+        .substringBefore(" {")
+}
+
+// ---------------------------------- Kotlin -----------------------------------
 
 internal fun String.isKotlinPublicClass(): Boolean {
     if (!this.isClass()) return false
@@ -26,7 +34,7 @@ internal fun String.isKotlinPublicClass(): Boolean {
 internal fun String.isKotlinSingleExpressionFunction(): Boolean =
     this matches Regex("""^fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
 
-// ----------------------------- Java declarations -----------------------------
+// ----------------------------------- Java ------------------------------------
 
 internal fun String.isJavaPublicClass(): Boolean =
     this.isClass() && this.startsWith("public class ")

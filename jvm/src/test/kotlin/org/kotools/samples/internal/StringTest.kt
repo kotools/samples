@@ -79,6 +79,25 @@ class StringTest {
         assertFalse(actual)
     }
 
+    // -------------------------- String.className() ---------------------------
+
+    @Test
+    fun `className passes on class declaration`() {
+        val expected = "Sample"
+        val actual: String = "class $expected {".className()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `className fails on another String than class declaration`() {
+        val text = "class"
+        val exception: IllegalArgumentException =
+            assertFailsWith(block = text::className)
+        val actual: String? = exception.message
+        val expected = "String is not a class declaration (input: '$text')."
+        assertEquals(expected, actual)
+    }
+
     // --------------------- String.isKotlinPublicClass() ----------------------
 
     @Test

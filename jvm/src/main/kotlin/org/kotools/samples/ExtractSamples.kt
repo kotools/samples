@@ -10,6 +10,7 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
 import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
+import org.kotools.samples.internal.className
 import org.kotools.samples.internal.isJava
 import org.kotools.samples.internal.isJavaPublicClass
 import org.kotools.samples.internal.isKotlin
@@ -73,8 +74,7 @@ private fun File.kotlinFunctions(): Map<String, String> {
 
 private fun File.publicKotlinClassName(): String = this
     .useLines { it.first(String::isKotlinPublicClass) }
-    .substringAfter("class ")
-    .substringBefore(" {")
+    .className()
 
 private fun String.toKotlinMarkdownCodeBlock(): String = """
     |```kotlin
@@ -111,8 +111,7 @@ private fun File.javaFunctions(): Map<String, String> {
 
 private fun File.publicJavaClassName(): String = this
     .useLines { it.first(String::isJavaPublicClass) }
-    .substringAfter("class ")
-    .substringBefore(" {")
+    .className()
 
 private fun String.toJavaMarkdownCodeBlock(): String = """
     |```java
