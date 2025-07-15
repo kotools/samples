@@ -14,6 +14,7 @@ import org.kotools.samples.internal.className
 import org.kotools.samples.internal.isJava
 import org.kotools.samples.internal.isJavaPublicClass
 import org.kotools.samples.internal.isKotlin
+import org.kotools.samples.internal.isKotlinFunction
 import org.kotools.samples.internal.isKotlinPublicClass
 import org.kotools.samples.internal.isPackage
 import org.kotools.samples.internal.isSample
@@ -59,8 +60,8 @@ private fun File.saveKotlinSamplesIn(directory: Directory): Unit = this
 
 private fun File.kotlinFunctions(): Map<String, String> {
     val functionHeaders: List<String> = this.useLines {
-        val regex = Regex("""fun [A-Za-z_]+\(\) \{$""")
-        it.filter(regex::containsMatchIn)
+        it.map(String::trim)
+            .filter(String::isKotlinFunction)
             .toList()
     }
     return functionHeaders.map { it.substringBefore('(') }

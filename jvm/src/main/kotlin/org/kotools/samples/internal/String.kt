@@ -31,8 +31,11 @@ internal fun String.isKotlinPublicClass(): Boolean {
     return this.startsWith("public class ") || this.startsWith("class ")
 }
 
+internal fun String.isKotlinFunction(): Boolean =
+    Regex("""fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)?""") in this
+
 internal fun String.isKotlinSingleExpressionFunction(): Boolean =
-    this matches Regex("""^fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
+    this.isKotlinFunction() && Regex(""" = .+$""") in this
 
 // ----------------------------------- Java ------------------------------------
 

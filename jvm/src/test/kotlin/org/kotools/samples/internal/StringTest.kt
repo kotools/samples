@@ -130,6 +130,38 @@ class StringTest {
         assertFalse(actual)
     }
 
+    // ----------------------- String.isKotlinFunction() -----------------------
+
+    @Test
+    fun `isKotlinFunction passes on Kotlin function with return-type`() {
+        val actual: Boolean = "fun doSomething(): Unit".isKotlinFunction()
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isKotlinFunction passes on Kotlin function without return-type`() {
+        val actual: Boolean = "fun doSomething()".isKotlinFunction()
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isKotlinFunction fails on String missing 'fun' keyword`() {
+        val actual: Boolean = "doSomething()".isKotlinFunction()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isKotlinFunction fails on String missing function name`() {
+        val actual: Boolean = "fun ()".isKotlinFunction()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isKotlinFunction fails on String missing parenthesis for arguments`() {
+        val actual: Boolean = "fun doSomething".isKotlinFunction()
+        assertFalse(actual)
+    }
+
     // --------------- String.isKotlinSingleExpressionFunction() ---------------
 
     @Test
