@@ -177,6 +177,25 @@ class StringTest {
         assertFalse(actual)
     }
 
+    // ---------------------- String.kotlinFunctionName() ----------------------
+
+    @Test
+    fun `kotlinFunctionName passes on Kotlin function`() {
+        val expected = "doSomething"
+        val actual: String = "fun $expected() {".kotlinFunctionName()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `kotlinFunctionName fails on another String than Kotlin function`() {
+        val text = "fun ()"
+        val exception: IllegalArgumentException =
+            assertFailsWith(block = text::kotlinFunctionName)
+        val actual: String? = exception.message
+        val expected = "String is not a function header (input: '$text')."
+        assertEquals(expected, actual)
+    }
+
     // ---------------------- String.isJavaPublicClass() -----------------------
 
     @Test

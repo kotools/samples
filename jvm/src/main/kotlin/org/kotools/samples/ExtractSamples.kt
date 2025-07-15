@@ -18,6 +18,7 @@ import org.kotools.samples.internal.isKotlinFunction
 import org.kotools.samples.internal.isKotlinPublicClass
 import org.kotools.samples.internal.isPackage
 import org.kotools.samples.internal.isSample
+import org.kotools.samples.internal.kotlinFunctionName
 import org.kotools.samples.internal.packageIdentifier
 import java.io.File
 
@@ -59,14 +60,13 @@ private fun File.saveKotlinSamplesIn(directory: Directory): Unit = this
     .forEach { it.saveAsFileIn(directory) }
 
 private fun File.kotlinFunctions(): Map<String, String> {
-    val functionHeaders: List<String> = this.useLines {
+    val functions: Set<String> = this.useLines {
         it.map(String::trim)
             .filter(String::isKotlinFunction)
-            .toList()
+            .map(String::kotlinFunctionName)
+            .toSet()
     }
-    return functionHeaders.map { it.substringBefore('(') }
-        .map { it.substringAfter("fun ") }
-        .associateWith(this::functionBodyLines)
+    return functions.associateWith(this::functionBodyLines)
         .mapValues {
             it.value.joinToString(separator = "\n")
                 .trimIndent()

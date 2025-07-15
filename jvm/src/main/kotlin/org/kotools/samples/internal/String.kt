@@ -37,6 +37,14 @@ internal fun String.isKotlinFunction(): Boolean =
 internal fun String.isKotlinSingleExpressionFunction(): Boolean =
     this.isKotlinFunction() && Regex(""" = .+$""") in this
 
+internal fun String.kotlinFunctionName(): String {
+    require(this.isKotlinFunction()) {
+        "String is not a function header (input: '$this')."
+    }
+    return this.substringAfter("fun ")
+        .substringBefore('(')
+}
+
 // ----------------------------------- Java ------------------------------------
 
 internal fun String.isJavaPublicClass(): Boolean =
