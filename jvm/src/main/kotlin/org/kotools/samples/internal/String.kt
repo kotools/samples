@@ -69,3 +69,12 @@ internal fun String.javaTestFunctionName(): String {
     return this.substringAfter("void ")
         .substringBefore('(')
 }
+
+internal fun String.toJavaMarkdownCodeBlock(): String {
+    require(this.isNotBlank()) { "Blank string specified (input: '$this')." }
+    return """
+        |```java
+        |$this
+        |```
+    """.trimMargin()
+}

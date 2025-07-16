@@ -308,4 +308,28 @@ class StringTest {
         val expected = "String is not a Java test function (input: '$text')."
         assertEquals(expected, actual)
     }
+
+    // ------------------- String.toJavaMarkdownCodeBlock() --------------------
+
+    @Test
+    fun `toJavaMarkdownCodeBlock passes on non-blank String`() {
+        val text = "final int x = 1;"
+        val actual: String = text.toJavaMarkdownCodeBlock()
+        val expected: String = """
+            |```java
+            |$text
+            |```
+        """.trimMargin()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `toJavaMarkdownCodeBlock fails on blank String`() {
+        val text = "  "
+        val exception: IllegalArgumentException =
+            assertFailsWith(block = text::toJavaMarkdownCodeBlock)
+        val actual: String? = exception.message
+        val expected = "Blank string specified (input: '$text')."
+        assertEquals(expected, actual)
+    }
 }

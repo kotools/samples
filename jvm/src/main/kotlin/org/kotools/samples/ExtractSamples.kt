@@ -22,6 +22,7 @@ import org.kotools.samples.internal.isSample
 import org.kotools.samples.internal.javaTestFunctionName
 import org.kotools.samples.internal.kotlinFunctionName
 import org.kotools.samples.internal.packageIdentifier
+import org.kotools.samples.internal.toJavaMarkdownCodeBlock
 import org.kotools.samples.internal.toKotlinMarkdownCodeBlock
 import java.io.File
 
@@ -101,12 +102,6 @@ private fun File.javaFunctions(): Map<String, String> {
 private fun File.publicJavaClassName(): String = this
     .useLines { it.first(String::isJavaPublicClass) }
     .className()
-
-private fun String.toJavaMarkdownCodeBlock(): String = """
-    |```java
-    |$this
-    |```
-""".trimMargin()
 
 // ------------------------------- Kotlin & Java -------------------------------
 
