@@ -60,17 +60,13 @@ private fun File.saveKotlinSamplesIn(directory: Directory): Unit = this
     .forEach { it.saveAsFileIn(directory) }
 
 private fun File.kotlinFunctions(): Map<String, String> {
-    val functions: Set<String> = this.useLines {
+    val functionNames: Set<String> = this.useLines {
         it.map(String::trim)
             .filter(String::isKotlinFunction)
             .map(String::kotlinFunctionName)
             .toSet()
     }
-    return functions.associateWith(this::functionBodyLines)
-        .mapValues {
-            it.value.joinToString(separator = "\n")
-                .trimIndent()
-        }
+    return functionNames.associateWith(this::functionBody)
 }
 
 private fun File.publicKotlinClassName(): String = this
@@ -96,18 +92,14 @@ private fun File.saveJavaSamplesIn(directory: Directory): Unit = this
     .forEach { it.saveAsFileIn(directory) }
 
 private fun File.javaFunctions(): Map<String, String> {
-    val functionHeaders: List<String> = this.useLines {
+    val functionNames: Set<String> = this.useLines { lines: Sequence<String> ->
         val regex = Regex("""void [A-Za-z_]+\(\) \{$""")
-        it.filter(regex::containsMatchIn)
-            .toList()
+        lines.filter(regex::containsMatchIn)
+            .map { it.substringBefore('(') }
+            .map { it.substringAfter("void ") }
+            .toSet()
     }
-    return functionHeaders.map { it.substringBefore('(') }
-        .map { it.substringAfter("void ") }
-        .associateWith(this::functionBodyLines)
-        .mapValues {
-            it.value.joinToString(separator = "\n")
-                .trimIndent()
-        }
+    return functionNames.associateWith(this::functionBody)
 }
 
 private fun File.publicJavaClassName(): String = this
@@ -126,8 +118,8 @@ private fun File.packageIdentifierOrNull(): String? = this
     .useLines { it.firstOrNull(String::isPackage) }
     ?.packageIdentifier()
 
-private fun File.functionBodyLines(name: String): List<String> =
-    this.useLines { lines: Sequence<String> ->
+private fun File.functionBody(name: String): String {
+    val body: List<String> = this.useLines { lines: Sequence<String> ->
         val header = "$name() {"
         var unclosedBracketCount = 0
         var read = false
@@ -141,6 +133,9 @@ private fun File.functionBodyLines(name: String): List<String> =
             .filter { header !in it && read }
             .toList()
     }
+    return body.joinToString(separator = "\n")
+        .trimIndent()
+}
 
 private fun String.toMarkdownFilePath(
     packageIdentifier: String?,
