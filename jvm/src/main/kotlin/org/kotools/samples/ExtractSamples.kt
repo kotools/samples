@@ -147,9 +147,8 @@ private fun String.toMarkdownFilePath(
         ?: suffix
 }
 
-private fun Map.Entry<String, String>.saveAsFileIn(directory: Directory) {
+private fun Map.Entry<String, String>.saveAsFileIn(directory: Directory): Unit =
     directory.file(this.key)
         .asFile
         .also(File::ensureParentDirsCreated)
         .writeText(this.value)
-}
