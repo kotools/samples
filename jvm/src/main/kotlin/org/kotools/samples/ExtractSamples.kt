@@ -20,6 +20,7 @@ import org.kotools.samples.internal.isPackage
 import org.kotools.samples.internal.isSample
 import org.kotools.samples.internal.kotlinFunctionName
 import org.kotools.samples.internal.packageIdentifier
+import org.kotools.samples.internal.toKotlinMarkdownCodeBlock
 import java.io.File
 
 /** Gradle task responsible for extracting samples for KDoc. */
@@ -72,12 +73,6 @@ private fun File.kotlinFunctions(): Map<String, String> {
 private fun File.publicKotlinClassName(): String = this
     .useLines { it.first(String::isKotlinPublicClass) }
     .className()
-
-private fun String.toKotlinMarkdownCodeBlock(): String = """
-    |```kotlin
-    |$this
-    |```
-""".trimMargin()
 
 // ----------------------------------- Java ------------------------------------
 

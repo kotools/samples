@@ -45,6 +45,15 @@ internal fun String.kotlinFunctionName(): String {
         .substringBefore('(')
 }
 
+internal fun String.toKotlinMarkdownCodeBlock(): String {
+    require(this.isNotBlank()) { "Blank string specified (input: '$this')." }
+    return """
+        |```kotlin
+        |$this
+        |```
+    """.trimMargin()
+}
+
 // ----------------------------------- Java ------------------------------------
 
 internal fun String.isJavaPublicClass(): Boolean =
