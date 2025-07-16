@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
 import org.kotools.samples.internal.className
 import org.kotools.samples.internal.isJava
 import org.kotools.samples.internal.isJavaPublicClass
+import org.kotools.samples.internal.isJavaTestFunction
 import org.kotools.samples.internal.isKotlin
 import org.kotools.samples.internal.isKotlinFunction
 import org.kotools.samples.internal.isKotlinPublicClass
@@ -88,8 +89,8 @@ private fun File.saveJavaSamplesIn(directory: Directory): Unit = this
 
 private fun File.javaFunctions(): Map<String, String> {
     val functionNames: Set<String> = this.useLines { lines: Sequence<String> ->
-        val regex = Regex("""void [A-Za-z_]+\(\) \{$""")
-        lines.filter(regex::containsMatchIn)
+        lines.map(String::trim)
+            .filter(String::isJavaTestFunction)
             .map { it.substringBefore('(') }
             .map { it.substringAfter("void ") }
             .toSet()

@@ -245,4 +245,48 @@ class StringTest {
         val actual: Boolean = "private class A".isJavaPublicClass()
         assertFalse(actual)
     }
+
+    // ---------------------- String.isJavaTestFunction() ----------------------
+
+    @Test
+    fun `isJavaTestFunction passes on Java test function header`() {
+        val actual: Boolean = "void doSomething() {".isJavaTestFunction()
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isJavaTestFunction fails on empty String`() {
+        val actual: Boolean = "".isJavaTestFunction()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isJavaTestFunction fails on blank String`() {
+        val actual: Boolean = "   ".isJavaTestFunction()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isJavaTestFunction fails on String missing 'void' return type`() {
+        val actual: Boolean = "doSomething() {".isJavaTestFunction()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isJavaTestFunction fails on String missing function name`() {
+        val actual: Boolean = "void () {".isJavaTestFunction()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isJavaTestFunction fails on String missing parenthesis for arguments`() {
+        val actual: Boolean = "void doSomething {".isJavaTestFunction()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isJavaTestFunction fails on String not ending with open-bracket`() {
+        val actual: Boolean = "void doSomething()".isJavaTestFunction()
+        assertFalse(actual)
+    }
 }

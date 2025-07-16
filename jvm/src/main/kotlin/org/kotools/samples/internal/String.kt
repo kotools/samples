@@ -58,3 +58,6 @@ internal fun String.toKotlinMarkdownCodeBlock(): String {
 
 internal fun String.isJavaPublicClass(): Boolean =
     this.isClass() && this.startsWith("public class ")
+
+internal fun String.isJavaTestFunction(): Boolean =
+    Regex("""void [A-Za-z_]+\(\) \{$""") in this
