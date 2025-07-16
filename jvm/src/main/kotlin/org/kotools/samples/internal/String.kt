@@ -61,3 +61,11 @@ internal fun String.isJavaPublicClass(): Boolean =
 
 internal fun String.isJavaTestFunction(): Boolean =
     Regex("""void [A-Za-z_]+\(\) \{$""") in this
+
+internal fun String.javaTestFunctionName(): String {
+    require(this.isJavaTestFunction()) {
+        "String is not a Java test function (input: '$this')."
+    }
+    return this.substringAfter("void ")
+        .substringBefore('(')
+}

@@ -279,7 +279,7 @@ class StringTest {
     }
 
     @Test
-    fun `isJavaTestFunction fails on String missing parenthesis for arguments`() {
+    fun `isJavaTestFunction fails on String missing parenthesis`() {
         val actual: Boolean = "void doSomething {".isJavaTestFunction()
         assertFalse(actual)
     }
@@ -288,5 +288,24 @@ class StringTest {
     fun `isJavaTestFunction fails on String not ending with open-bracket`() {
         val actual: Boolean = "void doSomething()".isJavaTestFunction()
         assertFalse(actual)
+    }
+
+    // --------------------- String.javaTestFunctionName() ---------------------
+
+    @Test
+    fun `javaTestFunctionName passes on Java test function`() {
+        val expected = "doSomething"
+        val actual: String = "void $expected() {".javaTestFunctionName()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `javaTestFunctionName fails on another text than Java test function`() {
+        val text = "final int x = 1;"
+        val exception: IllegalArgumentException =
+            assertFailsWith(block = text::javaTestFunctionName)
+        val actual: String? = exception.message
+        val expected = "String is not a Java test function (input: '$text')."
+        assertEquals(expected, actual)
     }
 }

@@ -19,6 +19,7 @@ import org.kotools.samples.internal.isKotlinFunction
 import org.kotools.samples.internal.isKotlinPublicClass
 import org.kotools.samples.internal.isPackage
 import org.kotools.samples.internal.isSample
+import org.kotools.samples.internal.javaTestFunctionName
 import org.kotools.samples.internal.kotlinFunctionName
 import org.kotools.samples.internal.packageIdentifier
 import org.kotools.samples.internal.toKotlinMarkdownCodeBlock
@@ -88,11 +89,10 @@ private fun File.saveJavaSamplesIn(directory: Directory): Unit = this
     .forEach { it.saveAsFileIn(directory) }
 
 private fun File.javaFunctions(): Map<String, String> {
-    val functionNames: Set<String> = this.useLines { lines: Sequence<String> ->
-        lines.map(String::trim)
+    val functionNames: Set<String> = this.useLines {
+        it.map(String::trim)
             .filter(String::isJavaTestFunction)
-            .map { it.substringBefore('(') }
-            .map { it.substringAfter("void ") }
+            .map(String::javaTestFunctionName)
             .toSet()
     }
     return functionNames.associateWith(this::functionBody)
