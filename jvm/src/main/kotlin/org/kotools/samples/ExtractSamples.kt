@@ -56,9 +56,8 @@ public abstract class ExtractSamples : DefaultTask() {
 private fun File.saveKotlinSamplesIn(directory: Directory): Unit = this
     .kotlinFunctions()
     .mapKeys {
-        val packageIdentifier: String? = this.packageIdentifierOrNull()
         val className: String = this.publicKotlinClassName()
-        it.key.toMarkdownFilePath(packageIdentifier, className)
+        this.markdownFilePath(className, fileName = it.key)
     }
     .mapValues { it.value.toKotlinMarkdownCodeBlock() }
     .forEach { it.saveAsFileIn(directory) }
@@ -82,9 +81,8 @@ private fun File.publicKotlinClassName(): String = this
 private fun File.saveJavaSamplesIn(directory: Directory): Unit = this
     .javaFunctions()
     .mapKeys {
-        val packageIdentifier: String? = this.packageIdentifierOrNull()
         val className: String = this.publicJavaClassName()
-        it.key.toMarkdownFilePath(packageIdentifier, className)
+        this.markdownFilePath(className, fileName = it.key)
     }
     .mapValues { it.value.toJavaMarkdownCodeBlock() }
     .forEach { it.saveAsFileIn(directory) }
@@ -105,10 +103,6 @@ private fun File.publicJavaClassName(): String = this
 
 // ------------------------------- Kotlin & Java -------------------------------
 
-private fun File.packageIdentifierOrNull(): String? = this
-    .useLines { it.firstOrNull(String::isPackage) }
-    ?.packageIdentifier()
-
 private fun File.functionBody(name: String): String {
     val body: List<String> = this.useLines { lines: Sequence<String> ->
         val header = "$name() {"
@@ -128,15 +122,17 @@ private fun File.functionBody(name: String): String {
         .trimIndent()
 }
 
-private fun String.toMarkdownFilePath(
-    packageIdentifier: String?,
-    className: String
-): String {
-    val suffix = "$className/${this}.md"
+private fun File.markdownFilePath(className: String, fileName: String): String {
+    val packageIdentifier: String? = this.packageIdentifierOrNull()
+    val suffix = "$className/${fileName}.md"
     return packageIdentifier?.replace(oldChar = '.', newChar = '/')
         ?.plus("/$suffix")
         ?: suffix
 }
+
+private fun File.packageIdentifierOrNull(): String? = this
+    .useLines { it.firstOrNull(String::isPackage) }
+    ?.packageIdentifier()
 
 private fun Map.Entry<String, String>.saveAsFileIn(directory: Directory): Unit =
     directory.file(this.key)
