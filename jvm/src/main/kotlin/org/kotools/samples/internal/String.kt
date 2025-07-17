@@ -45,15 +45,6 @@ internal fun String.kotlinFunctionName(): String {
         .substringBefore('(')
 }
 
-internal fun String.toKotlinMarkdownCodeBlock(): String {
-    require(this.isNotBlank()) { "Blank string specified (input: '$this')." }
-    return """
-        |```kotlin
-        |$this
-        |```
-    """.trimMargin()
-}
-
 // ----------------------------------- Java ------------------------------------
 
 internal fun String.isJavaPublicClass(): Boolean =
@@ -68,6 +59,17 @@ internal fun String.javaTestFunctionName(): String {
     }
     return this.substringAfter("void ")
         .substringBefore('(')
+}
+
+// --------------------------------- Markdown ----------------------------------
+
+internal fun String.toKotlinMarkdownCodeBlock(): String {
+    require(this.isNotBlank()) { "Blank string specified (input: '$this')." }
+    return """
+        |```kotlin
+        |$this
+        |```
+    """.trimMargin()
 }
 
 internal fun String.toJavaMarkdownCodeBlock(): String {

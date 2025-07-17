@@ -196,30 +196,6 @@ class StringTest {
         assertEquals(expected, actual)
     }
 
-    // ------------------ String.toKotlinMarkdownCodeBlock() -------------------
-
-    @Test
-    fun `toKotlinMarkdownCodeBlock passes on non-blank String`() {
-        val text = "assert(true)"
-        val actual: String = text.toKotlinMarkdownCodeBlock()
-        val expected = """
-            |```kotlin
-            |$text
-            |```
-        """.trimMargin()
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `toKotlinMarkdownCodeBlock fails on blank String`() {
-        val text = "  "
-        val exception: IllegalArgumentException =
-            assertFailsWith(block = text::toKotlinMarkdownCodeBlock)
-        val actual: String? = exception.message
-        val expected = "Blank string specified (input: '$text')."
-        assertEquals(expected, actual)
-    }
-
     // ---------------------- String.isJavaPublicClass() -----------------------
 
     @Test
@@ -306,6 +282,30 @@ class StringTest {
             assertFailsWith(block = text::javaTestFunctionName)
         val actual: String? = exception.message
         val expected = "String is not a Java test function (input: '$text')."
+        assertEquals(expected, actual)
+    }
+
+    // ------------------ String.toKotlinMarkdownCodeBlock() -------------------
+
+    @Test
+    fun `toKotlinMarkdownCodeBlock passes on non-blank String`() {
+        val text = "assert(true)"
+        val actual: String = text.toKotlinMarkdownCodeBlock()
+        val expected = """
+            |```kotlin
+            |$text
+            |```
+        """.trimMargin()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `toKotlinMarkdownCodeBlock fails on blank String`() {
+        val text = "  "
+        val exception: IllegalArgumentException =
+            assertFailsWith(block = text::toKotlinMarkdownCodeBlock)
+        val actual: String? = exception.message
+        val expected = "Blank string specified (input: '$text')."
         assertEquals(expected, actual)
     }
 
