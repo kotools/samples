@@ -8,6 +8,7 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
+import org.kotools.samples.internal.isKotlin
 import java.io.File
 
 /** Gradle task responsible for checking sample references from main sources. */
@@ -32,31 +33,32 @@ public abstract class CheckSampleReferences : DefaultTask() {
     @TaskAction
     internal fun execute() {
         val samplesDirectory: Directory = this.extractedSamplesDirectory.get()
-        this.sourceDirectory.asFileTree.asSequence()
+        val sampleNotFound: Boolean = this.sourceDirectory.asFileTree
+            .asSequence()
             .filterNotNull()
-            .filter { "Main/" in it.path }
-            .filter { it.name.endsWith(".kt") }
-            .forEach { it.checkSampleResolutions(samplesDirectory) }
+            .filter(File::isKotlin)
+            .flatMap { it.unresolvedSampleIdentifiers(samplesDirectory) }
+            .onEach { this.logger.error("'$it' sample not found.") }
+            .toSet()
+            .any()
+        if (!sampleNotFound) return
+        error("Errors found while checking sample references.")
     }
 }
 
-private fun File.checkSampleResolutions(directory: Directory) {
+private fun File.unresolvedSampleIdentifiers(
+    directory: Directory
+): Set<String> {
     val identifiers: Set<String> = this.useLines { lines: Sequence<String> ->
         lines.filter { it.contains("SAMPLE: [") }
             .map { it.substringAfter('[') }
             .map { it.substringBefore(']') }
             .toSet()
     }
-    val unresolvedIdentifier: String = identifiers.firstOrNull {
+    return identifiers.filter {
         val path: String = it.replace(oldChar = '.', newChar = '/') + ".md"
         !directory.file(path)
             .asFile
             .exists()
-    } ?: return
-    val message: String = listOf(
-        "'${this.name}' wants to inline a non-existent " +
-                "'$unresolvedIdentifier' function in documentation.",
-        "File location: ${this.path}"
-    ).joinToString(separator = "\n")
-    error(message)
+    }.toSet()
 }
