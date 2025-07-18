@@ -123,9 +123,9 @@ private fun File.functionBody(name: String): String {
 }
 
 private fun File.markdownFilePath(className: String, fileName: String): String {
-    val packageIdentifier: String? = this.packageIdentifierOrNull()
     val suffix = "$className/${fileName}.md"
-    return packageIdentifier?.replace(oldChar = '.', newChar = '/')
+    return this.packageIdentifierOrNull()
+        ?.replace(oldChar = '.', newChar = '/')
         ?.plus("/$suffix")
         ?: suffix
 }
