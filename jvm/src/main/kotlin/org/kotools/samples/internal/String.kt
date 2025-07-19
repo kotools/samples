@@ -45,6 +45,11 @@ internal fun String.kotlinFunctionName(): String {
         .substringBefore('(')
 }
 
+internal fun String.isSampleIdentifier(): Boolean =
+    if (this.isBlank() || '.' !in this) false
+    else this.split('.')
+        .all { it.all(Char::isLetterOrDigit) }
+
 internal fun String.isSampleReference(): Boolean =
     "SAMPLE: [" in this && this.endsWith(']')
 

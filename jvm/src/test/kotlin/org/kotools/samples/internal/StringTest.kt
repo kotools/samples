@@ -196,7 +196,33 @@ class StringTest {
         assertEquals(expected, actual)
     }
 
-    // ------------------- String.isSampleReference() --------------------
+    // ---------------------- String.isSampleIdentifier() ----------------------
+
+    @Test
+    fun `isSampleIdentifier passes on alphanumeric words separated by dot`() {
+        val actual: Boolean = "KotlinSample.greet".isSampleIdentifier()
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isSampleIdentifier fails on blank String`() {
+        val actual: Boolean = "  ".isSampleIdentifier()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isSampleIdentifier fails on String missing dot`() {
+        val actual: Boolean = "KotlinSample-greet".isSampleIdentifier()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isSampleIdentifier fails on String with special characters`() {
+        val actual: Boolean = "KotlinSample.greet-123_".isSampleIdentifier()
+        assertFalse(actual)
+    }
+
+    // ---------------------- String.isSampleReference() -----------------------
 
     @Test
     fun `isSampleReference passes on sample reference`() {
