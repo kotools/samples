@@ -45,6 +45,17 @@ internal fun String.kotlinFunctionName(): String {
         .substringBefore('(')
 }
 
+internal fun String.isSampleReference(): Boolean =
+    "SAMPLE: [" in this && this.endsWith(']')
+
+internal fun String.sampleIdentifier(): String {
+    require(this.isSampleReference()) {
+        "String is not a sample reference (input: '$this')."
+    }
+    return this.substringAfter('[')
+        .substringBefore(']')
+}
+
 // ----------------------------------- Java ------------------------------------
 
 internal fun String.isJavaPublicClass(): Boolean =

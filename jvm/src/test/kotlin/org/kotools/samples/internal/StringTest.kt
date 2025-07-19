@@ -196,6 +196,45 @@ class StringTest {
         assertEquals(expected, actual)
     }
 
+    // ------------------- String.isSampleReference() --------------------
+
+    @Test
+    fun `isSampleReference passes on sample reference`() {
+        val actual: Boolean = "SAMPLE: [KotlinSample.greet]".isSampleReference()
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isSampleReference fails on String missing 'SAMPLE' keyword`() {
+        val actual: Boolean = "[KotlinSample.greet]".isSampleReference()
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `isSampleReference fails on String missing sample identifier`() {
+        val actual: Boolean = "SAMPLE:".isSampleReference()
+        assertFalse(actual)
+    }
+
+    // ----------------------- String.sampleIdentifier() -----------------------
+
+    @Test
+    fun `sampleIdentifier passes on sample reference`() {
+        val expected = "KotlinSample.greet"
+        val actual: String = "SAMPLE: [$expected]".sampleIdentifier()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `sampleIdentifier fails on another String than sample reference`() {
+        val text = "[KotlinSample.greet]"
+        val exception: IllegalArgumentException =
+            assertFailsWith(block = text::sampleIdentifier)
+        val actual: String? = exception.message
+        val expected = "String is not a sample reference (input: '$text')."
+        assertEquals(expected, actual)
+    }
+
     // ---------------------- String.isJavaPublicClass() -----------------------
 
     @Test

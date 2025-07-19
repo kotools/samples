@@ -9,6 +9,8 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
 import org.kotools.samples.internal.isKotlin
+import org.kotools.samples.internal.isSampleReference
+import org.kotools.samples.internal.sampleIdentifier
 import java.io.File
 
 /** Gradle task responsible for checking sample references from main sources. */
@@ -37,7 +39,8 @@ public abstract class CheckSampleReferences : DefaultTask() {
             .asSequence()
             .filterNotNull()
             .filter(File::isKotlin)
-            .flatMap { it.unresolvedSampleIdentifiers(samplesDirectory) }
+            .flatMap { it.sampleIdentifiers() }
+            .filterNot { it.sampleExistsIn(samplesDirectory) }
             .onEach { this.logger.error("'$it' sample not found.") }
             .toSet()
             .any()
@@ -46,19 +49,15 @@ public abstract class CheckSampleReferences : DefaultTask() {
     }
 }
 
-private fun File.unresolvedSampleIdentifiers(
-    directory: Directory
-): Set<String> {
-    val identifiers: Set<String> = this.useLines { lines: Sequence<String> ->
-        lines.filter { it.contains("SAMPLE: [") }
-            .map { it.substringAfter('[') }
-            .map { it.substringBefore(']') }
-            .toSet()
-    }
-    return identifiers.filter {
-        val path: String = it.replace(oldChar = '.', newChar = '/') + ".md"
-        !directory.file(path)
-            .asFile
-            .exists()
-    }.toSet()
+private fun File.sampleIdentifiers(): Set<String> = this.useLines {
+    it.filter(String::isSampleReference)
+        .map(String::sampleIdentifier)
+        .toSet()
+}
+
+private fun String.sampleExistsIn(directory: Directory): Boolean {
+    val path: String = this.replace(oldChar = '.', newChar = '/') + ".md"
+    return directory.file(path)
+        .asFile
+        .exists()
 }
