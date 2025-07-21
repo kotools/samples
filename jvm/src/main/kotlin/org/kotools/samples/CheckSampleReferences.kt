@@ -12,6 +12,7 @@ import org.kotools.samples.internal.isKotlin
 import org.kotools.samples.internal.isSampleReference
 import org.kotools.samples.internal.sampleIdentifier
 import org.kotools.samples.internal.sampleIdentifierToSamplePath
+import org.kotools.samples.internal.sampleNotFound
 import java.io.File
 
 /** Gradle task responsible for checking sample references from main sources. */
@@ -42,7 +43,8 @@ public abstract class CheckSampleReferences : DefaultTask() {
             .filter(File::isKotlin)
             .flatMap { it.sampleIdentifiers() }
             .filterNot { it.sampleExistsIn(samplesDirectory) }
-            .onEach { this.logger.error("'$it' sample not found.") }
+            .map(String::sampleNotFound)
+            .onEach(this.logger::error)
             .toSet()
             .any()
         if (!sampleNotFound) return

@@ -10,3 +10,10 @@ internal fun File.noPublicClassFound(): IllegalStateException =
 
 internal fun File.singleExpressionKotlinFunctionFound(): IllegalStateException =
     IllegalStateException("Single-expression Kotlin function found in '$this'.")
+
+internal fun String.sampleNotFound(): String {
+    require(this.isSampleIdentifier()) {
+        "String is not a sample identifier (input: '$this')."
+    }
+    return "'$this' sample not found."
+}
