@@ -11,6 +11,7 @@ import org.gradle.work.DisableCachingByDefault
 import org.kotools.samples.internal.isKotlin
 import org.kotools.samples.internal.isSampleReference
 import org.kotools.samples.internal.sampleIdentifier
+import org.kotools.samples.internal.sampleIdentifierToSamplePath
 import java.io.File
 
 /** Gradle task responsible for checking sample references from main sources. */
@@ -56,7 +57,7 @@ private fun File.sampleIdentifiers(): Set<String> = this.useLines {
 }
 
 private fun String.sampleExistsIn(directory: Directory): Boolean {
-    val path: String = this.replace(oldChar = '.', newChar = '/') + ".md"
+    val path: String = this.sampleIdentifierToSamplePath()
     return directory.file(path)
         .asFile
         .exists()

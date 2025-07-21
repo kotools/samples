@@ -61,6 +61,13 @@ internal fun String.sampleIdentifier(): String {
         .substringBefore(']')
 }
 
+internal fun String.sampleIdentifierToSamplePath(): String {
+    require(this.isSampleIdentifier()) {
+        "String is not a sample identifier (input: '$this')."
+    }
+    return this.replace(oldChar = '.', newChar = '/') + ".md"
+}
+
 // ----------------------------------- Java ------------------------------------
 
 internal fun String.isJavaPublicClass(): Boolean =

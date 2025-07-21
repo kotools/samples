@@ -261,6 +261,28 @@ class StringTest {
         assertEquals(expected, actual)
     }
 
+    // ----------------- String.sampleIdentifierToSamplePath() -----------------
+
+    @Test
+    fun `sampleIdentifierToSamplePath passes on sample identifier`() {
+        val text = "KotlinSample.greet"
+        val actual: String = text.sampleIdentifierToSamplePath()
+        val expected: String = text.replace(oldChar = '.', newChar = '/')
+            .plus(".md")
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `sampleIdentifierToSamplePath fails on other than sample identifier`() {
+        val text = "KotlinSample-greet"
+        val exception: IllegalArgumentException = assertFailsWith(
+            block = text::sampleIdentifierToSamplePath
+        )
+        val actual: String? = exception.message
+        val expected = "String is not a sample identifier (input: '$text')."
+        assertEquals(expected, actual)
+    }
+
     // ---------------------- String.isJavaPublicClass() -----------------------
 
     @Test
