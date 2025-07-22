@@ -50,8 +50,10 @@ internal fun String.isSampleIdentifier(): Boolean =
     else this.split('.')
         .all { it.all(Char::isLetterOrDigit) }
 
+internal fun sampleReferenceKeyword(): String = "SAMPLE: ["
+
 internal fun String.isSampleReference(): Boolean =
-    "SAMPLE: [" in this && this.endsWith(']')
+    sampleReferenceKeyword() in this && this.endsWith(']')
 
 internal fun String.sampleIdentifier(): String {
     require(this.isSampleReference()) {

@@ -222,6 +222,15 @@ class StringTest {
         assertFalse(actual)
     }
 
+    // ----------------------- sampleReferenceKeyword() ------------------------
+
+    @Test
+    fun `sampleReferenceKeyword returns 'SAMPLE' keyword`() {
+        val actual: String = sampleReferenceKeyword()
+        val expected = "SAMPLE: ["
+        assertEquals(expected, actual)
+    }
+
     // ---------------------- String.isSampleReference() -----------------------
 
     @Test
