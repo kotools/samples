@@ -33,7 +33,7 @@ private val extractSamples: TaskProvider<ExtractSamples> by tasks.registering(
 
 private val checkSampleReferences: TaskProvider<CheckSampleReferences> by tasks
     .registering(CheckSampleReferences::class) {
-        this.description = "Checks sample references from KDoc."
+        this.description = "Checks sample references from main sources."
         this.sourceDirectory = projectSources.dir("main")
         this.extractedSamplesDirectory =
             extractSamples.flatMap(ExtractSamples::outputDirectory)
