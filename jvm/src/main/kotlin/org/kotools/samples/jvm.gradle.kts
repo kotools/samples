@@ -58,9 +58,9 @@ private val backupMainSources: TaskProvider<Copy> by tasks.registering(
 private val inlineSamples: TaskProvider<InlineSamples> by tasks.registering(
     InlineSamples::class
 ) {
-    this.description = "Inlines KDoc samples."
+    this.description = "Inlines samples in main sources."
     this.dependsOn(backupMainSources)
-    this.sourceDirectory = projectSources
+    this.sourceDirectory = projectSources.dir("main")
     this.extractedSamplesDirectory =
         extractSamples.flatMap(ExtractSamples::outputDirectory)
 }
