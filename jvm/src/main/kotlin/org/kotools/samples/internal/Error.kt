@@ -1,19 +1,36 @@
 package org.kotools.samples.internal
 
-import java.io.File
+/**
+ * Represents an error.
+ *
+ * For creating an instance of this type, see the methods provided by the
+ * [Error.Companion] type.
+ */
+@JvmInline
+internal value class Error private constructor(
+    /** The message of this error. */
+    val message: String
+) {
+    /** Returns the [message] of this error. */
+    override fun toString(): String = this.message
 
-internal fun File.multipleClassesFound(): IllegalStateException =
-    IllegalStateException("Multiple classes found in '$this'.")
+    /** Contains static declarations for the [Error] type. */
+    companion object {
+        /**
+         * Returns an error with the specified [message], or returns `null` if
+         * the [message] is [blank][String.isBlank].
+         */
+        fun orNull(message: String): Error? = message.takeIf(String::isNotBlank)
+            ?.let(::Error)
 
-internal fun File.noPublicClassFound(): IllegalStateException =
-    IllegalStateException("No public class found in '$this'.")
-
-internal fun File.singleExpressionKotlinFunctionFound(): IllegalStateException =
-    IllegalStateException("Single-expression Kotlin function found in '$this'.")
-
-internal fun String.sampleNotFound(): String {
-    require(this.isSampleIdentifier()) {
-        "String is not a sample identifier (input: '$this')."
+        /**
+         * Returns an error with the specified [message], or throws an
+         * [IllegalArgumentException] if the [message] is
+         * [blank][String.isBlank].
+         */
+        fun orThrow(message: String): Error {
+            require(message.isNotBlank()) { "Blank error message." }
+            return Error(message)
+        }
     }
-    return "'$this' sample not found."
 }
