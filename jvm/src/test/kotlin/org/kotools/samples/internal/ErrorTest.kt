@@ -1,5 +1,6 @@
 package org.kotools.samples.internal
 
+import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -48,5 +49,35 @@ class ErrorTest {
         }
         val expected = "Blank error message."
         assertEquals(expected, actual = exception.message)
+    }
+
+    // ---------------- Companion.multipleClassesFoundIn(File) -----------------
+
+    @Test
+    fun `multipleClassesFoundIn returns meaningful message`() {
+        val file = File("Sample.kt")
+        val error: Error = Error.multipleClassesFoundIn(file)
+        val expected = "Multiple classes found in '$file'."
+        assertEquals(expected, error.message)
+    }
+
+    // ----------------- Companion.noPublicClassFoundIn(File) ------------------
+
+    @Test
+    fun `noPublicClassFoundIn returns meaningful message`() {
+        val file = File("Sample.kt")
+        val error: Error = Error.noPublicClassFoundIn(file)
+        val expected = "No public class found in '$file'."
+        assertEquals(expected, actual = error.message)
+    }
+
+    // --------- Companion.singleExpressionKotlinFunctionFoundIn(File) ---------
+
+    @Test
+    fun `singleExpressionKotlinFunctionFoundIn returns meaningful message`() {
+        val file = File("Sample.kt")
+        val error: Error = Error.singleExpressionKotlinFunctionFoundIn(file)
+        val expected = "Single-expression Kotlin function found in '$file'."
+        assertEquals(expected, actual = error.message)
     }
 }
