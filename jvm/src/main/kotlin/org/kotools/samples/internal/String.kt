@@ -70,6 +70,13 @@ internal fun String.sampleIdentifierToSamplePath(): String {
     return this.replace(oldChar = '.', newChar = '/') + ".md"
 }
 
+internal fun String.sampleNotFound(): String {
+    require(this.isSampleIdentifier()) {
+        "String is not a sample identifier (input: '$this')."
+    }
+    return "'$this' sample not found."
+}
+
 // ----------------------------------- Java ------------------------------------
 
 internal fun String.isJavaPublicClass(): Boolean =
