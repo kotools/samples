@@ -4,80 +4,58 @@ import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 
 class ErrorTest {
-    // ------------------------------ toString() -------------------------------
+    // ---------------------- File.multipleClassesFound() ----------------------
 
     @Test
-    fun `toString returns message`() {
-        val error: Error = Error.orThrow("Error found.")
-        val actual: String = error.toString()
-        assertEquals(expected = error.message, actual)
-    }
-
-    // ----------------------- Companion.orNull(String) ------------------------
-
-    @Test
-    fun `orNull passes with non-blank message`() {
-        val message = "Error found."
-        val error: Error? = Error.orNull(message)
-        assertNotNull(error)
-        assertEquals(expected = message, actual = error.message)
-    }
-
-    @Test
-    fun `orNull fails with blank message`() {
-        val error: Error? = Error.orNull("   ")
-        assertNull(error)
-    }
-
-    // ----------------------- Companion.orThrow(String) -----------------------
-
-    @Test
-    fun `orThrow passes with non-blank message`() {
-        val message = "Error found."
-        val error = Error.orThrow(message)
-        assertEquals(expected = message, actual = error.message)
-    }
-
-    @Test
-    fun `orThrow fails with blank message`() {
-        val exception: IllegalArgumentException = assertFailsWith {
-            Error.orThrow(" ")
-        }
-        val expected = "Blank error message."
-        assertEquals(expected, actual = exception.message)
-    }
-
-    // ---------------- Companion.multipleClassesFoundIn(File) -----------------
-
-    @Test
-    fun `multipleClassesFoundIn returns meaningful message`() {
+    fun `multipleClassesFound passes on File`() {
         val file = File("Sample.kt")
-        val error: Error = Error.multipleClassesFoundIn(file)
+        val actual: String? = file.multipleClassesFound()
+            .message
         val expected = "Multiple classes found in '$file'."
-        assertEquals(expected, error.message)
+        assertEquals(expected, actual)
     }
 
-    // ----------------- Companion.noPublicClassFoundIn(File) ------------------
+    // ----------------------- File.noPublicClassFound() -----------------------
 
     @Test
-    fun `noPublicClassFoundIn returns meaningful message`() {
+    fun `noPublicClassFound passes on File`() {
         val file = File("Sample.kt")
-        val error: Error = Error.noPublicClassFoundIn(file)
+        val actual: String? = file.noPublicClassFound()
+            .message
         val expected = "No public class found in '$file'."
-        assertEquals(expected, actual = error.message)
+        assertEquals(expected, actual)
     }
 
-    // --------- Companion.singleExpressionKotlinFunctionFoundIn(File) ---------
+    // -------------- File.singleExpressionKotlinFunctionFound() ---------------
 
     @Test
-    fun `singleExpressionKotlinFunctionFoundIn returns meaningful message`() {
+    fun `singleExpressionKotlinFunctionFound passes on File`() {
         val file = File("Sample.kt")
-        val error: Error = Error.singleExpressionKotlinFunctionFoundIn(file)
+        val actual: String? = file.singleExpressionKotlinFunctionFound()
+            .message
         val expected = "Single-expression Kotlin function found in '$file'."
-        assertEquals(expected, actual = error.message)
+        assertEquals(expected, actual)
+    }
+
+    // ------------------------ String.sampleNotFound() ------------------------
+
+    @Test
+    fun `sampleNotFound passes on sample identifier`() {
+        val sampleIdentifier = "KotlinSample.test"
+        val actual: String = sampleIdentifier.sampleNotFound()
+        val expected = "'$sampleIdentifier' sample not found."
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `sampleNotFound fails on another String than sample identifier`() {
+        val text = "KotlinSample-test"
+        val exception: IllegalArgumentException =
+            assertFailsWith(block = text::sampleNotFound)
+        val actual: String? = exception.message
+        val expected = "String is not a sample identifier (input: '$text')."
+        assertEquals(expected, actual)
     }
 }
