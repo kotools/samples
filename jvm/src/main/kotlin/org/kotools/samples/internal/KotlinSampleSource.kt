@@ -8,22 +8,11 @@ import java.io.File
  * See the methods provided by the [KotlinSampleSource.Companion] type for
  * creating a Kotlin sample source.
  */
-internal class KotlinSampleSource private constructor(
+@JvmInline
+internal value class KotlinSampleSource private constructor(
     /** The file corresponding to this Kotlin sample source. */
     val file: File
 ) {
-    // -------------------- Structural equality operations ---------------------
-
-    /**
-     * Returns `true` if the [other] object is a Kotlin sample source
-     * corresponding to the same [file], or returns `false` otherwise.
-     */
-    override fun equals(other: Any?): Boolean =
-        other is KotlinSampleSource && this.file == other.file
-
-    /** Returns a hash code value for this Kotlin sample source. */
-    override fun hashCode(): Int = this.file.hashCode()
-
     // ------------------------------ Conversions ------------------------------
 
     /** Returns the string representation of this Kotlin sample source. */
