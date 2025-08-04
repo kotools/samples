@@ -10,11 +10,15 @@ internal value class Error private constructor(
     /** The message of this error. */
     val message: String
 ) {
+    // ------------------------------ Conversions ------------------------------
+
     /**
      * Returns the string representation of this error, corresponding to its
      * [message].
      */
     override fun toString(): String = this.message
+
+    // -------------------------------------------------------------------------
 
     /** Contains static declarations for the [Error] type. */
     companion object {
