@@ -13,6 +13,36 @@ internal value class KotlinSampleSource private constructor(
     /** The file corresponding to this Kotlin sample source. */
     val file: File
 ) {
+    // ----------------------- File's content operations -----------------------
+
+    /**
+     * Checks the content of this Kotlin sample source and returns `null` if no
+     * error was found. Returns an error if multiple classes were found, if no
+     * public class was found, or if a single-expression function was found.
+     */
+    fun contentError(): Error? {
+        val classes: List<String> = this.file.useLines {
+            val regex = Regex("""class (?:[A-Z][a-z]*)+""")
+            it.map(String::trim)
+                .filter(regex::containsMatchIn)
+                .toList()
+        }
+        if (classes.count() > 1)
+            return Error.orThrow("Multiple classes found in $this.")
+        val publicClassCount: Int = classes.count {
+            it.startsWith("public class") || it.startsWith("class")
+        }
+        if (publicClassCount == 0)
+            return Error.orThrow("No public class found in $this.")
+        val singleExpressionFunctionFound: Boolean = this.file.useLines {
+            val regex = Regex("""fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
+            it.map(String::trim)
+                .any(regex::containsMatchIn)
+        }
+        return if (!singleExpressionFunctionFound) null
+        else Error.orThrow("Single-expression Kotlin function found in $this.")
+    }
+
     // ------------------------------ Conversions ------------------------------
 
     /** Returns the string representation of this Kotlin sample source. */
