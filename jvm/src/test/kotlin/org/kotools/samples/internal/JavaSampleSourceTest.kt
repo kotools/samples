@@ -6,8 +6,51 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.test.fail
 
 class JavaSampleSourceTest {
+    // ---------------------------- contentError() -----------------------------
+
+    @Test
+    fun `contentError passes with no error found`() {
+        val fileName = "SinglePublicClassJavaSample.java"
+        val file: File = this::class.java.getResource("/$fileName")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$fileName' resource not found.")
+        val error: Error? = JavaSampleSource.orThrow(file)
+            .contentError()
+        assertNull(error)
+    }
+
+    @Test
+    fun `contentError fails with multiple classes found`() {
+        val fileName = "MultipleClassesJavaSample.java"
+        val file: File = this::class.java.getResource("/$fileName")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$fileName' resource not found.")
+        val source: JavaSampleSource = JavaSampleSource.orThrow(file)
+        val error: Error? = source.contentError()
+        val expected: Error =
+            Error.orThrow("Multiple classes found in $source.")
+        assertEquals(expected, actual = error)
+    }
+
+    @Test
+    fun `contentError fails with no public class found`() {
+        val fileName = "NoPublicClassJavaSample.java"
+        val file: File = this::class.java.getResource("/$fileName")
+            ?.toURI()
+            ?.let(::File)
+            ?: fail("'$fileName' resource not found.")
+        val source: JavaSampleSource = JavaSampleSource.orThrow(file)
+        val error: Error? = source.contentError()
+        val expected: Error =
+            Error.orThrow("No public class found in $source.")
+        assertEquals(expected, actual = error)
+    }
+
     // ------------------------------ toString() -------------------------------
 
     @Test
