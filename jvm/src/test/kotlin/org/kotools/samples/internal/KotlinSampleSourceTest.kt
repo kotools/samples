@@ -13,7 +13,7 @@ class KotlinSampleSourceTest {
 
     @Test
     fun `contentError passes with no error found`() {
-        val fileName = "SinglePublicClassSample.kt"
+        val fileName = "SinglePublicClassKotlinSample.kt"
         val file: File = this::class.java.getResource("/$fileName")
             ?.toURI()
             ?.let(::File)
@@ -25,7 +25,7 @@ class KotlinSampleSourceTest {
 
     @Test
     fun `contentError fails with multiple classes found`() {
-        val fileName = "MultipleClassesSample.kt"
+        val fileName = "MultipleClassesKotlinSample.kt"
         val file: File = this::class.java.getResource("/$fileName")
             ?.toURI()
             ?.let(::File)
@@ -39,7 +39,7 @@ class KotlinSampleSourceTest {
 
     @Test
     fun `contentError fails with no public class found`() {
-        val fileName = "NoPublicClassSample.kt"
+        val fileName = "NoPublicClassKotlinSample.kt"
         val file: File = this::class.java.getResource("/$fileName")
             ?.toURI()
             ?.let(::File)
@@ -52,7 +52,7 @@ class KotlinSampleSourceTest {
 
     @Test
     fun `contentError fails with single-expression function found`() {
-        val fileName = "SingleExpressionFunctionSample.kt"
+        val fileName = "SingleExpressionFunctionKotlinSample.kt"
         val file: File = this::class.java.getResource("/$fileName")
             ?.toURI()
             ?.let(::File)
