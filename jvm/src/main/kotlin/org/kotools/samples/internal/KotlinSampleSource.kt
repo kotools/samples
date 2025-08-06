@@ -52,17 +52,15 @@ internal value class KotlinSampleSource private constructor(
 
     /** Contains static declarations for the [KotlinSampleSource] type. */
     companion object {
-        private const val FILE_NAME_SUFFIX: String = "Sample"
-        private const val FILE_EXTENSION: String = "kt"
-
         /**
          * Returns a Kotlin sample source with the specified [file], or returns
          * `null` if the [file]'s name is not suffixed by `Sample.kt`.
          */
-        fun orNull(file: File): KotlinSampleSource? = file
-            .takeIf { it.extension == this.FILE_EXTENSION }
-            ?.takeIf { it.nameWithoutExtension.endsWith(this.FILE_NAME_SUFFIX) }
-            ?.let(::KotlinSampleSource)
+        fun orNull(file: File): KotlinSampleSource? = try {
+            this.orThrow(file)
+        } catch (_: IllegalArgumentException) {
+            null
+        }
 
         /**
          * Returns a Kotlin sample source with the specified [file], or throws
@@ -70,13 +68,11 @@ internal value class KotlinSampleSource private constructor(
          * `Sample.kt`.
          */
         fun orThrow(file: File): KotlinSampleSource {
-            val expectedFileExtension: String = this.FILE_EXTENSION
-            require(file.extension == expectedFileExtension) {
-                "'$file' file extension must be '$expectedFileExtension'."
+            require(file.extension == "kt") {
+                "'$file' file extension must be 'kt'."
             }
-            val expectedNameSuffix: String = this.FILE_NAME_SUFFIX
-            require(file.nameWithoutExtension.endsWith(expectedNameSuffix)) {
-                "'$file' file name must be suffixed by '$expectedNameSuffix'."
+            require(file.nameWithoutExtension.endsWith("Sample")) {
+                "'$file' file name must be suffixed by 'Sample'."
             }
             return KotlinSampleSource(file)
         }
