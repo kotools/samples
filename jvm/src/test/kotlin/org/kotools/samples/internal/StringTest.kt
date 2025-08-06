@@ -162,6 +162,21 @@ class StringTest {
         assertFalse(actual)
     }
 
+    // --------------- String.isKotlinSingleExpressionFunction() ---------------
+
+    @Test
+    fun `isKotlinSingleExpressionFunction passes on Kotlin function with =`() {
+        val actual: Boolean =
+            "fun test() = Unit".isKotlinSingleExpressionFunction()
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `isKotlinSingleExpressionFunction fails on regular Kotlin function`() {
+        val actual: Boolean = "fun test() {".isKotlinSingleExpressionFunction()
+        assertFalse(actual)
+    }
+
     // ---------------------- String.kotlinFunctionName() ----------------------
 
     @Test
