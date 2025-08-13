@@ -1,8 +1,6 @@
 [*]
 charset = utf-8
 end_of_line = lf
-insert_final_newline = true
-max_line_length = 80
 ij_continuation_indent_size = 8
 ij_formatter_off_tag = @formatter:off
 ij_formatter_on_tag = @formatter:on
@@ -10,6 +8,9 @@ ij_formatter_tags_enabled = true
 ij_smart_tabs = false
 ij_visual_guides = 80, 90
 ij_wrap_on_typing = false
+insert_final_newline = true
+max_line_length = 80
+trim_trailing_whitespace = true
 
 [*.{kt,kts}]
 ij_kotlin_name_count_to_use_star_import = 999999
