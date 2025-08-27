@@ -16,11 +16,12 @@ internal value class KotlinSampleSource(
 ) {
     init {
         require(this.file.extension == "kt") {
-            "Kotlin sample source must have 'kt' file extension (input: $file)."
+            "Kotlin sample source must have 'kt' file extension (input: " +
+                    "${this.file})."
         }
         require(this.file.nameWithoutExtension.endsWith("Sample")) {
             "Kotlin sample source must have 'Sample' suffix in its file name " +
-                    "(input: $file)."
+                    "(input: ${this.file})."
         }
     }
 
