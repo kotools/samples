@@ -18,6 +18,3 @@ internal fun File.multipleClassesFound(): IllegalStateException =
 
 internal fun File.noPublicClassFound(): IllegalStateException =
     IllegalStateException("No public class found in '$this'.")
-
-internal fun File.singleExpressionKotlinFunctionFound(): IllegalStateException =
-    IllegalStateException("Single-expression Kotlin function found in '$this'.")

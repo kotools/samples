@@ -76,15 +76,4 @@ class FileTest {
         val expected = "No public class found in '$file'."
         assertEquals(expected, actual)
     }
-
-    // -------------- File.singleExpressionKotlinFunctionFound() ---------------
-
-    @Test
-    fun `singleExpressionKotlinFunctionFound passes on File`() {
-        val file = File("Sample.kt")
-        val actual: String? = file.singleExpressionKotlinFunctionFound()
-            .message
-        val expected = "Single-expression Kotlin function found in '$file'."
-        assertEquals(expected, actual)
-    }
 }
