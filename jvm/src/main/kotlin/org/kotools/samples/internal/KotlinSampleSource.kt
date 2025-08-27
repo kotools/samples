@@ -8,6 +8,9 @@ import java.io.File
  * @constructor Returns a Kotlin sample source with the specified [file], or
  * throws an [IllegalArgumentException] if the [file] has another extension than
  * `kt` or a name that is not suffixed by `Sample`.
+ *
+ * See the [KotlinSampleSource.Companion.orNull] function for returning `null`
+ * instead of throwing an exception in case of invalid [file].
  */
 @JvmInline
 internal value class KotlinSampleSource(
@@ -58,5 +61,16 @@ internal value class KotlinSampleSource(
     override fun toString(): String = "'${this.file}' Kotlin sample source"
 
     /** Contains static declarations for the [KotlinSampleSource] type. */
-    companion object
+    companion object {
+        /**
+         * Returns a Kotlin sample source with the specified [file], or returns
+         * `null` if the [file] has another extension than `kt` or a name that
+         * is not suffixed by `Sample`.
+         */
+        fun orNull(file: File): KotlinSampleSource? = try {
+            KotlinSampleSource(file)
+        } catch (_: IllegalArgumentException) {
+            null
+        }
+    }
 }
