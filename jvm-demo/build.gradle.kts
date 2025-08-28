@@ -13,6 +13,8 @@ kotlin {
 
 dependencies {
     implementation(platform(libs.kotlin.bom))
+
+    testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlin.test.junit5)
 }
 

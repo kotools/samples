@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.kotlin.gradle.plugin)
     implementation(libs.dokka.gradle.plugin)
 
+    testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlin.test.junit5)
 }
 
