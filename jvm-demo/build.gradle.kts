@@ -11,10 +11,6 @@ kotlin {
     jvmToolchain(17)
 }
 
-dependencies {
-    implementation(platform(libs.kotlin.bom))
-
-    testImplementation(libs.kotlin.test)
-}
+dependencies.testImplementation(libs.kotlin.test)
 
 tasks.test.configure(Test::useJUnitPlatform)
