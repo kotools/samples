@@ -67,10 +67,9 @@ internal value class KotlinSampleSource(
          * `null` if the [file] has another extension than `kt` or a name that
          * is not suffixed by `Sample`.
          */
-        fun orNull(file: File): KotlinSampleSource? = try {
-            KotlinSampleSource(file)
-        } catch (_: IllegalArgumentException) {
-            null
-        }
+        fun orNull(file: File): KotlinSampleSource? = file
+            .takeIf { it.extension == "kt" }
+            ?.takeIf { it.nameWithoutExtension.endsWith("Sample") }
+            ?.let(::KotlinSampleSource)
     }
 }
