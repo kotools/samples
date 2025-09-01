@@ -21,6 +21,13 @@ internal value class Error(
     /** Contains static declarations for the [Error] type. */
     companion object {
         /**
+         * Returns an error with the specified [message], or returns `null` if
+         * the [message] is [blank][String.isBlank].
+         */
+        fun orNull(message: String): Error? = message.takeIf(String::isNotBlank)
+            ?.let(::Error)
+
+        /**
          * Returns an error with the specified [message], or throws an
          * [IllegalArgumentException] if the [message] is
          * [blank][String.isBlank].
