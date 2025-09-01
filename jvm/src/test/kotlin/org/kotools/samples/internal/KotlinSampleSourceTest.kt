@@ -111,6 +111,37 @@ class KotlinSampleSourceTest {
         val source: KotlinSampleSource? = KotlinSampleSource.orNull(file)
         assertNull(source)
     }
+
+    // ------------------------ Companion.orThrow(File) ------------------------
+
+    @Test
+    fun `orThrow passes with 'Sample' suffix in Kotlin file's name`() {
+        val file = File("Sample.kt")
+        val source: KotlinSampleSource = KotlinSampleSource.orThrow(file)
+        assertEquals(expected = file, actual = source.file)
+    }
+
+    @Test
+    fun `orThrow fails with file having another extension than 'kt'`() {
+        val file = File("Sample.java")
+        val exception: IllegalArgumentException = assertFailsWith {
+            KotlinSampleSource.orThrow(file)
+        }
+        val expected =
+            "Kotlin sample source must have 'kt' file extension (input: $file)."
+        assertEquals(expected, actual = exception.message)
+    }
+
+    @Test
+    fun `orThrow fails without 'Sample' suffix in file's name`() {
+        val file = File("Test.kt")
+        val exception: IllegalArgumentException = assertFailsWith {
+            KotlinSampleSource.orThrow(file)
+        }
+        val expected = "Kotlin sample source must have 'Sample' suffix in " +
+                "its file name (input: $file)."
+        assertEquals(expected, actual = exception.message)
+    }
 }
 
 private fun KotlinSampleSource.Companion.fromResources(
