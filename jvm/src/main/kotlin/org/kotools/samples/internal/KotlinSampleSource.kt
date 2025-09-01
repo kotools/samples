@@ -42,19 +42,19 @@ internal value class KotlinSampleSource(
                 .toList()
         }
         if (classes.count() > 1)
-            return Error("Multiple classes found in ${this}.")
+            return Error.orThrow("Multiple classes found in ${this}.")
         val publicClassCount: Int = classes.count {
             it.startsWith("public class ") || it.startsWith("class ")
         }
         if (publicClassCount == 0)
-            return Error("No public class found in ${this}.")
+            return Error.orThrow("No public class found in ${this}.")
         val singleExpressionFunctionFound: Boolean = this.file.useLines {
             val regex = Regex("""fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
             it.map(String::trim)
                 .any(regex::containsMatchIn)
         }
         return if (singleExpressionFunctionFound)
-            Error("Single-expression function found in ${this}.")
+            Error.orThrow("Single-expression function found in ${this}.")
         else null
     }
 
