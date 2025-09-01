@@ -8,6 +8,27 @@ internal value class JavaSampleSource private constructor(
     /** The file of this Java sample source. */
     val file: File
 ) {
+    /**
+     * Checks the content of this Java sample source and returns `null` if no
+     * error was found. Returns an error if this sample source contains multiple
+     * classes, or if it doesn't contain a public class.
+     */
+    fun contentError(): Error? {
+        val classes: List<String> = this.file.useLines {
+            val regex = Regex("""class (?:[A-Z][a-z]*)+""")
+            it.map(String::trim)
+                .filter(regex::containsMatchIn)
+                .toList()
+        }
+        if (classes.count() > 1)
+            return Error.orThrow("Multiple classes found in ${this}.")
+        val publicClassCount: Int =
+            classes.count { it.startsWith("public class ") }
+        return if (publicClassCount == 0)
+            Error.orThrow("No public class found in ${this}.")
+        else null
+    }
+
     override fun toString(): String = "'${this.file}' Java sample source"
 
     /** Contains static declarations for the [JavaSampleSource] type. */

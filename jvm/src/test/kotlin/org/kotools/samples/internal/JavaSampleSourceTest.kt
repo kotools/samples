@@ -1,12 +1,44 @@
 package org.kotools.samples.internal
 
 import java.io.File
+import java.net.URI
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
+import kotlin.test.fail
 
 class JavaSampleSourceTest {
+    // ---------------------------- contentError() -----------------------------
+
+    @Test
+    fun `contentError passes without error`() {
+        val error: Error? = JavaSampleSource
+            .fromResources("SinglePublicClassJavaSample.java")
+            .contentError()
+        assertNull(error)
+    }
+
+    @Test
+    fun `contentError fails with multiple classes found`() {
+        val source: JavaSampleSource =
+            JavaSampleSource.fromResources("MultipleClassesJavaSample.java")
+        val actual: Error? = source.contentError()
+        val expected: Error =
+            Error.orThrow("Multiple classes found in ${source}.")
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `contentError fails with no public class found`() {
+        val source: JavaSampleSource = JavaSampleSource
+            .fromResources("NoPublicClassJavaSample.java")
+        val actual: Error? = source.contentError()
+        val expected: Error =
+            Error.orThrow("No public class found in ${source}.")
+        assertEquals(expected, actual)
+    }
+
     // ------------------------------ toString() -------------------------------
 
     @Test
@@ -70,4 +102,14 @@ class JavaSampleSourceTest {
                 "file name (input: $file)."
         assertEquals(expected, actual = exception.message)
     }
+}
+
+private fun JavaSampleSource.Companion.fromResources(
+    path: String
+): JavaSampleSource {
+    val uri: URI = this::class.java.getResource("/$path")
+        ?.toURI()
+        ?: fail("$path resource file not found.")
+    val file = File(uri)
+    return this.orThrow(file)
 }
