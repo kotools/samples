@@ -2,32 +2,12 @@ package org.kotools.samples.internal
 
 import java.io.File
 
-/**
- * Represents a sample source written in [Kotlin](https://kotlinlang.org).
- *
- * @constructor Returns a Kotlin sample source with the specified [file], or
- * throws an [IllegalArgumentException] if the [file] has another extension than
- * `kt` or a name that is not suffixed by `Sample`.
- *
- * See the [KotlinSampleSource.Companion.orNull] function for returning `null`
- * instead of throwing an exception in case of invalid [file].
- */
+/** Represents a sample source written in [Kotlin](https://kotlinlang.org). */
 @JvmInline
-internal value class KotlinSampleSource(
+internal value class KotlinSampleSource private constructor(
     /** The file of this Kotlin sample source. */
     val file: File
 ) {
-    init {
-        require(this.file.extension == "kt") {
-            "Kotlin sample source must have 'kt' file extension (input: " +
-                    "${this.file})."
-        }
-        require(this.file.nameWithoutExtension.endsWith("Sample")) {
-            "Kotlin sample source must have 'Sample' suffix in its file name " +
-                    "(input: ${this.file})."
-        }
-    }
-
     /**
      * Checks the content of this Kotlin sample source and returns `null` if no
      * error was found. Returns an error if this sample source contains multiple

@@ -9,35 +9,6 @@ import kotlin.test.assertNull
 import kotlin.test.fail
 
 class KotlinSampleSourceTest {
-    // --------------------------- constructor(File) ---------------------------
-
-    @Test
-    fun `constructor passes with 'Sample' suffix in Kotlin file's name`() {
-        val file = File("Sample.kt")
-        val source = KotlinSampleSource(file)
-        assertEquals(expected = file, actual = source.file)
-    }
-
-    @Test
-    fun `constructor fails with file having another extension than 'kt'`() {
-        val file = File("Sample.java")
-        val exception: IllegalArgumentException =
-            assertFailsWith { KotlinSampleSource(file) }
-        val expected =
-            "Kotlin sample source must have 'kt' file extension (input: $file)."
-        assertEquals(expected, actual = exception.message)
-    }
-
-    @Test
-    fun `constructor fails without 'Sample' suffix in file's name`() {
-        val file = File("Test.kt")
-        val exception: IllegalArgumentException =
-            assertFailsWith { KotlinSampleSource(file) }
-        val expected = "Kotlin sample source must have 'Sample' suffix in " +
-                "its file name (input: $file)."
-        assertEquals(expected, actual = exception.message)
-    }
-
     // ---------------------------- contentError() -----------------------------
 
     @Test
@@ -83,7 +54,7 @@ class KotlinSampleSourceTest {
     @Test
     fun `toString passes`() {
         val file = File("Sample.kt")
-        val actual: String = KotlinSampleSource(file)
+        val actual: String = KotlinSampleSource.orThrow(file)
             .toString()
         val expected = "'$file' Kotlin sample source"
         assertEquals(expected, actual)
@@ -151,5 +122,5 @@ private fun KotlinSampleSource.Companion.fromResources(
         ?.toURI()
         ?: fail("$path resource file not found.")
     val file = File(uri)
-    return KotlinSampleSource(file)
+    return this.orThrow(file)
 }
