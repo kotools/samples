@@ -4,6 +4,7 @@ import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
 
 class JavaSampleSourceTest {
     // ------------------------------ toString() -------------------------------
@@ -14,6 +15,29 @@ class JavaSampleSourceTest {
         val actual: String = JavaSampleSource.orThrow(file)
             .toString()
         assertEquals(expected = "'$file' Java sample source", actual)
+    }
+
+    // ------------------------ Companion.orNull(File) -------------------------
+
+    @Test
+    fun `orNull passes with 'Sample' suffix in Java file's name`() {
+        val file = File("Sample.java")
+        val source: JavaSampleSource? = JavaSampleSource.orNull(file)
+        assertEquals(expected = file, actual = source?.file)
+    }
+
+    @Test
+    fun `orNull fails with file having another extension than 'java'`() {
+        val file = File("Sample.txt")
+        val source: JavaSampleSource? = JavaSampleSource.orNull(file)
+        assertNull(source)
+    }
+
+    @Test
+    fun `orNull fails without 'Sample' suffix in file's name`() {
+        val file = File("Test.java")
+        val source: JavaSampleSource? = JavaSampleSource.orNull(file)
+        assertNull(source)
     }
 
     // ------------------------ Companion.orThrow(File) ------------------------

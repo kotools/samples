@@ -13,6 +13,16 @@ internal value class JavaSampleSource private constructor(
     /** Contains static declarations for the [JavaSampleSource] type. */
     companion object {
         /**
+         * Returns a Java sample source with the specified [file], or returns
+         * `null` if the [file] has another extension than `java` or a name that
+         * is not suffixed by `Sample`.
+         */
+        fun orNull(file: File): JavaSampleSource? = file
+            .takeIf { it.extension == "java" }
+            ?.takeIf { it.nameWithoutExtension.endsWith("Sample") }
+            ?.let(::JavaSampleSource)
+
+        /**
          * Returns a Java sample source with the specified [file], or throws an
          * [IllegalArgumentException] if the [file] has another extension than
          * `java` or a name that is not suffixed by `Sample`.
