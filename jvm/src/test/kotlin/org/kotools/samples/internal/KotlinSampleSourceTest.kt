@@ -4,10 +4,27 @@ import java.io.File
 import java.net.URI
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.fail
 
 class KotlinSampleSourceTest {
+    // ------------------- File.toKotlinSampleSourceOrNull() -------------------
+
+    @Test
+    fun toKotlinSampleSourceOrNullPassesOnFileNameEndingWithSampleKt() {
+        val actual: KotlinSampleSource? = File("Sample.kt")
+            .toKotlinSampleSourceOrNull()
+        assertNotNull(actual)
+    }
+
+    @Test
+    fun toKotlinSampleSourceOrNullFailsOnFileNameNotEndingWithSampleKt() {
+        val actual: KotlinSampleSource? = File("Sample.java")
+            .toKotlinSampleSourceOrNull()
+        assertNull(actual)
+    }
+
     // ---------------------------- contentError() -----------------------------
 
     @Test

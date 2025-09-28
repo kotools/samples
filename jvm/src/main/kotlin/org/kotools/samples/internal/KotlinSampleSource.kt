@@ -2,9 +2,21 @@ package org.kotools.samples.internal
 
 import java.io.File
 
+// ----------------------------- Factory functions -----------------------------
+
+/**
+ * Returns a Kotlin sample source with this file, or returns `null` if this
+ * file's name doesn't end with `Sample.kt`.
+ */
+internal fun File.toKotlinSampleSourceOrNull(): KotlinSampleSource? = this
+    .takeIf { it.name.endsWith("Sample.kt") }
+    ?.let(::KotlinSampleSource)
+
+// ----------------------------------- Type ------------------------------------
+
 /** Represents a sample source written in [Kotlin](https://kotlinlang.org). */
 @JvmInline
-internal value class KotlinSampleSource private constructor(
+internal value class KotlinSampleSource internal constructor(
     /** The file of this Kotlin sample source. */
     val file: File
 ) {
