@@ -4,7 +4,6 @@ import java.io.File
 import java.net.URI
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlin.test.fail
 
@@ -54,8 +53,9 @@ class KotlinSampleSourceTest {
     @Test
     fun `toString passes`() {
         val file = File("Sample.kt")
-        val actual: String = KotlinSampleSource.orThrow(file)
-            .toString()
+        val source: KotlinSampleSource = KotlinSampleSource.orNull(file)
+            ?: fail("$file is not a Kotlin sample source.")
+        val actual: String = source.toString()
         val expected = "'$file' Kotlin sample source"
         assertEquals(expected, actual)
     }
@@ -82,37 +82,6 @@ class KotlinSampleSourceTest {
         val source: KotlinSampleSource? = KotlinSampleSource.orNull(file)
         assertNull(source)
     }
-
-    // ------------------------ Companion.orThrow(File) ------------------------
-
-    @Test
-    fun `orThrow passes with 'Sample' suffix in Kotlin file's name`() {
-        val file = File("Sample.kt")
-        val source: KotlinSampleSource = KotlinSampleSource.orThrow(file)
-        assertEquals(expected = file, actual = source.file)
-    }
-
-    @Test
-    fun `orThrow fails with file having another extension than 'kt'`() {
-        val file = File("Sample.java")
-        val exception: IllegalArgumentException = assertFailsWith {
-            KotlinSampleSource.orThrow(file)
-        }
-        val expected =
-            "Kotlin sample source must have 'kt' file extension (input: $file)."
-        assertEquals(expected, actual = exception.message)
-    }
-
-    @Test
-    fun `orThrow fails without 'Sample' suffix in file's name`() {
-        val file = File("Test.kt")
-        val exception: IllegalArgumentException = assertFailsWith {
-            KotlinSampleSource.orThrow(file)
-        }
-        val expected = "Kotlin sample source must have 'Sample' suffix in " +
-                "its file name (input: $file)."
-        assertEquals(expected, actual = exception.message)
-    }
 }
 
 private fun KotlinSampleSource.Companion.fromResources(
@@ -122,5 +91,5 @@ private fun KotlinSampleSource.Companion.fromResources(
         ?.toURI()
         ?: fail("$path resource file not found.")
     val file = File(uri)
-    return this.orThrow(file)
+    return this.orNull(file) ?: fail("$file is not a Kotlin sample source.")
 }

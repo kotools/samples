@@ -51,22 +51,5 @@ internal value class KotlinSampleSource private constructor(
             .takeIf { it.extension == "kt" }
             ?.takeIf { it.nameWithoutExtension.endsWith("Sample") }
             ?.let(::KotlinSampleSource)
-
-        /**
-         * Returns a Kotlin sample source with the specified [file], or throws
-         * an [IllegalArgumentException] if the [file] has another extension
-         * than `kt` or a name that is not suffixed by `Sample`.
-         */
-        fun orThrow(file: File): KotlinSampleSource {
-            require(file.extension == "kt") {
-                "Kotlin sample source must have 'kt' file extension (input: " +
-                        "$file)."
-            }
-            require(file.nameWithoutExtension.endsWith("Sample")) {
-                "Kotlin sample source must have 'Sample' suffix in its file " +
-                        "name (input: $file)."
-            }
-            return KotlinSampleSource(file)
-        }
     }
 }
