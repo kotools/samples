@@ -10,6 +10,7 @@ import org.gradle.work.DisableCachingByDefault
 import org.kotools.samples.internal.Error
 import org.kotools.samples.internal.JavaSampleSource
 import org.kotools.samples.internal.KotlinSampleSource
+import org.kotools.samples.internal.contentError
 import org.kotools.samples.internal.toKotlinSampleSourceOrNull
 import java.io.File
 

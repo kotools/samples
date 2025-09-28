@@ -1,7 +1,6 @@
 package org.kotools.samples.internal
 
 import java.io.File
-import java.net.URI
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -25,46 +24,6 @@ class KotlinSampleSourceTest {
         assertNull(actual)
     }
 
-    // ---------------------------- contentError() -----------------------------
-
-    @Test
-    fun `contentError passes without error`() {
-        val error: Error? = KotlinSampleSource
-            .fromResources("SinglePublicClassKotlinSample.kt")
-            .contentError()
-        assertNull(error)
-    }
-
-    @Test
-    fun `contentError fails with multiple classes found`() {
-        val source: KotlinSampleSource =
-            KotlinSampleSource.fromResources("MultipleClassesKotlinSample.kt")
-        val error: Error? = source.contentError()
-        val expected: Error =
-            Error.orThrow("Multiple classes found in ${source}.")
-        assertEquals(expected, actual = error)
-    }
-
-    @Test
-    fun `contentError fails with no public class found`() {
-        val source: KotlinSampleSource =
-            KotlinSampleSource.fromResources("NoPublicClassKotlinSample.kt")
-        val error: Error? = source.contentError()
-        val expected: Error =
-            Error.orThrow("No public class found in ${source}.")
-        assertEquals(expected, actual = error)
-    }
-
-    @Test
-    fun `contentError fails with single-expression function found`() {
-        val source: KotlinSampleSource = KotlinSampleSource
-            .fromResources("SingleExpressionFunctionKotlinSample.kt")
-        val error: Error? = source.contentError()
-        val expected: Error =
-            Error.orThrow("Single-expression function found in ${source}.")
-        assertEquals(expected, actual = error)
-    }
-
     // ------------------------------ toString() -------------------------------
 
     @Test
@@ -76,15 +35,52 @@ class KotlinSampleSourceTest {
         val expected = "'$file' Kotlin sample source"
         assertEquals(expected, actual)
     }
+
+    // ---------------------------- contentError() -----------------------------
+
+    @Test
+    fun `contentError passes without error`() {
+        val error: Error? = "SinglePublicClassKotlinSample.kt"
+            .resourceToKotlinSampleSource()
+            .contentError()
+        assertNull(error)
+    }
+
+    @Test
+    fun `contentError fails with multiple classes found`() {
+        val source: KotlinSampleSource =
+            "MultipleClassesKotlinSample.kt".resourceToKotlinSampleSource()
+        val error: Error? = source.contentError()
+        val expected: Error =
+            Error.orThrow("Multiple classes found in ${source}.")
+        assertEquals(expected, actual = error)
+    }
+
+    @Test
+    fun `contentError fails with no public class found`() {
+        val source: KotlinSampleSource =
+            "NoPublicClassKotlinSample.kt".resourceToKotlinSampleSource()
+        val error: Error? = source.contentError()
+        val expected: Error =
+            Error.orThrow("No public class found in ${source}.")
+        assertEquals(expected, actual = error)
+    }
+
+    @Test
+    fun `contentError fails with single-expression function found`() {
+        val source: KotlinSampleSource =
+            "SingleExpressionFunctionKotlinSample.kt"
+                .resourceToKotlinSampleSource()
+        val error: Error? = source.contentError()
+        val expected: Error =
+            Error.orThrow("Single-expression function found in ${source}.")
+        assertEquals(expected, actual = error)
+    }
 }
 
-private fun KotlinSampleSource.Companion.fromResources(
-    path: String
-): KotlinSampleSource {
-    val uri: URI = this::class.java.getResource("/$path")
+private fun String.resourceToKotlinSampleSource(): KotlinSampleSource =
+    KotlinSampleSource::class.java.getResource("/$this")
         ?.toURI()
-        ?: fail("$path resource file not found.")
-    val file = File(uri)
-    return file.toKotlinSampleSourceOrNull()
-        ?: fail("$file is not a Kotlin sample source.")
-}
+        ?.let(::File)
+        ?.toKotlinSampleSourceOrNull()
+        ?: fail("$this Kotlin sample source not found from resources.")
