@@ -38,19 +38,16 @@ internal fun KotlinSampleSource.contentError(): Error? {
             .filter(regex::containsMatchIn)
             .toList()
     }
-    if (classes.count() > 1)
-        return "Multiple classes found in ${this}.".toError()
+    if (classes.count() > 1) return Error("Multiple classes found in ${this}.")
     val publicClassCount: Int = classes.count {
         it.startsWith("public class ") || it.startsWith("class ")
     }
-    if (publicClassCount == 0)
-        return "No public class found in ${this}.".toError()
+    if (publicClassCount == 0) return Error("No public class found in ${this}.")
     val singleExpressionFunctionFound: Boolean = this.file.useLines {
         val regex = Regex("""fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
         it.map(String::trim)
             .any(regex::containsMatchIn)
     }
-    return if (singleExpressionFunctionFound)
-        "Single-expression function found in ${this}.".toError()
-    else null
+    return if (!singleExpressionFunctionFound) null
+    else Error("Single-expression function found in ${this}.")
 }

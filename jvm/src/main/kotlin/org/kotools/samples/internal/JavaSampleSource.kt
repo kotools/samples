@@ -21,11 +21,11 @@ internal value class JavaSampleSource private constructor(
                 .toList()
         }
         if (classes.count() > 1)
-            return "Multiple classes found in ${this}.".toError()
+            return Error("Multiple classes found in ${this}.")
         val publicClassCount: Int =
             classes.count { it.startsWith("public class ") }
         return if (publicClassCount == 0)
-            "No public class found in ${this}.".toError()
+            Error("No public class found in ${this}.")
         else null
     }
 
