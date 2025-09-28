@@ -24,8 +24,7 @@ class JavaSampleSourceTest {
         val source: JavaSampleSource =
             JavaSampleSource.fromResources("MultipleClassesJavaSample.java")
         val actual: Error? = source.contentError()
-        val expected: Error =
-            Error.orThrow("Multiple classes found in ${source}.")
+        val expected: Error = "Multiple classes found in ${source}.".toError()
         assertEquals(expected, actual)
     }
 
@@ -34,8 +33,7 @@ class JavaSampleSourceTest {
         val source: JavaSampleSource = JavaSampleSource
             .fromResources("NoPublicClassJavaSample.java")
         val actual: Error? = source.contentError()
-        val expected: Error =
-            Error.orThrow("No public class found in ${source}.")
+        val expected: Error = "No public class found in ${source}.".toError()
         assertEquals(expected, actual)
     }
 

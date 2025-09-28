@@ -51,8 +51,7 @@ class KotlinSampleSourceTest {
         val source: KotlinSampleSource =
             "MultipleClassesKotlinSample.kt".resourceToKotlinSampleSource()
         val error: Error? = source.contentError()
-        val expected: Error =
-            Error.orThrow("Multiple classes found in ${source}.")
+        val expected: Error = "Multiple classes found in ${source}.".toError()
         assertEquals(expected, actual = error)
     }
 
@@ -61,8 +60,7 @@ class KotlinSampleSourceTest {
         val source: KotlinSampleSource =
             "NoPublicClassKotlinSample.kt".resourceToKotlinSampleSource()
         val error: Error? = source.contentError()
-        val expected: Error =
-            Error.orThrow("No public class found in ${source}.")
+        val expected: Error = "No public class found in ${source}.".toError()
         assertEquals(expected, actual = error)
     }
 
@@ -73,7 +71,7 @@ class KotlinSampleSourceTest {
                 .resourceToKotlinSampleSource()
         val error: Error? = source.contentError()
         val expected: Error =
-            Error.orThrow("Single-expression function found in ${source}.")
+            "Single-expression function found in ${source}.".toError()
         assertEquals(expected, actual = error)
     }
 }
