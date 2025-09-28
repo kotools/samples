@@ -21,9 +21,6 @@ internal value class KotlinSampleSource internal constructor(
     val file: File
 ) {
     override fun toString(): String = "'${this.file}' Kotlin sample source"
-
-    /** Contains static declarations for the [KotlinSampleSource] type. */
-    companion object
 }
 
 // ------------------------------ File operations ------------------------------
