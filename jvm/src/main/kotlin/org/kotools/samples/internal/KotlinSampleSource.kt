@@ -53,15 +53,5 @@ internal value class KotlinSampleSource internal constructor(
     override fun toString(): String = "'${this.file}' Kotlin sample source"
 
     /** Contains static declarations for the [KotlinSampleSource] type. */
-    companion object {
-        /**
-         * Returns a Kotlin sample source with the specified [file], or returns
-         * `null` if the [file] has another extension than `kt` or a name that
-         * is not suffixed by `Sample`.
-         */
-        fun orNull(file: File): KotlinSampleSource? = file
-            .takeIf { it.extension == "kt" }
-            ?.takeIf { it.nameWithoutExtension.endsWith("Sample") }
-            ?.let(::KotlinSampleSource)
-    }
+    companion object
 }
