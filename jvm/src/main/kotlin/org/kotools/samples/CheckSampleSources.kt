@@ -10,6 +10,7 @@ import org.gradle.work.DisableCachingByDefault
 import org.kotools.samples.internal.Error
 import org.kotools.samples.internal.JavaSampleSource
 import org.kotools.samples.internal.KotlinSampleSource
+import org.kotools.samples.internal.toKotlinSampleSourceOrNull
 import java.io.File
 
 /**
@@ -34,7 +35,7 @@ public abstract class CheckSampleSources : DefaultTask() {
         val files: Sequence<File> = this.sourceDirectory.asFileTree.asSequence()
             .filterNotNull()
         val kotlinContentErrors: Sequence<Error> = files
-            .mapNotNull(KotlinSampleSource.Companion::orNull)
+            .mapNotNull(File::toKotlinSampleSourceOrNull)
             .mapNotNull(KotlinSampleSource::contentError)
         val javaContentErrors: Sequence<Error> = files
             .mapNotNull(JavaSampleSource.Companion::orNull)
