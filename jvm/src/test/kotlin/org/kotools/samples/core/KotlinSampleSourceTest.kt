@@ -2,7 +2,9 @@ package org.kotools.samples.core
 
 import java.io.File
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class KotlinSampleSourceTest {
@@ -45,4 +47,59 @@ class KotlinSampleSourceTest {
     @Test
     fun `isFunction fails without fun Kotlin keyword in line`(): Unit =
         assertFalse { KotlinSampleSource.isFunction(line = "val one: Int = 1") }
+
+    // ---------------- classFunctionError(File, List<String>) -----------------
+
+    @Test
+    fun classFunctionErrorPassesWithSinglePublicClassInDeclarations() {
+        val file = File("Sample.kt")
+        val declarations: List<String> = listOf(
+            "class IntegersKotlinSample {",
+            "fun takeIfPositive() {"
+        )
+        val actual: String? =
+            KotlinSampleSource.classFunctionError(file, declarations)
+        assertNull(actual)
+    }
+
+    @Test
+    fun classFunctionErrorFailsWithMultipleClassesInDeclarations() {
+        val file = File("Sample.kt")
+        val declarations: List<String> = listOf(
+            "class FirstClass {",
+            "class SecondClass {"
+        )
+        val actual: String? =
+            KotlinSampleSource.classFunctionError(file, declarations)
+        val expected =
+            "Multiple classes found in '${file.name}' Kotlin sample source."
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun classFunctionErrorFailsWithNoPublicClassInDeclarations() {
+        val file = File("Sample.kt")
+        val declarations: List<String> = listOf(
+            "internal class InternalClass {"
+        )
+        val actual: String? =
+            KotlinSampleSource.classFunctionError(file, declarations)
+        val expected =
+            "No public class found in '${file.name}' Kotlin sample source."
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun classFunctionErrorFailsWithSingleExpressionFunctionInDeclarations() {
+        val file = File("Sample.kt")
+        val declarations: List<String> = listOf(
+            "class Sample {",
+            "fun singleExpressionTest() = Unit"
+        )
+        val actual: String? =
+            KotlinSampleSource.classFunctionError(file, declarations)
+        val expected = "Single-expression function found in '${file.name}' " +
+                "Kotlin sample source."
+        assertEquals(expected, actual)
+    }
 }
