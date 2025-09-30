@@ -15,4 +15,10 @@ internal object KotlinSampleSource {
      * keyword, or returns `false` otherwise.
      */
     fun isClass(line: String): Boolean = "class " in line
+
+    /**
+     * Returns `true` if the specified [line] contains the `fun` Kotlin keyword,
+     * or returns `false` otherwise.
+     */
+    fun isFunction(line: String): Boolean = "fun " in line
 }

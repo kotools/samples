@@ -35,4 +35,14 @@ class KotlinSampleSourceTest {
     @Test
     fun `isClass fails without class Kotlin keyword in line`(): Unit =
         assertFalse { KotlinSampleSource.isClass(line = "val one: Int = 1") }
+
+    // -------------------------- isFunction(String) ---------------------------
+
+    @Test
+    fun `isFunction passes with fun Kotlin keyword in line`(): Unit =
+        assertTrue { KotlinSampleSource.isFunction(line = "fun test() = Unit") }
+
+    @Test
+    fun `isFunction fails without fun Kotlin keyword in line`(): Unit =
+        assertFalse { KotlinSampleSource.isFunction(line = "val one: Int = 1") }
 }
