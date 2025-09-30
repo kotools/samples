@@ -11,21 +11,18 @@ class KotlinSampleSourceTest {
     @Test
     fun `isValid passes with sample suffix and kt extension in file name`() {
         val file = File("Sample.kt")
-        val actual: Boolean = KotlinSampleSource.isValid(file)
-        assertTrue(actual)
+        assertTrue { KotlinSampleSource.isValid(file) }
     }
 
     @Test
     fun `isValid fails without sample suffix in file name`() {
         val file = File("Test.kt")
-        val actual: Boolean = KotlinSampleSource.isValid(file)
-        assertFalse(actual)
+        assertFalse { KotlinSampleSource.isValid(file) }
     }
 
     @Test
     fun `isValid fails without kt extension in file name`() {
         val file = File("Sample.java")
-        val actual: Boolean = KotlinSampleSource.isValid(file)
-        assertFalse(actual)
+        assertFalse { KotlinSampleSource.isValid(file) }
     }
 }
