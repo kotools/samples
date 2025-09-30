@@ -25,4 +25,14 @@ class KotlinSampleSourceTest {
         val file = File("Sample.java")
         assertFalse { KotlinSampleSource.isValid(file) }
     }
+
+    // ---------------------------- isClass(String) ----------------------------
+
+    @Test
+    fun `isClass passes with class Kotlin keyword in line`(): Unit =
+        assertTrue { KotlinSampleSource.isClass(line = "class A") }
+
+    @Test
+    fun `isClass fails without class Kotlin keyword in line`(): Unit =
+        assertFalse { KotlinSampleSource.isClass(line = "val one: Int = 1") }
 }

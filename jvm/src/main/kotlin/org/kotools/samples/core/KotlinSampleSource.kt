@@ -9,4 +9,10 @@ internal object KotlinSampleSource {
      * `Sample.kt`, or returns `false` otherwise.
      */
     fun isValid(file: File): Boolean = file.name.endsWith("Sample.kt")
+
+    /**
+     * Returns `true` if the specified [line] contains the `class` Kotlin
+     * keyword, or returns `false` otherwise.
+     */
+    fun isClass(line: String): Boolean = "class " in line
 }
