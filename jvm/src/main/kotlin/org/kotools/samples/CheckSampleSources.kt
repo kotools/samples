@@ -7,11 +7,8 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
-import org.kotools.samples.internal.Error
+import org.kotools.samples.core.KotlinSampleSource
 import org.kotools.samples.internal.JavaSampleSource
-import org.kotools.samples.internal.KotlinSampleSource
-import org.kotools.samples.internal.contentError
-import org.kotools.samples.internal.toKotlinSampleSourceOrNull
 import java.io.File
 
 /**
@@ -35,18 +32,32 @@ public abstract class CheckSampleSources : DefaultTask() {
     internal fun execute() {
         val files: Sequence<File> = this.sourceDirectory.asFileTree.asSequence()
             .filterNotNull()
-        val kotlinContentErrors: Sequence<Error> = files
-            .mapNotNull(File::toKotlinSampleSourceOrNull)
-            .mapNotNull(KotlinSampleSource::contentError)
-        val javaContentErrors: Sequence<Error> = files
+        val kotlinErrorFound: Boolean = files
+            .filter(KotlinSampleSource::isValid)
+            .associateWith(File::kotlinClassesAndFunctions)
+            .mapNotNull {
+                KotlinSampleSource.classFunctionError(it.key, it.value)
+            }
+            .onEach(this.logger::error)
+            .any()
+        val javaErrorFound: Boolean = files
             .mapNotNull(JavaSampleSource.Companion::orNull)
             .mapNotNull(JavaSampleSource::contentError)
-        val contentErrorFound: Boolean = kotlinContentErrors
-            .plus(javaContentErrors)
             .onEach { this.logger.error(it.message) }
             .toSet()
             .any()
-        if (contentErrorFound)
+        if (kotlinErrorFound || javaErrorFound)
             error("Errors found while checking the content of sample sources.")
     }
 }
+
+private fun File.kotlinClassesAndFunctions(): List<String> =
+    this.useLines { lines: Sequence<String> ->
+        lines.filter(String::isKotlinClassOrFunction)
+            .map(String::trim)
+            .toList()
+    }
+
+private fun String.isKotlinClassOrFunction(): Boolean =
+    KotlinSampleSource.isClass(line = this)
+            || KotlinSampleSource.isFunction(line = this)
