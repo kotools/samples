@@ -51,9 +51,8 @@ public abstract class CheckSampleSources : DefaultTask() {
     }
 }
 
-private fun File.kotlinClassesAndFunctions(): List<String> =
-    this.useLines { lines: Sequence<String> ->
-        lines.filter(KotlinSampleSource::isClassOrFunction)
-            .map(String::trim)
-            .toList()
-    }
+private fun File.kotlinClassesAndFunctions(): List<String> = this.useLines {
+    it.filter(KotlinSampleSource::isClassOrFunction)
+        .map(String::trim)
+        .toList()
+}
