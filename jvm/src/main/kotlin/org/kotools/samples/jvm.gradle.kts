@@ -7,19 +7,20 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 // ----------------------------- Script properties -----------------------------
 
-private val projectSources: Directory = layout.projectDirectory.dir("src")
+private val srcDirectory: Directory = layout.projectDirectory.dir("src")
 
-private val output: Provider<Directory> =
+private val kotoolsSamplesDirectory: Provider<Directory> =
     layout.buildDirectory.dir("kotools-samples")
-private val sourcesBackup: Provider<Directory> =
-    output.map { it.dir("sources-backup") }
+
+private val sourcesBackupDirectory: Provider<Directory> =
+    kotoolsSamplesDirectory.map { it.dir("sources-backup") }
 
 // ----------------------------------- Tasks -----------------------------------
 
 private val checkSampleSources: TaskProvider<CheckSampleSources> by tasks
     .registering(CheckSampleSources::class) {
         this.description = "Checks the content of sample sources."
-        this.sourceDirectory = projectSources.dir("test")
+        this.sourceDirectory = srcDirectory.dir("test")
     }
 
 private val extractSamples: TaskProvider<ExtractSamples> by tasks.registering(
@@ -27,14 +28,14 @@ private val extractSamples: TaskProvider<ExtractSamples> by tasks.registering(
 ) {
     this.description = "Extracts samples from sources."
     this.dependsOn(checkSampleSources)
-    this.sourceDirectory = projectSources.dir("test")
-    this.outputDirectory = output.map { it.dir("extracted") }
+    this.sourceDirectory = srcDirectory.dir("test")
+    this.outputDirectory = kotoolsSamplesDirectory.map { it.dir("extracted") }
 }
 
 private val checkSampleReferences: TaskProvider<CheckSampleReferences> by tasks
     .registering(CheckSampleReferences::class) {
         this.description = "Checks sample references from main sources."
-        this.sourceDirectory = projectSources.dir("main")
+        this.sourceDirectory = srcDirectory.dir("main")
         this.extractedSamplesDirectory =
             extractSamples.flatMap(ExtractSamples::outputDirectory)
     }
@@ -43,7 +44,7 @@ private val cleanMainSourcesBackup: TaskProvider<Delete> by tasks.registering(
     Delete::class
 ) {
     this.description = "Deletes main sources backup from the build directory."
-    this.setDelete(sourcesBackup)
+    this.setDelete(sourcesBackupDirectory)
 }
 
 private val backupMainSources: TaskProvider<Copy> by tasks.registering(
@@ -51,8 +52,8 @@ private val backupMainSources: TaskProvider<Copy> by tasks.registering(
 ) {
     this.description = "Copies main sources into the build directory."
     this.dependsOn(checkSampleReferences, cleanMainSourcesBackup)
-    this.from(projectSources) { exclude("api", "sample", "test") }
-    this.into(sourcesBackup)
+    this.from(srcDirectory) { exclude("api", "sample", "test") }
+    this.into(sourcesBackupDirectory)
 }
 
 private val inlineSamples: TaskProvider<InlineSamples> by tasks.registering(
@@ -60,7 +61,7 @@ private val inlineSamples: TaskProvider<InlineSamples> by tasks.registering(
 ) {
     this.description = "Inlines samples in main sources."
     this.dependsOn(backupMainSources)
-    this.sourceDirectory = projectSources.dir("main")
+    this.sourceDirectory = srcDirectory.dir("main")
     this.extractedSamplesDirectory =
         extractSamples.flatMap(ExtractSamples::outputDirectory)
 }
@@ -69,8 +70,8 @@ private val restoreMainSources: TaskProvider<Copy> by tasks.registering(
     Copy::class
 ) {
     this.description = "Restores main sources backup from the build directory."
-    this.from(sourcesBackup)
-    this.into(projectSources)
+    this.from(sourcesBackupDirectory)
+    this.into(srcDirectory)
     this.outputs.upToDateWhen { false }
 }
 
