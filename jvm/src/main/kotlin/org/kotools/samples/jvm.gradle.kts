@@ -19,57 +19,47 @@ private val sourcesBackupDirectory: Provider<Directory> =
 
 private val checkSampleSources: TaskProvider<CheckSampleSources> by tasks
     .registering(CheckSampleSources::class) {
-        this.description = "Checks the content of sample sources."
         this.sourceDirectory = srcDirectory.dir("test")
     }
 
 private val extractSamples: TaskProvider<ExtractSamples> by tasks.registering(
     ExtractSamples::class
 ) {
-    this.description = "Extracts samples from sources."
-    this.dependsOn(checkSampleSources)
     this.sourceDirectory = srcDirectory.dir("test")
     this.outputDirectory = kotoolsSamplesDirectory.map { it.dir("extracted") }
+    this.dependsOn(checkSampleSources)
 }
 
 private val checkSampleReferences: TaskProvider<CheckSampleReferences> by tasks
     .registering(CheckSampleReferences::class) {
-        this.description = "Checks sample references from main sources."
         this.sourceDirectory = srcDirectory.dir("main")
         this.extractedSamplesDirectory =
             extractSamples.flatMap(ExtractSamples::outputDirectory)
     }
 
-private val cleanMainSourcesBackup: TaskProvider<Delete> by tasks.registering(
-    Delete::class
-) {
-    this.description = "Deletes main sources backup from the build directory."
-    this.setDelete(sourcesBackupDirectory)
-}
+private val cleanMainSourcesBackup: TaskProvider<Delete> by tasks
+    .registering(Delete::class) { this.setDelete(sourcesBackupDirectory) }
 
 private val backupMainSources: TaskProvider<Copy> by tasks.registering(
     Copy::class
 ) {
-    this.description = "Copies main sources into the build directory."
-    this.dependsOn(checkSampleReferences, cleanMainSourcesBackup)
     this.from(srcDirectory) { exclude("api", "sample", "test") }
     this.into(sourcesBackupDirectory)
+    this.dependsOn(checkSampleReferences, cleanMainSourcesBackup)
 }
 
 private val inlineSamples: TaskProvider<InlineSamples> by tasks.registering(
     InlineSamples::class
 ) {
-    this.description = "Inlines samples in main sources."
-    this.dependsOn(backupMainSources)
     this.sourceDirectory = srcDirectory.dir("main")
     this.extractedSamplesDirectory =
         extractSamples.flatMap(ExtractSamples::outputDirectory)
+    this.dependsOn(backupMainSources)
 }
 
 private val restoreMainSources: TaskProvider<Copy> by tasks.registering(
     Copy::class
 ) {
-    this.description = "Restores main sources backup from the build directory."
     this.from(sourcesBackupDirectory)
     this.into(srcDirectory)
     this.outputs.upToDateWhen { false }
