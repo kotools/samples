@@ -1,4 +1,4 @@
-package org.kotools.samples.core
+package org.kotools.samples.internal
 
 import java.io.File
 

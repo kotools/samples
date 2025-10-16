@@ -7,8 +7,8 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
-import org.kotools.samples.core.KotlinSampleSource
 import org.kotools.samples.internal.JavaSampleSource
+import org.kotools.samples.internal.KotlinSampleSource
 import java.io.File
 
 /**
