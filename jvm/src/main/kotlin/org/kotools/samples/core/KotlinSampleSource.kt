@@ -30,19 +30,22 @@ internal object KotlinSampleSource {
      */
     fun classFunctionError(file: File, declarations: List<String>): String? {
         val classes: List<String> = declarations.filter(this::isClass)
-        if (classes.count() > 1) return "Multiple classes found in " +
-                "'${file.name}' Kotlin sample source."
+        if (classes.count() > 1)
+            return "Multiple classes found in ${this.toString(file)}."
         val publicClassCount: Int = classes.count {
             it.startsWith("public class ") || it.startsWith("class ")
         }
-        if (publicClassCount == 0) return "No public class found in " +
-                "'${file.name}' Kotlin sample source."
+        if (publicClassCount == 0)
+            return "No public class found in ${this.toString(file)}."
         val regex = Regex("""fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
         val singleExpressionFunctionFound: Boolean = declarations
             .filter(this::isFunction)
             .any(regex::containsMatchIn)
-        return if (singleExpressionFunctionFound) "Single-expression " +
-                "function found in '${file.name}' Kotlin sample source."
+        return if (singleExpressionFunctionFound)
+            "Single-expression function found in ${this.toString(file)}."
         else null
     }
+
+    private fun toString(file: File): String =
+        "'${file.name}' Kotlin sample source"
 }
