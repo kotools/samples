@@ -28,25 +28,23 @@ class KotlinSampleSourceTest {
         assertFalse { KotlinSampleSource.isValid(file) }
     }
 
-    // ---------------------------- isClass(String) ----------------------------
+    // ----------------------- isClassOrFunction(String) -----------------------
 
     @Test
-    fun `isClass passes with class Kotlin keyword in line`(): Unit =
-        assertTrue { KotlinSampleSource.isClass(line = "class A") }
+    fun isClassOrFunctionPassesWithClassKotlinKeywordInLine(): Unit =
+        assertTrue { KotlinSampleSource.isClassOrFunction(line = "class A") }
 
     @Test
-    fun `isClass fails without class Kotlin keyword in line`(): Unit =
-        assertFalse { KotlinSampleSource.isClass(line = "val one: Int = 1") }
-
-    // -------------------------- isFunction(String) ---------------------------
-
-    @Test
-    fun `isFunction passes with fun Kotlin keyword in line`(): Unit =
-        assertTrue { KotlinSampleSource.isFunction(line = "fun test() = Unit") }
+    fun isClassOrFunctionPassesWithFunKotlinKeywordInLine(): Unit =
+        assertTrue {
+            KotlinSampleSource.isClassOrFunction(line = "fun test() = Unit")
+        }
 
     @Test
-    fun `isFunction fails without fun Kotlin keyword in line`(): Unit =
-        assertFalse { KotlinSampleSource.isFunction(line = "val one: Int = 1") }
+    fun isClassOrFunctionFailsWithoutClassAndFunKotlinKeywordsInLine(): Unit =
+        assertFalse {
+            KotlinSampleSource.isClassOrFunction(line = "val one: Int = 1")
+        }
 
     // ---------------- classFunctionError(File, List<String>) -----------------
 

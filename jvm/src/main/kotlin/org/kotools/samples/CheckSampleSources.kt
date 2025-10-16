@@ -53,11 +53,7 @@ public abstract class CheckSampleSources : DefaultTask() {
 
 private fun File.kotlinClassesAndFunctions(): List<String> =
     this.useLines { lines: Sequence<String> ->
-        lines.filter(String::isKotlinClassOrFunction)
+        lines.filter(KotlinSampleSource::isClassOrFunction)
             .map(String::trim)
             .toList()
     }
-
-private fun String.isKotlinClassOrFunction(): Boolean =
-    KotlinSampleSource.isClass(line = this)
-            || KotlinSampleSource.isFunction(line = this)

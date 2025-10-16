@@ -11,16 +11,15 @@ internal object KotlinSampleSource {
     fun isValid(file: File): Boolean = file.name.endsWith("Sample.kt")
 
     /**
-     * Returns `true` if the specified [line] contains the `class` Kotlin
-     * keyword, or returns `false` otherwise.
+     * Returns `true` if the specified [line] contains the `class` or the `fun`
+     * Kotlin keywords, or returns `false` otherwise.
      */
-    fun isClass(line: String): Boolean = "class " in line
+    fun isClassOrFunction(line: String): Boolean =
+        this.isClass(line) || this.isFunction(line)
 
-    /**
-     * Returns `true` if the specified [line] contains the `fun` Kotlin keyword,
-     * or returns `false` otherwise.
-     */
-    fun isFunction(line: String): Boolean = "fun " in line
+    private fun isClass(line: String): Boolean = "class " in line
+
+    private fun isFunction(line: String): Boolean = "fun " in line
 
     /**
      * Checks the classes and the functions from the specified Kotlin
@@ -30,7 +29,7 @@ internal object KotlinSampleSource {
      * contains a single-expression function.
      */
     fun classFunctionError(file: File, declarations: List<String>): String? {
-        val classes: List<String> = declarations.filter(::isClass)
+        val classes: List<String> = declarations.filter(this::isClass)
         if (classes.count() > 1) return "Multiple classes found in " +
                 "'${file.name}' Kotlin sample source."
         val publicClassCount: Int = classes.count {
@@ -40,7 +39,7 @@ internal object KotlinSampleSource {
                 "'${file.name}' Kotlin sample source."
         val regex = Regex("""fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
         val singleExpressionFunctionFound: Boolean = declarations
-            .filter(::isFunction)
+            .filter(this::isFunction)
             .any(regex::containsMatchIn)
         return if (singleExpressionFunctionFound) "Single-expression " +
                 "function found in '${file.name}' Kotlin sample source."
