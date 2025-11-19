@@ -31,6 +31,11 @@ kotlin {
     this.coreLibrariesVersion = libs.versions.kotlin.get()
 }
 
+gradlePlugin.plugins.register("Compatibility").configure {
+    this.id = "convention." + this.name.lowercase()
+    this.implementationClass =
+        "org.kotools.samples.conventions.${this.name}Plugin"
+}
 gradlePlugin.plugins.register("Help").configure {
     this.id = "convention.help"
     this.implementationClass = "org.kotools.samples.conventions.HelpPlugin"
