@@ -31,6 +31,11 @@ kotlin {
     this.coreLibrariesVersion = libs.versions.kotlin.get()
 }
 
+gradlePlugin.plugins.register("Help").configure {
+    this.id = "convention.help"
+    this.implementationClass = "org.kotools.samples.conventions.HelpPlugin"
+}
+
 dependencies.testImplementation(libs.kotlin.test)
 
 tasks.withType<JavaCompile>().configureEach {
