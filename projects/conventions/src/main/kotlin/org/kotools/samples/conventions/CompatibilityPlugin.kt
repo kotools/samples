@@ -4,13 +4,17 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskContainer
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.named
+import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.kotools.samples.conventions.tasks.JavaCompatibility
 
 /** Project plugin that configures Java and Kotlin compatibilities. */
 public class CompatibilityPlugin internal constructor() : Plugin<Project> {
@@ -43,6 +47,21 @@ private fun Project.withKotlinJvmPlugin(
     val jdkRelease: Provider<String> =
         compatibility.java.map { "-Xjdk-release=$it" }
     kotlin.compilerOptions.freeCompilerArgs.add(jdkRelease)
+
+    project.tasks.register<JavaCompatibility>("javaCompatibility").configure {
+        this.description = "Prints Java compatibility."
+        this.group = "compatibility"
+
+        this.version.set(compatibility.java)
+        val compileJava: TaskProvider<JavaCompile> =
+            project.tasks.named<JavaCompile>("compileJava")
+        val source: Provider<String> =
+            compileJava.map { it.sourceCompatibility }
+        this.sourceVersion.set(source)
+        val target: Provider<String> =
+            compileJava.map { it.targetCompatibility }
+        this.targetVersion.set(target)
+    }
 }
 
 private fun TaskContainer.javaCompile(

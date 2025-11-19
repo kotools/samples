@@ -44,6 +44,7 @@ gradlePlugin.plugins.register("Help").configure {
 dependencies {
     this.implementation(libs.kotlin.gradle.plugin)
 
+    this.testImplementation(this.gradleTestKit())
     this.testImplementation(libs.kotlin.test)
 }
 

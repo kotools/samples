@@ -4,11 +4,13 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.withType
 import org.gradle.testfixtures.ProjectBuilder
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.kotools.samples.conventions.tasks.JavaCompatibility
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -77,5 +79,32 @@ class CompatibilityPluginTest {
             kotlin.compilerOptions.languageVersion.get()
         assertEquals(expectedKotlinVersion, actualLanguageVersion)
         assertEquals(kotlinVersion, kotlin.coreLibrariesVersion)
+    }
+
+    @Test
+    fun `creates javaCompatibility task for Kotlin JVM project`() {
+        // Given
+        val project: Project = ProjectBuilder.builder()
+            .build()
+        project.pluginManager.apply("org.jetbrains.kotlin.jvm")
+        project.pluginManager.apply(CompatibilityPlugin::class)
+        val compatibility: CompatibilityExtension =
+            project.extensions.getByType()
+        val javaVersion = "17"
+        // When
+        compatibility.java.set(javaVersion)
+        // Then
+        val task: JavaCompatibility = project.tasks
+            .named<JavaCompatibility>("javaCompatibility")
+            .get()
+        assertEquals("Prints Java compatibility.", task.description)
+        assertEquals("compatibility", task.group)
+        assertTrue(task.dependsOn.isEmpty(), "$task shouldn't have dependency.")
+        assertEquals(javaVersion, task.version.get())
+        val compileJava: JavaCompile = project.tasks
+            .named<JavaCompile>("compileJava")
+            .get()
+        assertEquals(compileJava.sourceCompatibility, task.sourceVersion.get())
+        assertEquals(compileJava.targetCompatibility, task.targetVersion.get())
     }
 }
