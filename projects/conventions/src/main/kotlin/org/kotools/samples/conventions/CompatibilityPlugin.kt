@@ -2,6 +2,7 @@ package org.kotools.samples.conventions
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
@@ -27,10 +28,19 @@ public class CompatibilityPlugin internal constructor() : Plugin<Project> {
     }
 }
 
+// -------------------------------- Kotlin/JVM ---------------------------------
+
 private fun Project.withKotlinJvmPlugin(
     compatibility: CompatibilityExtension
 ): Unit = this.pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
-    val kotlin: KotlinJvmProjectExtension = project.extensions.getByType()
+    project.extensions.kotlinJvm(compatibility)
+    project.tasks.javaCompatibility(compatibility)
+}
+
+private fun ExtensionContainer.kotlinJvm(
+    compatibility: CompatibilityExtension
+) {
+    val kotlin: KotlinJvmProjectExtension = this.getByType()
 
     val kotlinVersion: Provider<KotlinVersion> = compatibility.kotlin
         .map { it.substringBeforeLast('.') }
@@ -47,22 +57,26 @@ private fun Project.withKotlinJvmPlugin(
     val jdkRelease: Provider<String> =
         compatibility.java.map { "-Xjdk-release=$it" }
     kotlin.compilerOptions.freeCompilerArgs.add(jdkRelease)
-
-    project.tasks.register<JavaCompatibility>("javaCompatibility").configure {
-        this.description = "Prints Java compatibility."
-        this.group = "compatibility"
-
-        this.version.set(compatibility.java)
-        val compileJava: TaskProvider<JavaCompile> =
-            project.tasks.named<JavaCompile>("compileJava")
-        val source: Provider<String> =
-            compileJava.map { it.sourceCompatibility }
-        this.sourceVersion.set(source)
-        val target: Provider<String> =
-            compileJava.map { it.targetCompatibility }
-        this.targetVersion.set(target)
-    }
 }
+
+private fun TaskContainer.javaCompatibility(
+    compatibility: CompatibilityExtension
+): Unit = this.register<JavaCompatibility>("javaCompatibility").configure {
+    this.description = "Prints Java compatibility."
+    this.group = "compatibility"
+
+    this.version.set(compatibility.java)
+    val compileJava: TaskProvider<JavaCompile> =
+        project.tasks.named<JavaCompile>("compileJava")
+    val source: Provider<String> =
+        compileJava.map { it.sourceCompatibility }
+    this.sourceVersion.set(source)
+    val target: Provider<String> =
+        compileJava.map { it.targetCompatibility }
+    this.targetVersion.set(target)
+}
+
+// ----------------------------------- Java ------------------------------------
 
 private fun TaskContainer.javaCompile(
     compatibility: CompatibilityExtension
