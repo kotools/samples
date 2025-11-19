@@ -1,9 +1,14 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
-plugins { `kotlin-dsl` }
+plugins {
+    `kotlin-dsl`
+    alias(libs.plugins.kotlinx.bcv)
+}
 
 repositories.mavenCentral()
+
+apiValidation.apiDumpDirectory = "src/api"
 
 kotlin {
     this.explicitApi()

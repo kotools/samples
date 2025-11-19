@@ -3,11 +3,13 @@ dokka = "2.0.0!!"
 gradle-plugin-publish = "1.3.0!!"
 java = "17"
 kotlin = "2.0.21"
+kotlinx-bcv = "0.16.3"
 
 [plugins]
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 gradle-plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-plugin-publish" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlinx-bcv = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinx-bcv" }
 kotools-samples-jvm = { id = "org.kotools.samples.jvm" }
 
 [libraries]
