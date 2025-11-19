@@ -49,3 +49,7 @@ tasks.withType<ValidatePlugins>().configureEach {
 }
 
 tasks.test.configure(Test::useJUnitPlatform)
+
+private val moduleTaskGroup: String = "module"
+tasks.tasks.configure { this.displayGroup = moduleTaskGroup }
+tasks.check.configure { this.group = moduleTaskGroup }
