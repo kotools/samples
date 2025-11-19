@@ -31,6 +31,8 @@ kotlin {
     this.coreLibrariesVersion = libs.versions.kotlin.get()
 }
 
+dependencies.testImplementation(libs.kotlin.test)
+
 tasks.withType<JavaCompile>().configureEach {
     val release: Provider<Int> = libs.versions.java.map(String::toInt)
     this.options.release.set(release)
