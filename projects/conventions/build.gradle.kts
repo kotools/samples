@@ -36,7 +36,11 @@ gradlePlugin.plugins.register("Help").configure {
     this.implementationClass = "org.kotools.samples.conventions.HelpPlugin"
 }
 
-dependencies.testImplementation(libs.kotlin.test)
+dependencies {
+    this.implementation(libs.kotlin.gradle.plugin)
+
+    this.testImplementation(libs.kotlin.test)
+}
 
 tasks.withType<JavaCompile>().configureEach {
     val release: Provider<Int> = libs.versions.java.map(String::toInt)
