@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-
 plugins {
     `kotlin-dsl`
     alias(libs.plugins.kotlinx.bcv)
@@ -12,23 +9,7 @@ apiValidation.apiDumpDirectory = "src/api"
 
 kotlin {
     this.explicitApi()
-    this.compilerOptions {
-        this.allWarningsAsErrors.set(true)
-
-        val kotlinVersion: Provider<KotlinVersion> = libs.versions.kotlin
-            .map { it.substringBeforeLast('.') }
-            .map(KotlinVersion.Companion::fromVersion)
-        this.apiVersion.set(kotlinVersion)
-        this.languageVersion.set(kotlinVersion)
-
-        val javaVersion: Provider<String> = libs.versions.java
-        val jvmTarget: Provider<JvmTarget> =
-            javaVersion.map(JvmTarget.Companion::fromTarget)
-        this.jvmTarget.set(jvmTarget)
-        val release: Provider<String> = javaVersion.map { "-Xjdk-release=$it" }
-        this.freeCompilerArgs.add(release)
-    }
-    this.coreLibrariesVersion = libs.versions.kotlin.get()
+    this.compilerOptions.allWarningsAsErrors.set(true)
 }
 
 gradlePlugin.plugins.register("Compatibility").configure {
@@ -46,11 +27,6 @@ dependencies {
 
     this.testImplementation(this.gradleTestKit())
     this.testImplementation(libs.kotlin.test)
-}
-
-tasks.withType<JavaCompile>().configureEach {
-    val release: Provider<Int> = libs.versions.java.map(String::toInt)
-    this.options.release.set(release)
 }
 
 tasks.withType<ValidatePlugins>().configureEach {
