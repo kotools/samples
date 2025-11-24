@@ -100,7 +100,7 @@ class CompatibilityPluginTest {
         assertEquals("Prints Java compatibility.", task.description)
         assertEquals("compatibility", task.group)
         assertTrue(task.dependsOn.isEmpty(), "$task shouldn't have dependency.")
-        assertEquals(javaVersion, task.version.get())
+        assertEquals(javaVersion, task.compatibilityVersion.get())
         val compileJava: JavaCompile = project.tasks
             .named<JavaCompile>("compileJava")
             .get()

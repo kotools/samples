@@ -9,7 +9,7 @@ import kotlin.test.assertTrue
 
 class JavaCompatibilityTest {
     @Test
-    fun `saves version in output file`() {
+    fun `saves compatibility version in output file`() {
         // Given
         val version = 17
         val runner = GradleRunner { """compatibility.java = "$version"""" }

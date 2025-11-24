@@ -65,7 +65,7 @@ private fun TaskContainer.javaCompatibility(
     this.description = "Prints Java compatibility."
     this.group = "compatibility"
 
-    this.version.set(compatibility.java)
+    this.compatibilityVersion.set(compatibility.java)
     val compileJava: TaskProvider<JavaCompile> =
         project.tasks.named<JavaCompile>("compileJava")
     val source: Provider<String> =

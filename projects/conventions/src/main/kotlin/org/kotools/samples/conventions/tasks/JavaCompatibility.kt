@@ -21,7 +21,7 @@ public abstract class JavaCompatibility internal constructor() : DefaultTask() {
      */
     @get:Input
     @get:Optional
-    public abstract val version: Property<String>
+    public abstract val compatibilityVersion: Property<String>
 
     /**
      * Default Java source compatibility, usually set with
@@ -39,7 +39,7 @@ public abstract class JavaCompatibility internal constructor() : DefaultTask() {
 
     @TaskAction
     internal fun execute() {
-        val version: String? = this.version.orNull
+        val version: String? = this.compatibilityVersion.orNull
         if (version != null) return println("Java $version")
         val sourceVersion: String = this.sourceVersion.get()
         val targetVersion: String = this.targetVersion.get()
