@@ -1,7 +1,8 @@
 rootProject.name = "samples"
 
-include("samples")
-project(":samples").projectDir = rootDir.resolve("projects/plugin")
+include("samples-gradle-plugin")
+project(":samples-gradle-plugin").projectDir =
+    rootDir.resolve("projects/gradle-plugin")
 
 includeBuild("projects/conventions")
 includeBuild("jvm")
