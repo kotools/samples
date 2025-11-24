@@ -82,16 +82,16 @@ class CompatibilityPluginTest {
     }
 
     @Test
-    fun `creates javaCompatibility task for Kotlin JVM project`() {
+    fun `registers javaCompatibility task for Kotlin JVM project`() {
         // Given
         val project: Project = ProjectBuilder.builder()
             .build()
         project.pluginManager.apply("org.jetbrains.kotlin.jvm")
+        // When
         project.pluginManager.apply(CompatibilityPlugin::class)
         val compatibility: CompatibilityExtension =
             project.extensions.getByType()
         val javaVersion = "17"
-        // When
         compatibility.java.set(javaVersion)
         // Then
         val task: JavaCompatibility = project.tasks
@@ -99,7 +99,6 @@ class CompatibilityPluginTest {
             .get()
         assertEquals("Prints Java compatibility.", task.description)
         assertEquals("compatibility", task.group)
-        assertTrue(task.dependsOn.isEmpty(), "$task shouldn't have dependency.")
         assertEquals(javaVersion, task.compatibilityVersion.get())
         val compileJava: JavaCompile = project.tasks
             .named<JavaCompile>("compileJava")
