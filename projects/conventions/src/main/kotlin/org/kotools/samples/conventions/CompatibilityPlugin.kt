@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.kotools.samples.conventions.tasks.JavaCompatibility
+import org.kotools.samples.conventions.tasks.KotlinCompatibility
 
 /** Project plugin that configures Java and Kotlin compatibilities. */
 public class CompatibilityPlugin internal constructor() : Plugin<Project> {
@@ -35,6 +36,7 @@ private fun Project.withKotlinJvmPlugin(
 ): Unit = this.pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
     project.extensions.kotlinJvm(compatibility)
     project.tasks.javaCompatibility(compatibility)
+    project.tasks.kotlinCompatibility(compatibility)
 }
 
 private fun ExtensionContainer.kotlinJvm(
@@ -67,13 +69,26 @@ private fun TaskContainer.javaCompatibility(
 
     this.compatibilityVersion.set(compatibility.java)
     val compileJava: TaskProvider<JavaCompile> =
-        project.tasks.named<JavaCompile>("compileJava")
+        this.project.tasks.named<JavaCompile>("compileJava")
     val source: Provider<String> =
         compileJava.map { it.sourceCompatibility }
     this.sourceVersion.set(source)
     val target: Provider<String> =
         compileJava.map { it.targetCompatibility }
     this.targetVersion.set(target)
+}
+
+private fun TaskContainer.kotlinCompatibility(
+    compatibility: CompatibilityExtension
+): Unit = this.register<KotlinCompatibility>("kotlinCompatibility").configure {
+    this.description = "Prints Kotlin compatibility."
+    this.group = "compatibility"
+
+    this.compatibilityVersion.set(compatibility.kotlin)
+    val kotlin: KotlinJvmProjectExtension = this.project.extensions.getByType()
+    this.apiVersion.set(kotlin.compilerOptions.apiVersion)
+    this.languageVersion.set(kotlin.compilerOptions.languageVersion)
+    this.coreLibrariesVersion.set(kotlin.coreLibrariesVersion)
 }
 
 // ----------------------------------- Java ------------------------------------

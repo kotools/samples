@@ -20,3 +20,10 @@ public abstract class org/kotools/samples/conventions/tasks/JavaCompatibility : 
 	public abstract fun getTargetVersion ()Lorg/gradle/api/provider/Property;
 }
 
+public abstract class org/kotools/samples/conventions/tasks/KotlinCompatibility : org/gradle/api/DefaultTask {
+	public abstract fun getApiVersion ()Lorg/gradle/api/provider/Property;
+	public abstract fun getCompatibilityVersion ()Lorg/gradle/api/provider/Property;
+	public abstract fun getCoreLibrariesVersion ()Lorg/gradle/api/provider/Property;
+	public abstract fun getLanguageVersion ()Lorg/gradle/api/provider/Property;
+}
+

@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.kotools.samples.conventions.tasks.JavaCompatibility
+import org.kotools.samples.conventions.tasks.KotlinCompatibility
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -91,19 +92,54 @@ class CompatibilityPluginTest {
         project.pluginManager.apply(CompatibilityPlugin::class)
         val compatibility: CompatibilityExtension =
             project.extensions.getByType()
-        val javaVersion = "17"
-        compatibility.java.set(javaVersion)
+        compatibility.java.set("17")
         // Then
         val task: JavaCompatibility = project.tasks
             .named<JavaCompatibility>("javaCompatibility")
             .get()
         assertEquals("Prints Java compatibility.", task.description)
         assertEquals("compatibility", task.group)
-        assertEquals(javaVersion, task.compatibilityVersion.get())
+        assertEquals(compatibility.java.get(), task.compatibilityVersion.get())
         val compileJava: JavaCompile = project.tasks
             .named<JavaCompile>("compileJava")
             .get()
         assertEquals(compileJava.sourceCompatibility, task.sourceVersion.get())
         assertEquals(compileJava.targetCompatibility, task.targetVersion.get())
+    }
+
+    @Test
+    fun `registers kotlinCompatibility task for Kotlin JVM project`() {
+        // Given
+        val project: Project = ProjectBuilder.builder()
+            .build()
+        project.pluginManager.apply("org.jetbrains.kotlin.jvm")
+        // When
+        project.pluginManager.apply(CompatibilityPlugin::class)
+        val compatibility: CompatibilityExtension =
+            project.extensions.getByType()
+        compatibility.kotlin.set("2.0.21")
+        // Then
+        val task: KotlinCompatibility = project.tasks
+            .named<KotlinCompatibility>("kotlinCompatibility")
+            .get()
+        assertEquals("Prints Kotlin compatibility.", task.description)
+        assertEquals("compatibility", task.group)
+        assertEquals(
+            compatibility.kotlin.get(),
+            task.compatibilityVersion.get()
+        )
+        val kotlin: KotlinJvmProjectExtension = project.extensions.getByType()
+        assertEquals(
+            kotlin.compilerOptions.apiVersion.get(),
+            task.apiVersion.get()
+        )
+        assertEquals(
+            kotlin.compilerOptions.languageVersion.get(),
+            task.languageVersion.get()
+        )
+        assertEquals(
+            kotlin.coreLibrariesVersion,
+            task.coreLibrariesVersion.get()
+        )
     }
 }
