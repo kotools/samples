@@ -27,3 +27,7 @@ public abstract class org/kotools/samples/conventions/tasks/KotlinCompatibility 
 	public abstract fun getLanguageVersion ()Lorg/gradle/api/provider/Property;
 }
 
+public abstract class org/kotools/samples/conventions/tasks/Print : org/gradle/api/DefaultTask {
+	public abstract fun getMessage ()Lorg/gradle/api/provider/Property;
+}
+
