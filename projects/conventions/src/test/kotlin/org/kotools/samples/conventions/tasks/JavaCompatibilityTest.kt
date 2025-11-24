@@ -68,6 +68,6 @@ class JavaCompatibilityTest {
         // When
         val result: BuildResult = gradleBuild(project, task)
         // Then
-        result.assertPrints("Java 21 (source) and 20 (target)")
+        result.assertPrints("Java 21 (target: 20)")
     }
 }

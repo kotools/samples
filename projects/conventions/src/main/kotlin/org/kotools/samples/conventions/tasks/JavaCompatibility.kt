@@ -39,12 +39,13 @@ public abstract class JavaCompatibility internal constructor() : DefaultTask() {
 
     @TaskAction
     internal fun execute() {
-        val version: String? = this.compatibilityVersion.orNull
-        if (version != null) return println("Java $version")
+        val compatibilityVersion: String? = this.compatibilityVersion.orNull
+        if (compatibilityVersion != null)
+            return println("Java $compatibilityVersion")
         val sourceVersion: String = this.sourceVersion.get()
         val targetVersion: String = this.targetVersion.get()
-        return if (sourceVersion == targetVersion)
-            println("Java $sourceVersion")
-        else println("Java $sourceVersion (source) and $targetVersion (target)")
+        if (sourceVersion == targetVersion)
+            return println("Java $sourceVersion")
+        println("Java $sourceVersion (target: $targetVersion)")
     }
 }

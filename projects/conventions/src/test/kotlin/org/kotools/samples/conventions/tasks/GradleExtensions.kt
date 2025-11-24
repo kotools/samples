@@ -29,5 +29,5 @@ internal fun gradleBuild(project: File, task: String): BuildResult =
 
 internal fun BuildResult.assertPrints(expected: String): Unit = assertTrue(
     expected in this.output,
-    "Gradle build should print \"$expected\", but was: ${this.output}"
+    "Gradle build should print \"$expected\", but was:\n${this.output}"
 )
