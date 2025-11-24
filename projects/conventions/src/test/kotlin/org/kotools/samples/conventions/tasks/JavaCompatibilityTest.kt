@@ -6,7 +6,7 @@ import kotlin.test.Test
 
 class JavaCompatibilityTest {
     @Test
-    fun `prints compatibility version`() {
+    fun `with compatibility version`() {
         // Given
         val project: File = gradleProject(
             """
@@ -26,7 +26,7 @@ class JavaCompatibilityTest {
     }
 
     @Test
-    fun `prints same source and target compatibilities`() {
+    fun `with same source and target compatibilities`() {
         // Given
         val project: File = gradleProject(
             """
@@ -49,7 +49,7 @@ class JavaCompatibilityTest {
     }
 
     @Test
-    fun `prints different source and target compatibilities`() {
+    fun `with different source and target compatibilities`() {
         // Given
         val project: File = gradleProject(
             """
