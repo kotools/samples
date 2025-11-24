@@ -50,15 +50,12 @@ public abstract class KotlinCompatibility internal constructor() :
 
     @TaskAction
     internal fun execute() {
-        val compatibilityVersion: String? = this.compatibilityVersion.orNull
-        if (compatibilityVersion != null)
-            return println("Kotlin $compatibilityVersion")
-        val coreLibrariesVersion: String = this.coreLibrariesVersion.get()
+        val version: String = this.compatibilityVersion.orNull
+            ?: this.coreLibrariesVersion.get()
         val apiVersion: String = this.apiVersion.get().version
         val languageVersion: String = this.languageVersion.get().version
         println(
-            "Kotlin $coreLibrariesVersion (api: $apiVersion, language: " +
-                    "$languageVersion)"
+            "Kotlin $version (api: $apiVersion, language: $languageVersion)"
         )
     }
 }

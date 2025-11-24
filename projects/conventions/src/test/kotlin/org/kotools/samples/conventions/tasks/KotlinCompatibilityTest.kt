@@ -6,7 +6,7 @@ import kotlin.test.Test
 
 class KotlinCompatibilityTest {
     @Test
-    fun `prints compatibility version`() {
+    fun `with compatibility version`() {
         // Given
         val project: File = gradleProject(
             """
@@ -22,11 +22,11 @@ class KotlinCompatibilityTest {
         // When
         val result: BuildResult = gradleBuild(project, task)
         // Then
-        result.assertPrints("Kotlin 2.0.21")
+        result.assertPrints("Kotlin 2.0.21 (api: 2.0, language: 2.0)")
     }
 
     @Test
-    fun `prints api, language and core libraries version`() {
+    fun `without compatibility version`() {
         // Given
         val project: File = gradleProject(
             """
