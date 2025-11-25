@@ -27,6 +27,7 @@ gradlePlugin {
     registerPlugin("Compatibility")
     registerPlugin("Help")
     registerPlugin(name = "KotlinDsl", id = "convention.kotlin.dsl")
+    registerPlugin("Tasks")
 }
 
 dependencies {

@@ -19,6 +19,11 @@ public final class org/kotools/samples/gradle/conventions/KotlinDslPlugin : org/
 	public fun apply (Lorg/gradle/api/Project;)V
 }
 
+public final class org/kotools/samples/gradle/conventions/TasksPlugin : org/gradle/api/Plugin {
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/Project;)V
+}
+
 public abstract class org/kotools/samples/gradle/conventions/tasks/JavaCompatibility : org/gradle/api/DefaultTask {
 	public abstract fun getCompatibilityVersion ()Lorg/gradle/api/provider/Property;
 	public abstract fun getSourceVersion ()Lorg/gradle/api/provider/Property;
