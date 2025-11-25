@@ -4,6 +4,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.diagnostics.TaskReportTask
 import org.gradle.kotlin.dsl.withType
+import org.kotools.samples.gradle.conventions.internal.TaskGroup
 
 /**
  * Project plugin that configures the group displayed by the `tasks` task, and
@@ -15,7 +16,7 @@ public class TasksPlugin internal constructor() : Plugin<Project> {
     /** Applies this plugin to the specified [project]. */
     override fun apply(project: Project) {
         project.tasks.withType<TaskReportTask>()
-            .configureEach { this.displayGroup = MODULE_TASK_GROUP }
+            .configureEach { TaskGroup.Module.displayIn(this) }
         project.pluginManager.withPlugin("base") {
             this@TasksPlugin.configureBaseLifecycleTasks(project)
         }
@@ -25,10 +26,6 @@ public class TasksPlugin internal constructor() : Plugin<Project> {
         setOf("assemble", "check", "build")
             .map(project.tasks::named)
             .forEach {
-                it.configure { this.group = MODULE_TASK_GROUP }
+                it.configure { TaskGroup.Module.group(this) }
             }
-
-    private companion object {
-        private const val MODULE_TASK_GROUP: String = "module"
-    }
 }

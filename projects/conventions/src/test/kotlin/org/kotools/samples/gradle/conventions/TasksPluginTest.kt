@@ -7,6 +7,7 @@ import org.gradle.api.tasks.diagnostics.TaskReportTask
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.register
 import org.gradle.testfixtures.ProjectBuilder
+import org.kotools.samples.gradle.conventions.internal.TaskGroup
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -21,9 +22,10 @@ class TasksPluginTest {
         // When
         project.pluginManager.apply(TasksPlugin::class)
         // Then
-        val group: String = tasks.get()
+        val actual: String = tasks.get()
             .displayGroup
-        assertEquals(expected = "module", group)
+        val expected: String = TaskGroup.Module.toString()
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -35,10 +37,11 @@ class TasksPluginTest {
         // When
         project.pluginManager.apply(TasksPlugin::class)
         // Then
-        val group: String? = project.tasks.named("assemble")
+        val actual: String? = project.tasks.named("assemble")
             .get()
             .group
-        assertEquals(expected = "module", group)
+        val expected: String = TaskGroup.Module.toString()
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -50,10 +53,11 @@ class TasksPluginTest {
         // When
         project.pluginManager.apply(TasksPlugin::class)
         // Then
-        val group: String? = project.tasks.named("check")
+        val actual: String? = project.tasks.named("check")
             .get()
             .group
-        assertEquals(expected = "module", group)
+        val expected: String = TaskGroup.Module.toString()
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -65,9 +69,10 @@ class TasksPluginTest {
         // When
         project.pluginManager.apply(TasksPlugin::class)
         // Then
-        val group: String? = project.tasks.named("build")
+        val actual: String? = project.tasks.named("build")
             .get()
             .group
-        assertEquals(expected = "module", group)
+        val expected: String = TaskGroup.Module.toString()
+        assertEquals(expected, actual)
     }
 }
