@@ -15,16 +15,17 @@ kotlin {
 gradlePlugin.plugins.register("Compatibility").configure {
     this.id = "convention." + this.name.lowercase()
     this.implementationClass =
-        "org.kotools.samples.conventions.${this.name}Plugin"
+        "org.kotools.samples.gradle.conventions.${this.name}Plugin"
 }
 gradlePlugin.plugins.register("Help").configure {
     this.id = "convention.help"
-    this.implementationClass = "org.kotools.samples.conventions.HelpPlugin"
+    this.implementationClass =
+        "org.kotools.samples.gradle.conventions.HelpPlugin"
 }
 gradlePlugin.plugins.register("KotlinDsl").configure {
     this.id = "convention.kotlin.dsl"
     this.implementationClass =
-        "org.kotools.samples.conventions.${this.name}Plugin"
+        "org.kotools.samples.gradle.conventions.${this.name}Plugin"
 }
 
 dependencies {

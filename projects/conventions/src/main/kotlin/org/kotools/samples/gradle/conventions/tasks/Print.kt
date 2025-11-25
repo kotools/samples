@@ -1,4 +1,4 @@
-package org.kotools.samples.conventions.tasks
+package org.kotools.samples.gradle.conventions.tasks
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.Property

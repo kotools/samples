@@ -1,4 +1,4 @@
-package org.kotools.samples.conventions
+package org.kotools.samples.gradle.conventions
 
 import org.gradle.api.provider.Property
 

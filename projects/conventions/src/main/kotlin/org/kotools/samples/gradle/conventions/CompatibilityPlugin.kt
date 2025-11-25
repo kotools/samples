@@ -1,4 +1,4 @@
-package org.kotools.samples.conventions
+package org.kotools.samples.gradle.conventions
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -15,8 +15,8 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-import org.kotools.samples.conventions.tasks.JavaCompatibility
-import org.kotools.samples.conventions.tasks.KotlinCompatibility
+import org.kotools.samples.gradle.conventions.tasks.JavaCompatibility
+import org.kotools.samples.gradle.conventions.tasks.KotlinCompatibility
 
 /** Project plugin that configures Java and Kotlin compatibilities. */
 public class CompatibilityPlugin internal constructor() : Plugin<Project> {

@@ -1,9 +1,9 @@
-package org.kotools.samples.conventions
+package org.kotools.samples.gradle.conventions
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.register
-import org.kotools.samples.conventions.tasks.Print
+import org.kotools.samples.gradle.conventions.tasks.Print
 
 /** Project plugin that provides additional help tasks. */
 public class HelpPlugin : Plugin<Project> {

@@ -1,4 +1,4 @@
-package org.kotools.samples.conventions.tasks
+package org.kotools.samples.gradle.conventions.tasks
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner

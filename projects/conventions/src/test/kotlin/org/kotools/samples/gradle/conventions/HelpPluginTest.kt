@@ -1,10 +1,10 @@
-package org.kotools.samples.conventions
+package org.kotools.samples.gradle.conventions
 
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.named
 import org.gradle.testfixtures.ProjectBuilder
-import org.kotools.samples.conventions.tasks.Print
+import org.kotools.samples.gradle.conventions.tasks.Print
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

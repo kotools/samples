@@ -1,4 +1,4 @@
-package org.kotools.samples.conventions.tasks
+package org.kotools.samples.gradle.conventions.tasks
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.Property
@@ -7,7 +7,7 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.work.DisableCachingByDefault
-import org.kotools.samples.conventions.CompatibilityPluginExtension
+import org.kotools.samples.gradle.conventions.CompatibilityPluginExtension
 
 /** Task that prints Java compatibility of a project. */
 @DisableCachingByDefault(because = "Prints to standard output.")
