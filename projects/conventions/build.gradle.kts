@@ -21,6 +21,11 @@ gradlePlugin.plugins.register("Help").configure {
     this.id = "convention.help"
     this.implementationClass = "org.kotools.samples.conventions.HelpPlugin"
 }
+gradlePlugin.plugins.register("KotlinDsl").configure {
+    this.id = "convention.kotlin.dsl"
+    this.implementationClass =
+        "org.kotools.samples.conventions.${this.name}Plugin"
+}
 
 dependencies {
     this.implementation(libs.kotlin.gradle.plugin)

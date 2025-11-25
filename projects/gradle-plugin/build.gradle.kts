@@ -2,6 +2,7 @@ plugins {
     `kotlin-dsl`
     alias(libs.plugins.convention.compatibility)
     alias(libs.plugins.convention.help)
+    alias(libs.plugins.convention.kotlin.dsl)
 }
 
 group = "org.kotools"
@@ -13,15 +14,3 @@ compatibility {
     this.java.set(libs.versions.java)
     this.kotlin.set(libs.versions.kotlin)
 }
-
-kotlin {
-    this.explicitApi()
-    this.compilerOptions.allWarningsAsErrors.set(true)
-}
-
-tasks.withType<ValidatePlugins>().configureEach {
-    this.failOnWarning.set(true)
-    this.enableStricterValidation.set(true)
-}
-
-tasks.test.configure(Test::useJUnitPlatform)
