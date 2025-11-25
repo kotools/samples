@@ -7,14 +7,14 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.work.DisableCachingByDefault
-import org.kotools.samples.conventions.CompatibilityExtension
+import org.kotools.samples.conventions.CompatibilityPluginExtension
 
 /** Task that prints Java compatibility of a project. */
 @DisableCachingByDefault(because = "Prints to standard output.")
 public abstract class JavaCompatibility internal constructor() : DefaultTask() {
     /**
      * Java version to be compatible with, usually set with
-     * [CompatibilityExtension.java].
+     * [CompatibilityPluginExtension.java].
      *
      * If this property is not set, this task prints Java
      * [source][sourceVersion] and [target][targetVersion] compatibilities.

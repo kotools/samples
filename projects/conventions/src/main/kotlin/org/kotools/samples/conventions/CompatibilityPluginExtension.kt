@@ -3,7 +3,7 @@ package org.kotools.samples.conventions
 import org.gradle.api.provider.Property
 
 /** Extension for [CompatibilityPlugin]. */
-public interface CompatibilityExtension {
+public interface CompatibilityPluginExtension {
     /** Java version to be compatible with. */
     public val java: Property<String>
 

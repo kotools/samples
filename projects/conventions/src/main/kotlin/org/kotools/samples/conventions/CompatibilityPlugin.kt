@@ -22,7 +22,7 @@ import org.kotools.samples.conventions.tasks.KotlinCompatibility
 public class CompatibilityPlugin internal constructor() : Plugin<Project> {
     /** Applies this plugin to the specified [project]. */
     override fun apply(project: Project) {
-        val compatibility: CompatibilityExtension =
+        val compatibility: CompatibilityPluginExtension =
             project.extensions.create("compatibility")
         project.withKotlinJvmPlugin(compatibility)
         project.tasks.javaCompile(compatibility)
@@ -32,7 +32,7 @@ public class CompatibilityPlugin internal constructor() : Plugin<Project> {
 // -------------------------------- Kotlin/JVM ---------------------------------
 
 private fun Project.withKotlinJvmPlugin(
-    compatibility: CompatibilityExtension
+    compatibility: CompatibilityPluginExtension
 ): Unit = this.pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
     project.extensions.kotlinJvm(compatibility)
     project.tasks.javaCompatibility(compatibility)
@@ -40,7 +40,7 @@ private fun Project.withKotlinJvmPlugin(
 }
 
 private fun ExtensionContainer.kotlinJvm(
-    compatibility: CompatibilityExtension
+    compatibility: CompatibilityPluginExtension
 ) {
     val kotlin: KotlinJvmProjectExtension = this.getByType()
 
@@ -62,7 +62,7 @@ private fun ExtensionContainer.kotlinJvm(
 }
 
 private fun TaskContainer.javaCompatibility(
-    compatibility: CompatibilityExtension
+    compatibility: CompatibilityPluginExtension
 ): Unit = this.register<JavaCompatibility>("javaCompatibility").configure {
     this.description = "Prints Java compatibility."
     this.group = "compatibility"
@@ -79,7 +79,7 @@ private fun TaskContainer.javaCompatibility(
 }
 
 private fun TaskContainer.kotlinCompatibility(
-    compatibility: CompatibilityExtension
+    compatibility: CompatibilityPluginExtension
 ): Unit = this.register<KotlinCompatibility>("kotlinCompatibility").configure {
     this.description = "Prints Kotlin compatibility."
     this.group = "compatibility"
@@ -94,7 +94,7 @@ private fun TaskContainer.kotlinCompatibility(
 // ----------------------------------- Java ------------------------------------
 
 private fun TaskContainer.javaCompile(
-    compatibility: CompatibilityExtension
+    compatibility: CompatibilityPluginExtension
 ): Unit = this.withType<JavaCompile>().configureEach {
     val release: Provider<Int> = compatibility.java.map(String::toInt)
     this.options.release.set(release)

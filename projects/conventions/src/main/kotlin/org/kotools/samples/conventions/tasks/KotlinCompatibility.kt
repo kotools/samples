@@ -9,7 +9,7 @@ import org.gradle.work.DisableCachingByDefault
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-import org.kotools.samples.conventions.CompatibilityExtension
+import org.kotools.samples.conventions.CompatibilityPluginExtension
 
 /** Task that prints Kotlin compatibility of a project. */
 @DisableCachingByDefault(because = "Prints to standard output.")
@@ -17,7 +17,7 @@ public abstract class KotlinCompatibility internal constructor() :
     DefaultTask() {
     /**
      * Kotlin version to be compatible with, usually set with
-     * [CompatibilityExtension.kotlin].
+     * [CompatibilityPluginExtension.kotlin].
      *
      * If this property is not set, this task prints Kotlin [API][apiVersion],
      * [Language][languageVersion] and [Core Libraries][coreLibrariesVersion]

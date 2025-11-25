@@ -1,11 +1,11 @@
-public abstract interface class org/kotools/samples/conventions/CompatibilityExtension {
-	public abstract fun getJava ()Lorg/gradle/api/provider/Property;
-	public abstract fun getKotlin ()Lorg/gradle/api/provider/Property;
-}
-
 public final class org/kotools/samples/conventions/CompatibilityPlugin : org/gradle/api/Plugin {
 	public synthetic fun apply (Ljava/lang/Object;)V
 	public fun apply (Lorg/gradle/api/Project;)V
+}
+
+public abstract interface class org/kotools/samples/conventions/CompatibilityPluginExtension {
+	public abstract fun getJava ()Lorg/gradle/api/provider/Property;
+	public abstract fun getKotlin ()Lorg/gradle/api/provider/Property;
 }
 
 public final class org/kotools/samples/conventions/HelpPlugin : org/gradle/api/Plugin {

@@ -3,6 +3,7 @@ package org.kotools.samples.conventions
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.withType
@@ -14,7 +15,6 @@ import org.kotools.samples.conventions.tasks.JavaCompatibility
 import org.kotools.samples.conventions.tasks.KotlinCompatibility
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class CompatibilityPluginTest {
@@ -26,9 +26,9 @@ class CompatibilityPluginTest {
         // When
         project.pluginManager.apply(CompatibilityPlugin::class)
         // Then
-        val compatibility: CompatibilityExtension? = project.extensions
-            .findByName("compatibility") as? CompatibilityExtension
-        assertNotNull(compatibility, "Compatibility extension not found.")
+        project.extensions.getByName<CompatibilityPluginExtension>(
+            "compatibility"
+        )
     }
 
     @Test
@@ -38,7 +38,7 @@ class CompatibilityPluginTest {
             .build()
         project.pluginManager.apply("org.jetbrains.kotlin.jvm")
         project.pluginManager.apply(CompatibilityPlugin::class)
-        val compatibility: CompatibilityExtension =
+        val compatibility: CompatibilityPluginExtension =
             project.extensions.getByType()
         val javaVersion = "17"
         // When
@@ -65,7 +65,7 @@ class CompatibilityPluginTest {
             .build()
         project.pluginManager.apply("org.jetbrains.kotlin.jvm")
         project.pluginManager.apply(CompatibilityPlugin::class)
-        val compatibility: CompatibilityExtension =
+        val compatibility: CompatibilityPluginExtension =
             project.extensions.getByType()
         val kotlinVersion = "2.0.21"
         // When
@@ -90,7 +90,7 @@ class CompatibilityPluginTest {
         project.pluginManager.apply("org.jetbrains.kotlin.jvm")
         // When
         project.pluginManager.apply(CompatibilityPlugin::class)
-        val compatibility: CompatibilityExtension =
+        val compatibility: CompatibilityPluginExtension =
             project.extensions.getByType()
         compatibility.java.set("17")
         // Then
@@ -115,7 +115,7 @@ class CompatibilityPluginTest {
         project.pluginManager.apply("org.jetbrains.kotlin.jvm")
         // When
         project.pluginManager.apply(CompatibilityPlugin::class)
-        val compatibility: CompatibilityExtension =
+        val compatibility: CompatibilityPluginExtension =
             project.extensions.getByType()
         compatibility.kotlin.set("2.0.21")
         // Then
