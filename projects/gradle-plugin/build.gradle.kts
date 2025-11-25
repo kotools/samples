@@ -17,3 +17,9 @@ compatibility {
     this.java.set(libs.versions.java)
     this.kotlin.set(libs.versions.kotlin)
 }
+
+private val moduleTaskGroup: String = "module"
+tasks.tasks.configure { this.displayGroup = moduleTaskGroup }
+tasks.assemble.configure { this.group = moduleTaskGroup }
+tasks.check.configure { this.group = moduleTaskGroup }
+tasks.build.configure { this.group = moduleTaskGroup }
