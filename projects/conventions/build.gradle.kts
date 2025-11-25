@@ -12,20 +12,21 @@ kotlin {
     this.compilerOptions.allWarningsAsErrors.set(true)
 }
 
-gradlePlugin.plugins.register("Compatibility").configure {
-    this.id = "convention." + this.name.lowercase()
-    this.implementationClass =
-        "org.kotools.samples.gradle.conventions.${this.name}Plugin"
-}
-gradlePlugin.plugins.register("Help").configure {
-    this.id = "convention.help"
-    this.implementationClass =
-        "org.kotools.samples.gradle.conventions.HelpPlugin"
-}
-gradlePlugin.plugins.register("KotlinDsl").configure {
-    this.id = "convention.kotlin.dsl"
-    this.implementationClass =
-        "org.kotools.samples.gradle.conventions.${this.name}Plugin"
+gradlePlugin {
+    fun registerPlugin(
+        name: String,
+        id: String = "convention." + name.lowercase()
+    ) {
+        this.plugins.register(name).configure {
+            this.id = id
+            this.implementationClass =
+                "org.kotools.samples.gradle.conventions.${this.name}Plugin"
+        }
+    }
+
+    registerPlugin("Compatibility")
+    registerPlugin("Help")
+    registerPlugin(name = "KotlinDsl", id = "convention.kotlin.dsl")
 }
 
 dependencies {
