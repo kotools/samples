@@ -24,6 +24,11 @@ public final class org/kotools/samples/gradle/conventions/TasksPlugin : org/grad
 	public fun apply (Lorg/gradle/api/Project;)V
 }
 
+public abstract class org/kotools/samples/gradle/conventions/tasks/Compatibilities : org/gradle/api/DefaultTask {
+	public abstract fun getJavaCompatibility ()Lorg/gradle/api/file/RegularFileProperty;
+	public abstract fun getKotlinCompatibility ()Lorg/gradle/api/file/RegularFileProperty;
+}
+
 public abstract class org/kotools/samples/gradle/conventions/tasks/JavaCompatibility : org/gradle/api/DefaultTask {
 	public abstract fun getCompatibilityVersion ()Lorg/gradle/api/provider/Property;
 	public abstract fun getOutputFile ()Lorg/gradle/api/file/RegularFileProperty;

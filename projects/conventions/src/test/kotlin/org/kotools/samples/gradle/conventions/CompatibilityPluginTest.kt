@@ -12,6 +12,7 @@ import org.gradle.testfixtures.ProjectBuilder
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.kotools.samples.gradle.conventions.tasks.Compatibilities
 import org.kotools.samples.gradle.conventions.tasks.JavaCompatibility
 import org.kotools.samples.gradle.conventions.tasks.KotlinCompatibility
 import kotlin.test.Test
@@ -152,5 +153,50 @@ class CompatibilityPluginTest {
             .file("compatibility/kotlin.txt")
             .get()
         assertEquals(expectedOutputFile, actualOutputFile)
+    }
+
+    @Test
+    fun `registers compatibilities task for Kotlin JVM project`() {
+        // Given
+        val project: Project = ProjectBuilder.builder()
+            .build()
+        project.pluginManager.apply("org.jetbrains.kotlin.jvm")
+
+        // When
+        project.pluginManager.apply(CompatibilityPlugin::class)
+        val compatibility: CompatibilityPluginExtension =
+            project.extensions.getByType()
+        compatibility.java.set("17")
+        compatibility.kotlin.set("2.0.21")
+
+        // Then
+        val compatibilities: Compatibilities = project.tasks
+            .named<Compatibilities>("compatibilities")
+            .get()
+        val actualDescription: String = compatibilities.description
+        val expectedDescription = "Prints detected compatibilities."
+        assertEquals(expectedDescription, actualDescription)
+
+        val actualGroup: String = compatibilities.group
+        val expectedGroup = "help"
+        assertEquals(expectedGroup, actualGroup)
+
+        val actualJavaCompatibility: RegularFile =
+            compatibilities.javaCompatibility.get()
+        val expectedJavaCompatibility: RegularFile = project.tasks
+            .named<JavaCompatibility>("javaCompatibility")
+            .get()
+            .outputFile
+            .get()
+        assertEquals(expectedJavaCompatibility, actualJavaCompatibility)
+
+        val actualKotlinCompatibility: RegularFile =
+            compatibilities.kotlinCompatibility.get()
+        val expectedKotlinCompatibility: RegularFile = project.tasks
+            .named<KotlinCompatibility>("kotlinCompatibility")
+            .get()
+            .outputFile
+            .get()
+        assertEquals(expectedKotlinCompatibility, actualKotlinCompatibility)
     }
 }
