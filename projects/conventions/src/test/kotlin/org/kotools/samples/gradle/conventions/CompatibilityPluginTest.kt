@@ -2,6 +2,7 @@ package org.kotools.samples.gradle.conventions
 
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
+import org.gradle.api.file.RegularFile
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.getByName
@@ -106,11 +107,11 @@ class CompatibilityPluginTest {
             .get()
         assertEquals(compileJava.sourceCompatibility, task.sourceVersion.get())
         assertEquals(compileJava.targetCompatibility, task.targetVersion.get())
-        val actualOutputDirectory: Directory = task.outputDirectory.get()
-        val expectedOutputDirectory: Directory = project.layout.buildDirectory
-            .dir("compatibility")
+        val actualOutputFile: RegularFile = task.outputFile.get()
+        val expectedOutputFile: RegularFile = project.layout.buildDirectory
+            .file("compatibility/java.txt")
             .get()
-        assertEquals(expectedOutputDirectory, actualOutputDirectory)
+        assertEquals(expectedOutputFile, actualOutputFile)
     }
 
     @Test

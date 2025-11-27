@@ -1,12 +1,12 @@
 package org.kotools.samples.gradle.conventions.tasks
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
-import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.JavaCompile
 import org.kotools.samples.gradle.conventions.CompatibilityPluginExtension
@@ -39,15 +39,14 @@ public abstract class JavaCompatibility internal constructor() : DefaultTask() {
     @get:Input
     public abstract val targetVersion: Property<String>
 
-    /** Directory that will contain the Java compatibility file (`java.txt`). */
-    @get:OutputDirectory
-    public abstract val outputDirectory: DirectoryProperty
+    /** File that will contain the detected Java compatibility. */
+    @get:OutputFile
+    public abstract val outputFile: RegularFileProperty
 
     @TaskAction
     internal fun execute() {
         val compatibility: String = this.compatibility()
-        this.outputDirectory.file("java.txt")
-            .get()
+        this.outputFile.get()
             .asFile
             .writeText(compatibility)
     }

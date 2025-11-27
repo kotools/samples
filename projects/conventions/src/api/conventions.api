@@ -26,7 +26,7 @@ public final class org/kotools/samples/gradle/conventions/TasksPlugin : org/grad
 
 public abstract class org/kotools/samples/gradle/conventions/tasks/JavaCompatibility : org/gradle/api/DefaultTask {
 	public abstract fun getCompatibilityVersion ()Lorg/gradle/api/provider/Property;
-	public abstract fun getOutputDirectory ()Lorg/gradle/api/file/DirectoryProperty;
+	public abstract fun getOutputFile ()Lorg/gradle/api/file/RegularFileProperty;
 	public abstract fun getSourceVersion ()Lorg/gradle/api/provider/Property;
 	public abstract fun getTargetVersion ()Lorg/gradle/api/provider/Property;
 }

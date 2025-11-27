@@ -3,6 +3,7 @@ package org.kotools.samples.gradle.conventions
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
+import org.gradle.api.file.RegularFile
 import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskContainer
@@ -78,9 +79,9 @@ private fun TaskContainer.javaCompatibility(
         compileJava.map { it.targetCompatibility }
     this.targetVersion.set(target)
 
-    val outputDirectory: Provider<Directory> =
-        this.project.layout.buildDirectory.dir("compatibility")
-    this.outputDirectory.set(outputDirectory)
+    val outputFile: Provider<RegularFile> =
+        this.project.layout.buildDirectory.file("compatibility/java.txt")
+    this.outputFile.set(outputFile)
 }
 
 private fun TaskContainer.kotlinCompatibility(
