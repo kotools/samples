@@ -1,10 +1,10 @@
 plugins {
-    `kotlin-dsl`
-    alias(libs.plugins.kotlinx.bcv)
-    alias(libs.plugins.convention.compatibility)
-    alias(libs.plugins.convention.help)
-    alias(libs.plugins.convention.kotlin.dsl)
-    alias(libs.plugins.convention.tasks)
+    this.`kotlin-dsl`
+    this.alias(libs.plugins.kotlinx.bcv)
+    this.alias(libs.plugins.convention.compatibility)
+    this.alias(libs.plugins.convention.help)
+    this.alias(libs.plugins.convention.kotlin.dsl)
+    this.alias(libs.plugins.convention.tasks)
 }
 
 group = "org.kotools"
