@@ -4,7 +4,7 @@ import org.gradle.api.Task
 import org.gradle.api.tasks.diagnostics.TaskReportTask
 
 internal enum class TaskGroup {
-    Module;
+    Help, Module;
 
     fun displayIn(task: TaskReportTask) {
         task.displayGroup = this.toString()

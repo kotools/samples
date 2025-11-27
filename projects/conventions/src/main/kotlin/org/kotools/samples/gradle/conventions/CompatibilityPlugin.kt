@@ -16,6 +16,7 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.kotools.samples.gradle.conventions.internal.TaskGroup
 import org.kotools.samples.gradle.conventions.tasks.Compatibilities
 import org.kotools.samples.gradle.conventions.tasks.JavaCompatibility
 import org.kotools.samples.gradle.conventions.tasks.KotlinCompatibility
@@ -115,7 +116,7 @@ private fun TaskContainer.compatibilities(
     kotlinCompatibility: TaskProvider<KotlinCompatibility>
 ): Unit = this.register<Compatibilities>("compatibilities").configure {
     this.description = "Prints detected compatibilities."
-    this.group = "help"
+    TaskGroup.Help.group(this)
 
     val javaCompatibilityFile: Provider<RegularFile> =
         javaCompatibility.flatMap(JavaCompatibility::outputFile)
