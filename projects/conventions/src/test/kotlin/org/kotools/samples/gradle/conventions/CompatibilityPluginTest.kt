@@ -147,5 +147,10 @@ class CompatibilityPluginTest {
             kotlin.coreLibrariesVersion,
             task.coreLibrariesVersion.get()
         )
+        val actualOutputDirectory: Directory = task.outputDirectory.get()
+        val expectedOutputDirectory: Directory = project.layout.buildDirectory
+            .dir("compatibility")
+            .get()
+        assertEquals(expectedOutputDirectory, actualOutputDirectory)
     }
 }

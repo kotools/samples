@@ -94,6 +94,10 @@ private fun TaskContainer.kotlinCompatibility(
     this.apiVersion.set(kotlin.compilerOptions.apiVersion)
     this.languageVersion.set(kotlin.compilerOptions.languageVersion)
     this.coreLibrariesVersion.set(kotlin.coreLibrariesVersion)
+
+    val outputDirectory: Provider<Directory> =
+        this.project.layout.buildDirectory.dir("compatibility")
+    this.outputDirectory.set(outputDirectory)
 }
 
 // ----------------------------------- Java ------------------------------------

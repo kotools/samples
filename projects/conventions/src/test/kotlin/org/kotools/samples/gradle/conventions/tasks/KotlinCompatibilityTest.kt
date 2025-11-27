@@ -1,8 +1,8 @@
 package org.kotools.samples.gradle.conventions.tasks
 
-import org.gradle.testkit.runner.BuildResult
 import java.io.File
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class KotlinCompatibilityTest {
     @Test
@@ -20,9 +20,12 @@ class KotlinCompatibilityTest {
         )
         val task = "kotlinCompatibility"
         // When
-        val result: BuildResult = gradleBuild(project, task)
+        gradleBuild(project, task)
         // Then
-        result.assertPrints("Kotlin 2.0.21 (api: 2.0, language: 2.0)")
+        val actual: String = project.resolve("build/compatibility/kotlin.txt")
+            .readText()
+        val expected = "Kotlin 2.0.21 (api: 2.0, language: 2.0)"
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -46,8 +49,11 @@ class KotlinCompatibilityTest {
         )
         val task = "kotlinCompatibility"
         // When
-        val result: BuildResult = gradleBuild(project, task)
+        gradleBuild(project, task)
         // Then
-        result.assertPrints("Kotlin 2.0.21 (api: 2.0, language: 1.9)")
+        val actual: String = project.resolve("build/compatibility/kotlin.txt")
+            .readText()
+        val expected = "Kotlin 2.0.21 (api: 2.0, language: 1.9)"
+        assertEquals(expected, actual)
     }
 }

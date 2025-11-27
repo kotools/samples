@@ -1,18 +1,20 @@
 package org.kotools.samples.gradle.conventions.tasks
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
-import org.gradle.work.DisableCachingByDefault
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.kotools.samples.gradle.conventions.CompatibilityPluginExtension
 
-/** Task that prints Kotlin compatibility of a project. */
-@DisableCachingByDefault(because = "Prints to standard output.")
+/** Task that detects the compatibility of a project with Kotlin. */
+@CacheableTask
 public abstract class KotlinCompatibility internal constructor() :
     DefaultTask() {
     /**
@@ -48,14 +50,26 @@ public abstract class KotlinCompatibility internal constructor() :
     @get:Input
     public abstract val coreLibrariesVersion: Property<String>
 
+    /**
+     * Directory that will contain the Kotlin compatibility file (`kotlin.txt`).
+     */
+    @get:OutputDirectory
+    public abstract val outputDirectory: DirectoryProperty
+
     @TaskAction
     internal fun execute() {
+        val compatibility: String = this.compatibility()
+        this.outputDirectory.file("kotlin.txt")
+            .get()
+            .asFile
+            .writeText(compatibility)
+    }
+
+    private fun compatibility(): String {
         val version: String = this.compatibilityVersion.orNull
             ?: this.coreLibrariesVersion.get()
         val apiVersion: String = this.apiVersion.get().version
         val languageVersion: String = this.languageVersion.get().version
-        println(
-            "Kotlin $version (api: $apiVersion, language: $languageVersion)"
-        )
+        return "Kotlin $version (api: $apiVersion, language: $languageVersion)"
     }
 }
