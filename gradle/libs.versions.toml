@@ -14,6 +14,7 @@ dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 gradle-plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-plugin-publish" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinx-bcv = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinx-bcv" }
+kotools-samples = { id = "org.kotools.samples" }
 kotools-samples-jvm = { id = "org.kotools.samples.jvm" }
 
 [libraries]

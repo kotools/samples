@@ -14,5 +14,5 @@ import org.gradle.api.Project
  */
 public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
     /** Applies this plugin to the specified [project]. */
-    override fun apply(project: Project): Unit = TODO("Not yet implemented")
+    override fun apply(project: Project): Unit = Unit
 }
