@@ -29,3 +29,11 @@ gradlePlugin {
         this.implementationClass = "${this.name}.gradle.KotoolsSamplesPlugin"
     }
 }
+
+dependencies {
+    this.implementation(libs.kotlin.gradle.plugin)
+
+    this.testImplementation(libs.kotlin.test)
+}
+
+tasks.test.configure(Test::useJUnitPlatform)
