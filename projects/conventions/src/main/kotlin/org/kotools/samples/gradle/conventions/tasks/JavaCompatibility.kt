@@ -1,16 +1,18 @@
 package org.kotools.samples.gradle.conventions.tasks
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.JavaCompile
-import org.gradle.work.DisableCachingByDefault
 import org.kotools.samples.gradle.conventions.CompatibilityPluginExtension
 
-/** Task that prints Java compatibility of a project. */
-@DisableCachingByDefault(because = "Prints to standard output.")
+/** Task that detects the compatibility of a project with Java. */
+@CacheableTask
 public abstract class JavaCompatibility internal constructor() : DefaultTask() {
     /**
      * Java version to be compatible with, usually set with
@@ -37,15 +39,25 @@ public abstract class JavaCompatibility internal constructor() : DefaultTask() {
     @get:Input
     public abstract val targetVersion: Property<String>
 
+    /** Directory that will contain the Java compatibility file (`java.txt`). */
+    @get:OutputDirectory
+    public abstract val outputDirectory: DirectoryProperty
+
     @TaskAction
     internal fun execute() {
+        val compatibility: String = this.compatibility()
+        this.outputDirectory.file("java.txt")
+            .get()
+            .asFile
+            .writeText(compatibility)
+    }
+
+    private fun compatibility(): String {
         val compatibilityVersion: String? = this.compatibilityVersion.orNull
-        if (compatibilityVersion != null)
-            return println("Java $compatibilityVersion")
+        if (compatibilityVersion != null) return "Java $compatibilityVersion"
         val sourceVersion: String = this.sourceVersion.get()
         val targetVersion: String = this.targetVersion.get()
-        if (sourceVersion == targetVersion)
-            return println("Java $sourceVersion")
-        println("Java $sourceVersion (target: $targetVersion)")
+        if (sourceVersion == targetVersion) return "Java $sourceVersion"
+        return "Java $sourceVersion (target: $targetVersion)"
     }
 }

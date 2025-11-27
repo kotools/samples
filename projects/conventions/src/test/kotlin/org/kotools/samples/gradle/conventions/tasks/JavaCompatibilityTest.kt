@@ -1,8 +1,8 @@
 package org.kotools.samples.gradle.conventions.tasks
 
-import org.gradle.testkit.runner.BuildResult
 import java.io.File
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class JavaCompatibilityTest {
     @Test
@@ -20,9 +20,11 @@ class JavaCompatibilityTest {
         )
         val task = "javaCompatibility"
         // When
-        val result: BuildResult = gradleBuild(project, task)
+        gradleBuild(project, task)
         // Then
-        result.assertPrints("Java 17")
+        val actual: String = project.resolve("build/compatibility/java.txt")
+            .readText()
+        assertEquals(expected = "Java 17", actual)
     }
 
     @Test
@@ -43,9 +45,11 @@ class JavaCompatibilityTest {
         )
         val task = "javaCompatibility"
         // When
-        val result: BuildResult = gradleBuild(project, task)
+        gradleBuild(project, task)
         // Then
-        result.assertPrints("Java 17")
+        val actual: String = project.resolve("build/compatibility/java.txt")
+            .readText()
+        assertEquals(expected = "Java 17", actual)
     }
 
     @Test
@@ -66,8 +70,10 @@ class JavaCompatibilityTest {
         )
         val task = "javaCompatibility"
         // When
-        val result: BuildResult = gradleBuild(project, task)
+        gradleBuild(project, task)
         // Then
-        result.assertPrints("Java 21 (target: 20)")
+        val actual: String = project.resolve("build/compatibility/java.txt")
+            .readText()
+        assertEquals(expected = "Java 21 (target: 20)", actual)
     }
 }
