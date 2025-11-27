@@ -17,6 +17,7 @@ import org.kotools.samples.gradle.conventions.tasks.JavaCompatibility
 import org.kotools.samples.gradle.conventions.tasks.KotlinCompatibility
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class CompatibilityPluginTest {
@@ -90,23 +91,35 @@ class CompatibilityPluginTest {
         val project: Project = ProjectBuilder.builder()
             .build()
         project.pluginManager.apply("org.jetbrains.kotlin.jvm")
+
         // When
         project.pluginManager.apply(CompatibilityPlugin::class)
         val compatibility: CompatibilityPluginExtension =
             project.extensions.getByType()
         compatibility.java.set("17")
+
         // Then
         val task: JavaCompatibility = project.tasks
             .named<JavaCompatibility>("javaCompatibility")
             .get()
-        assertEquals("Prints Java compatibility.", task.description)
-        assertEquals("compatibility", task.group)
-        assertEquals(compatibility.java.get(), task.compatibilityVersion.get())
+        assertNull(task.description)
+        assertNull(task.group)
+
+        val actualCompatibilityVersion: String = task.compatibilityVersion.get()
+        val expectedCompatibilityVersion: String = compatibility.java.get()
+        assertEquals(expectedCompatibilityVersion, actualCompatibilityVersion)
+
+        val actualSourceVersion: String = task.sourceVersion.get()
         val compileJava: JavaCompile = project.tasks
             .named<JavaCompile>("compileJava")
             .get()
-        assertEquals(compileJava.sourceCompatibility, task.sourceVersion.get())
-        assertEquals(compileJava.targetCompatibility, task.targetVersion.get())
+        val expectedSourceVersion: String = compileJava.sourceCompatibility
+        assertEquals(expectedSourceVersion, actualSourceVersion)
+
+        val actualTargetVersion: String = task.targetVersion.get()
+        val expectedTargetVersion: String = compileJava.targetCompatibility
+        assertEquals(expectedTargetVersion, actualTargetVersion)
+
         val actualOutputFile: RegularFile = task.outputFile.get()
         val expectedOutputFile: RegularFile = project.layout.buildDirectory
             .file("compatibility/java.txt")
@@ -120,34 +133,39 @@ class CompatibilityPluginTest {
         val project: Project = ProjectBuilder.builder()
             .build()
         project.pluginManager.apply("org.jetbrains.kotlin.jvm")
+
         // When
         project.pluginManager.apply(CompatibilityPlugin::class)
         val compatibility: CompatibilityPluginExtension =
             project.extensions.getByType()
         compatibility.kotlin.set("2.0.21")
+
         // Then
         val task: KotlinCompatibility = project.tasks
             .named<KotlinCompatibility>("kotlinCompatibility")
             .get()
-        assertEquals("Prints Kotlin compatibility.", task.description)
-        assertEquals("compatibility", task.group)
-        assertEquals(
-            compatibility.kotlin.get(),
-            task.compatibilityVersion.get()
-        )
+        assertNull(task.description)
+        assertNull(task.group)
+
+        val actualCompatibilityVersion: String = task.compatibilityVersion.get()
+        val expectedCompatibilityVersion: String = compatibility.kotlin.get()
+        assertEquals(expectedCompatibilityVersion, actualCompatibilityVersion)
+
+        val actualApiVersion: KotlinVersion = task.apiVersion.get()
         val kotlin: KotlinJvmProjectExtension = project.extensions.getByType()
-        assertEquals(
-            kotlin.compilerOptions.apiVersion.get(),
-            task.apiVersion.get()
-        )
-        assertEquals(
-            kotlin.compilerOptions.languageVersion.get(),
-            task.languageVersion.get()
-        )
-        assertEquals(
-            kotlin.coreLibrariesVersion,
-            task.coreLibrariesVersion.get()
-        )
+        val expectedApiVersion: KotlinVersion =
+            kotlin.compilerOptions.apiVersion.get()
+        assertEquals(expectedApiVersion, actualApiVersion)
+
+        val actualLanguageVersion: KotlinVersion = task.languageVersion.get()
+        val expectedLanguageVersion: KotlinVersion =
+            kotlin.compilerOptions.languageVersion.get()
+        assertEquals(expectedLanguageVersion, actualLanguageVersion)
+
+        val actualCoreLibrariesVersion: String = task.coreLibrariesVersion.get()
+        val expectedCoreLibrariesVersion: String = kotlin.coreLibrariesVersion
+        assertEquals(expectedCoreLibrariesVersion, actualCoreLibrariesVersion)
+
         val actualOutputFile: RegularFile = task.outputFile.get()
         val expectedOutputFile: RegularFile = project.layout.buildDirectory
             .file("compatibility/kotlin.txt")

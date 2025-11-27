@@ -73,9 +73,6 @@ private fun TaskContainer.javaCompatibility(
     val task: TaskProvider<JavaCompatibility> =
         this.register<JavaCompatibility>("javaCompatibility")
     task.configure {
-        this.description = "Prints Java compatibility."
-        this.group = "compatibility"
-
         this.compatibilityVersion.set(compatibility.java)
         val compileJava: TaskProvider<JavaCompile> =
             this.project.tasks.named<JavaCompile>("compileJava")
@@ -99,9 +96,6 @@ private fun TaskContainer.kotlinCompatibility(
     val task: TaskProvider<KotlinCompatibility> =
         this.register<KotlinCompatibility>("kotlinCompatibility")
     task.configure {
-        this.description = "Prints Kotlin compatibility."
-        this.group = "compatibility"
-
         this.compatibilityVersion.set(compatibility.kotlin)
         val kotlin: KotlinJvmProjectExtension =
             this.project.extensions.getByType()
