@@ -26,6 +26,6 @@ public class TasksPlugin internal constructor() : Plugin<Project> {
         setOf("assemble", "check", "build")
             .map(project.tasks::named)
             .forEach {
-                it.configure { TaskGroup.Module.group(this) }
+                it.configure { TaskGroup.Module.add(this) }
             }
 }

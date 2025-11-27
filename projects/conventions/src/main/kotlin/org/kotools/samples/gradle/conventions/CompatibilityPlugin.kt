@@ -116,7 +116,7 @@ private fun TaskContainer.compatibilities(
     kotlinCompatibility: TaskProvider<KotlinCompatibility>
 ): Unit = this.register<Compatibilities>("compatibilities").configure {
     this.description = "Prints detected compatibilities."
-    TaskGroup.Help.group(this)
+    TaskGroup.Help.add(this)
 
     val javaCompatibilityFile: Provider<RegularFile> =
         javaCompatibility.flatMap(JavaCompatibility::outputFile)
