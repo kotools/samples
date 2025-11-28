@@ -12,6 +12,12 @@ kotlin {
     this.compilerOptions.allWarningsAsErrors.set(true)
 }
 
+gradlePlugin.plugins.register("coordinates").configure {
+    val conventionsPackage = "org.kotools.samples.conventions"
+    this.id = "$conventionsPackage.coordinates"
+    this.implementationClass = "$conventionsPackage.CoordinatesPlugin"
+}
+
 tasks {
     this.withType<ValidatePlugins>().configureEach {
         this.failOnWarning.set(true)
