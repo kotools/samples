@@ -1,6 +1,11 @@
-plugins { this.`kotlin-dsl` }
+plugins {
+    this.`kotlin-dsl`
+    this.alias(libs.plugins.kotlinx.bcv)
+}
 
 repositories.mavenCentral()
+
+apiValidation.apiDumpDirectory = "src/api"
 
 kotlin {
     this.explicitApi()
