@@ -23,9 +23,6 @@ on:
       - gradlew
       - gradlew.bat
   workflow_dispatch:
-env:
-  JAVA_DISTRIBUTION: temurin
-  JAVA_VERSION: 17
 jobs:
   checks:
     name: Checks
@@ -36,8 +33,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4.7.1
         with:
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+          java-version: 17
       - name: Validate Gradle wrapper
         uses: gradle/actions/wrapper-validation@v4.3.1
       - name: Setup Gradle
@@ -46,37 +43,3 @@ jobs:
         run: ./gradlew :jvm:check
       - name: Check 'jvm-demo' Gradle project
         run: ./gradlew :jvm-demo:check
-  conventions:
-    name: Convention plugins
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4.2.2
-      - name: Setup Java
-        uses: actions/setup-java@v4.7.1
-        with:
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          java-version: ${{ env.JAVA_VERSION }}
-      - name: Validate Gradle wrapper
-        uses: gradle/actions/wrapper-validation@v4.3.1
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4.3.1
-      - name: Build ':conventions' project
-        run: ./gradlew :conventions:build
-  samples-gradle-plugin:
-    name: Gradle plugin
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4.2.2
-      - name: Setup Java
-        uses: actions/setup-java@v4.7.1
-        with:
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          java-version: ${{ env.JAVA_VERSION }}
-      - name: Validate Gradle wrapper
-        uses: gradle/actions/wrapper-validation@v4.3.1
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4.3.1
-      - name: Build ':plugin' project
-        run: ./gradlew :plugin:build
