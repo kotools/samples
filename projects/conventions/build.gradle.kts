@@ -13,9 +13,12 @@ kotlin {
 }
 
 gradlePlugin.plugins.register("coordinates").configure {
-    val conventionsPackage = "org.kotools.samples.conventions"
-    this.id = "$conventionsPackage.coordinates"
-    this.implementationClass = "$conventionsPackage.CoordinatesPlugin"
+    this.id = libs.plugins.conventions.coordinates.map { it.pluginId }
+        .get()
+    this.implementationClass = this.id.split('.')
+        .dropLast(1)
+        .plus("CoordinatesPlugin")
+        .joinToString(separator = ".")
 }
 
 dependencies {
