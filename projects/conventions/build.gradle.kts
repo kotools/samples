@@ -18,6 +18,11 @@ gradlePlugin.plugins.register("coordinates").configure {
     this.implementationClass = "$conventionsPackage.CoordinatesPlugin"
 }
 
+dependencies {
+    this.testImplementation(this.gradleTestKit())
+    this.testImplementation(libs.kotlin.test)
+}
+
 tasks {
     this.withType<ValidatePlugins>().configureEach {
         this.failOnWarning.set(true)

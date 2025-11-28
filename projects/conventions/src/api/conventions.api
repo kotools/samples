@@ -3,3 +3,9 @@ public final class org/kotools/samples/conventions/CoordinatesPlugin : org/gradl
 	public fun apply (Lorg/gradle/api/Project;)V
 }
 
+public abstract class org/kotools/samples/conventions/CoordinatesTask : org/gradle/api/DefaultTask {
+	public abstract fun getProjectGroup ()Lorg/gradle/api/provider/Property;
+	public abstract fun getProjectName ()Lorg/gradle/api/provider/Property;
+	public abstract fun getProjectVersion ()Lorg/gradle/api/provider/Property;
+}
+
