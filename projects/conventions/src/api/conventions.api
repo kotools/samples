@@ -1,3 +1,8 @@
+public final class org/kotools/samples/conventions/CompatibilityPlugin : org/gradle/api/Plugin {
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/Project;)V
+}
+
 public final class org/kotools/samples/conventions/CoordinatesPlugin : org/gradle/api/Plugin {
 	public synthetic fun apply (Ljava/lang/Object;)V
 	public fun apply (Lorg/gradle/api/Project;)V
