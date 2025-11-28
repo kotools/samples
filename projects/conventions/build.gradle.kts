@@ -20,6 +20,11 @@ gradlePlugin.plugins.register("coordinates").configure {
         .plus("CoordinatesPlugin")
         .joinToString(separator = ".")
 }
+gradlePlugin.plugins.register("compatibility").configure {
+    val packageRoot = "org.kotools.samples.conventions"
+    this.id = "$packageRoot.compatibility"
+    this.implementationClass = "$packageRoot.CompatibilityPlugin"
+}
 
 dependencies {
     this.testImplementation(this.gradleTestKit())
