@@ -1,7 +1,10 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
-plugins { this.alias(libs.plugins.kotlin.jvm) }
+plugins {
+    this.alias(libs.plugins.kotlin.jvm)
+    this.alias(libs.plugins.kotools.samples)
+}
 
 repositories.mavenCentral()
 
