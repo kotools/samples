@@ -1,0 +1,5 @@
+public final class org/kotools/samples/KotoolsSamplesPlugin : org/gradle/api/Plugin {
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/Project;)V
+}
+
