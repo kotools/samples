@@ -30,6 +30,17 @@ kotlin {
     this.coreLibrariesVersion = libs.versions.kotlin.get()
 }
 
+gradlePlugin {
+    this.vcsUrl.set("https://github.com/kotools/samples")
+    this.plugins.register("org.kotools.samples").configure {
+        this.displayName = "Kotools Samples"
+        this.description =
+            "Plugin that inlines read-only Kotlin samples into documentation."
+        this.id = this.name
+        this.implementationClass = "${this.name}.KotoolsSamplesPlugin"
+    }
+}
+
 tasks {
     this.withType<ValidatePlugins>().configureEach {
         this.failOnWarning.set(true)
