@@ -1,12 +1,17 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
-plugins { this.`kotlin-dsl` }
+plugins {
+    this.`kotlin-dsl`
+    this.alias(libs.plugins.kotlinx.bcv)
+}
 
 group = "org.kotools"
 version = "0.5.0-SNAPSHOT"
 
 repositories.mavenCentral()
+
+apiValidation.apiDumpDirectory = "src/api"
 
 java {
     val version: JavaVersion = JavaVersion.VERSION_17
