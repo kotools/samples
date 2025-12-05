@@ -24,6 +24,12 @@ gradlePlugin {
     }
 }
 
+dependencies {
+    this.implementation(libs.kotlin.gradle.plugin)
+
+    this.testImplementation(libs.kotlin.test)
+}
+
 tasks.withType<ValidatePlugins>().configureEach {
     this.failOnWarning.set(true)
     this.enableStricterValidation.set(true)
