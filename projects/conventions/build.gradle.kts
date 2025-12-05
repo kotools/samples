@@ -22,6 +22,8 @@ kotlin {
     this.coreLibrariesVersion = libs.versions.kotlin.get()
 }
 
+dependencies.implementation(libs.kotlin.gradle.plugin)
+
 tasks {
     this.withType<ValidatePlugins>().configureEach {
         this.failOnWarning.set(true)
