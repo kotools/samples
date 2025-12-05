@@ -8,64 +8,21 @@ version = "0.5.0-SNAPSHOT"
 
 repositories.mavenCentral()
 
-// ------------------------------- Compatibility -------------------------------
-
 java {
-    this.sourceCompatibility = JavaVersion.VERSION_17
-    this.targetCompatibility = JavaVersion.VERSION_17
+    val version: JavaVersion = JavaVersion.VERSION_17
+    this.sourceCompatibility = version
+    this.targetCompatibility = version
 }
-
-kotlin {
-    val version: Provider<KotlinVersion> = libs.versions.kotlin
-        .map { it.substringBeforeLast(delimiter = '.') }
-        .map(KotlinVersion.Companion::fromVersion)
-    this.compilerOptions.apiVersion.set(version)
-    this.compilerOptions.languageVersion.set(version)
-    this.coreLibrariesVersion = libs.versions.kotlin.get()
-
-    this.compilerOptions.jvmTarget.set(
-        JvmTarget.fromTarget("${java.targetCompatibility}")
-    )
-    this.compilerOptions.freeCompilerArgs.add(
-        "-Xjdk-release=${java.sourceCompatibility}"
-    )
-}
-
-tasks.register("compatibilities").configure {
-    this.description = "Prints detected compatibilities."
-    this.group = "help"
-
-    this.doLast {
-        val javaSourceVersion: JavaVersion = java.sourceCompatibility
-        val javaTargetVersion: JavaVersion = java.targetCompatibility
-        if (javaSourceVersion == javaTargetVersion)
-            println("Java $javaSourceVersion")
-        else println("Java $javaSourceVersion (target: $javaTargetVersion)")
-
-        val kotlinVersion: String = kotlin.coreLibrariesVersion
-        val kotlinApiVersion: String = kotlin.compilerOptions.apiVersion.get()
-            .version
-        val kotlinLanguageVersion: String = kotlin.compilerOptions
-            .languageVersion
-            .get()
-            .version
-        println(
-            "Kotlin $kotlinVersion (api: $kotlinApiVersion, " +
-                    "language: $kotlinLanguageVersion)"
-        )
-
-        println("Gradle ${gradle.gradleVersion}")
-
-        val dokkaVersion: String = libs.versions.dokka.get()
-        println("Dokka $dokkaVersion")
-    }
-}
-
-// -------------------------------- Kotlin DSL ---------------------------------
 
 kotlin {
     this.explicitApi()
-    this.compilerOptions.allWarningsAsErrors.set(true)
+    this.compilerOptions {
+        this.allWarningsAsErrors.set(true)
+        this.apiVersion.set(KotlinVersion.KOTLIN_2_0)
+        this.languageVersion.set(KotlinVersion.KOTLIN_1_8)
+        this.jvmTarget.set(JvmTarget.JVM_17)
+    }
+    this.coreLibrariesVersion = libs.versions.kotlin.get()
 }
 
 tasks {
@@ -75,11 +32,7 @@ tasks {
     }
 
     this.test.configure(Test::useJUnitPlatform)
-}
 
-// ----------------------------------- Tasks -----------------------------------
-
-tasks {
     val moduleTaskGroup = "module"
     this.tasks.configure { this.displayGroup = moduleTaskGroup }
     this.assemble.configure { this.group = moduleTaskGroup }
