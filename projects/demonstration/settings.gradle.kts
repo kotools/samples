@@ -1,9 +1,6 @@
 rootProject.name = "demonstration"
 
-pluginManagement {
-    this.includeBuild("../conventions")
-    this.includeBuild("../plugin")
-}
+pluginManagement.includeBuild("../plugin")
 
 dependencyResolutionManagement.versionCatalogs.register("libs").configure {
     val catalog: ConfigurableFileCollection =

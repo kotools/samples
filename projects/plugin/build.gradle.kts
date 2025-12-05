@@ -1,10 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
-plugins {
-    this.`kotlin-dsl`
-    this.alias(libs.plugins.conventions.coordinates)
-}
+plugins { this.`kotlin-dsl` }
 
 group = "org.kotools"
 version = "0.5.0-SNAPSHOT"
