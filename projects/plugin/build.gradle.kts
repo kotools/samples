@@ -11,7 +11,7 @@ repositories.mavenCentral()
 
 apiValidation.apiDumpDirectory = "src/api"
 
-kotlinJvmConventions.coreLibrariesVersion.set(libs.versions.kotlin)
+kotlin.coreLibrariesVersion = libs.versions.kotlin.get()
 
 gradlePlugin {
     this.vcsUrl.set("https://github.com/kotools/samples")

@@ -5,9 +5,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
-    val kotlinJvmConventions: KotlinJvmConventionExtension =
-        extensions.create("kotlinJvmConventions")
-
     val java: JavaPluginExtension = extensions.getByType()
     java.sourceCompatibility = JavaVersion.VERSION_17
     java.targetCompatibility = java.sourceCompatibility
@@ -19,9 +16,6 @@ pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
         this.apiVersion.set(KotlinVersion.KOTLIN_2_0)
         this.languageVersion.set(KotlinVersion.KOTLIN_1_8)
         this.jvmTarget.set(JvmTarget.JVM_17)
-    }
-    kotlinJvmConventions.coreLibrariesVersion.map {
-        kotlin.coreLibrariesVersion = it
     }
 
     tasks.named<Test>("test").configure(Test::useJUnitPlatform)

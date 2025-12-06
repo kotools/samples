@@ -6,4 +6,4 @@ plugins {
 
 repositories.mavenCentral()
 
-kotlinJvmConventions.coreLibrariesVersion.set(libs.versions.kotlin)
+kotlin.coreLibrariesVersion = libs.versions.kotlin.get()
