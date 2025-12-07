@@ -7,7 +7,10 @@ plugins {
 group = "org.kotools"
 version = "0.5.0-SNAPSHOT"
 
-repositories.mavenCentral()
+repositories {
+    this.mavenCentral()
+    this.maven("https://jitpack.io")
+}
 
 apiValidation.apiDumpDirectory = "src/api"
 
@@ -26,6 +29,7 @@ gradlePlugin {
 
 dependencies {
     this.implementation(libs.kotlin.gradle.plugin)
+    this.implementation(libs.kotlinx.ast)
 
     this.testImplementation(libs.kotlin.test)
 }

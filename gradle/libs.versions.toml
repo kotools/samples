@@ -2,6 +2,7 @@
 dokka = "2.0.0"
 gradle-plugin-publish = "1.3.0"
 kotlin = "2.0.21"
+kotlinx-ast = "v0.1.0"
 kotlinx-bcv = "0.16.3"
 
 [plugins]
@@ -17,3 +18,4 @@ kotools-samples-jvm = { id = "org.kotools.samples.jvm" }
 dokka-gradle-plugin = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", version.ref = "dokka" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlinx-ast = { module = "com.github.kotlinx.ast:grammar-kotlin-parser-antlr-kotlin", version.ref = "kotlinx-ast" }
