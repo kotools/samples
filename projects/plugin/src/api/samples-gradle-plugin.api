@@ -1,3 +1,8 @@
+public abstract class org/kotools/samples/ExtractKotlinSamplesTask : org/gradle/api/DefaultTask {
+	public abstract fun getOutputDirectory ()Lorg/gradle/api/file/DirectoryProperty;
+	public abstract fun getSourceDirectory ()Lorg/gradle/api/file/DirectoryProperty;
+}
+
 public final class org/kotools/samples/KotoolsSamplesPlugin : org/gradle/api/Plugin {
 	public synthetic fun apply (Ljava/lang/Object;)V
 	public fun apply (Lorg/gradle/api/Project;)V

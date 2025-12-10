@@ -3,7 +3,11 @@ package org.kotools.samples
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
+import org.gradle.api.plugins.ExtensionContainer
+import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.TaskContainer
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.register
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
 /**
@@ -28,11 +32,32 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
         project.pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
             val sampleDirectory: Directory =
                 project.layout.projectDirectory.dir("src/sample/kotlin")
-            project.extensions.getByType<KotlinJvmProjectExtension>()
-                .sourceSets
-                .named("test")
-                .get()
-                .kotlin
-                .srcDir(sampleDirectory)
+            project.extensions.kotlin(sampleDirectory)
+            project.tasks.extractKotlinSamples(sampleDirectory)
         }
+
+    private fun ExtensionContainer.kotlin(sampleDirectory: Directory) {
+        this.getByType<KotlinJvmProjectExtension>()
+            .sourceSets
+            .named("test")
+            .get()
+            .kotlin
+            .srcDir(sampleDirectory)
+    }
+
+    private fun TaskContainer.extractKotlinSamples(sourceDirectory: Directory) =
+        this.register<ExtractKotlinSamplesTask>("extractKotlinSamples")
+            .configure {
+                this.description = "Extracts Kotlin samples from sources."
+                this.group = "Kotools Samples"
+
+                this.sourceDirectory.set(sourceDirectory)
+
+                val extractedSamplesDirectory: Provider<Directory> = this
+                    .project
+                    .layout
+                    .buildDirectory
+                    .dir("kotools-samples/extracted")
+                this.outputDirectory.set(extractedSamplesDirectory)
+            }
 }
