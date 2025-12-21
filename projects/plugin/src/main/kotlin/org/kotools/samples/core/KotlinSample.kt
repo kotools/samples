@@ -1,8 +1,8 @@
 package org.kotools.samples.core
 
 internal class KotlinSample private constructor(
-    private val identifier: String,
-    private val content: String
+    val identifier: String,
+    val content: String
 ) {
     // ------------------------------- Creations -------------------------------
 
