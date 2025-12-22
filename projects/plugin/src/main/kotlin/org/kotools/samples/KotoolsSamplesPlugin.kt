@@ -21,10 +21,12 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
  *
  * ### Key features
  *
+ * - Supports Kotlin/JVM projects.
  * - Adds `sample` directory in `test` Kotlin source set for isolating code
  * samples from main and test sources, and for compiling them alongside test
  * sources.
- * - Supports Kotlin/JVM projects.
+ * - Extracts Kotlin sample sources as Markdown files, ready to inline into
+ * documentation (see [ExtractKotlinSamplesTask]).
  */
 public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
     /** Applies this plugin to the specified [project]. */

@@ -13,7 +13,10 @@ import org.kotools.samples.core.KotlinSample
 import org.kotools.samples.core.KotlinSampleSource
 import java.io.File
 
-/** Task that extracts Kotlin samples as Markdown files. */
+/**
+ * Task that extracts Kotlin samples as Markdown files, from
+ * [sources][sourceDirectory] into the [output][outputDirectory] directory.
+ */
 @CacheableTask
 public abstract class ExtractKotlinSamplesTask internal constructor() :
     DefaultTask() {
