@@ -6,6 +6,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 import kotlin.test.fail
 
 class KotlinSampleSourceTest {
@@ -40,9 +41,24 @@ class KotlinSampleSourceTest {
     // ---------------------------- File operations ----------------------------
 
     @Test
-    fun `samples passes without top-level functions`() {
+    fun `samples passes with empty file`() {
         // Given
-        val file: File = resourceFile("ValidSamples.kt")
+        val file: File = resourceFile("Empty.kt")
+        val source: KotlinSampleSource? =
+            KotlinSampleSource.fromFileOrNull(file)
+        checkNotNull(source)
+
+        // When
+        val samples: Set<KotlinSample> = source.samples()
+
+        // Then
+        assertTrue(samples.isEmpty())
+    }
+
+    @Test
+    fun `samples passes with classes and member functions`() {
+        // Given
+        val file: File = resourceFile("MemberFunctions.kt")
         val source: KotlinSampleSource? =
             KotlinSampleSource.fromFileOrNull(file)
         checkNotNull(source)
