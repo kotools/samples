@@ -13,8 +13,9 @@ pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
     kotlin.explicitApi()
     kotlin.compilerOptions {
         this.allWarningsAsErrors.set(true)
-        this.apiVersion.set(KotlinVersion.KOTLIN_2_0)
-        this.languageVersion.set(KotlinVersion.KOTLIN_1_8)
+        val version: KotlinVersion = KotlinVersion.KOTLIN_1_8
+        this.apiVersion.set(version)
+        this.languageVersion.set(version)
         this.jvmTarget.set(JvmTarget.JVM_17)
     }
 
