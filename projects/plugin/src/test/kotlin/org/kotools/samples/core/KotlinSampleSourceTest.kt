@@ -91,7 +91,7 @@ class KotlinSampleSourceTest {
         val expectedLongAddition: String = """
             val x = 1L
             val y = 2L
-            check(1L + 2L == 3L)
+            check(x + y == 3L)
         """.trimIndent()
         assertEquals(expectedLongAddition, actualLongAddition)
 
