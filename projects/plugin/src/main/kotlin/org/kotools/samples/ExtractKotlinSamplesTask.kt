@@ -8,6 +8,10 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
+import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
+import org.kotools.samples.core.KotlinSample
+import org.kotools.samples.core.KotlinSampleSource
+import java.io.File
 
 /** Task that extracts Kotlin samples as Markdown files. */
 @CacheableTask
@@ -23,5 +27,19 @@ public abstract class ExtractKotlinSamplesTask internal constructor() :
     public abstract val outputDirectory: DirectoryProperty
 
     @TaskAction
-    internal fun execute(): Unit = TODO()
+    internal fun execute(): Unit = this.sourceDirectory.asFileTree.asSequence()
+        .filterNotNull()
+        .mapNotNull(KotlinSampleSource.Companion::fromFileOrNull)
+        .flatMap(KotlinSampleSource::samples)
+        .forEach(this::save)
+
+    private fun save(sample: KotlinSample) {
+        val path: String = sample.markdownFilePath()
+        val content: String = sample.markdownFileContent()
+        this.outputDirectory.get()
+            .file(path)
+            .asFile
+            .also(File::ensureParentDirsCreated)
+            .writeText(content)
+    }
 }

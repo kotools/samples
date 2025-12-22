@@ -1,5 +1,6 @@
-package test
+package demonstration
 
+@Suppress("unused")
 class IntSample {
     fun addition() {
         val x = 1
@@ -10,6 +11,7 @@ class IntSample {
     fun subtraction(): Unit = check(2 - 1 == 1)
 }
 
+@Suppress("unused")
 class LongSample {
     fun addition() {
         val x = 1L
