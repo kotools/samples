@@ -7,3 +7,5 @@ plugins {
 repositories.mavenCentral()
 
 kotlin.coreLibrariesVersion = libs.versions.kotlin.get()
+
+dependencies.testImplementation(libs.kotlin.test)
