@@ -47,19 +47,19 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
             .srcDir(sampleDirectory)
     }
 
-    private fun TaskContainer.extractKotlinSamples(sourceDirectory: Directory) =
-        this.register<ExtractKotlinSamplesTask>("extractKotlinSamples")
-            .configure {
-                this.description = "Extracts Kotlin samples from sources."
-                this.group = "Kotools Samples"
+    private fun TaskContainer.extractKotlinSamples(
+        sourceDirectory: Directory
+    ): Unit = this.register<ExtractKotlinSamplesTask>("extractKotlinSamples")
+        .configure {
+            this.description = "Extracts Kotlin samples from sources."
+            this.group = "Kotools Samples"
 
-                this.sourceDirectory.set(sourceDirectory)
+            this.sourceDirectory.set(sourceDirectory)
 
-                val extractedSamplesDirectory: Provider<Directory> = this
-                    .project
-                    .layout
-                    .buildDirectory
-                    .dir("kotools-samples/extracted")
-                this.outputDirectory.set(extractedSamplesDirectory)
-            }
+            val extractedSamplesDirectory: Provider<Directory> = this.project
+                .layout
+                .buildDirectory
+                .dir("kotools-samples/extracted")
+            this.outputDirectory.set(extractedSamplesDirectory)
+        }
 }
