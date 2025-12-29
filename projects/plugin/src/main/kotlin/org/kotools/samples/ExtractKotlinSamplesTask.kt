@@ -32,7 +32,7 @@ public abstract class ExtractKotlinSamplesTask internal constructor() :
     @TaskAction
     internal fun execute(): Unit = this.sourceDirectory.asFileTree.asSequence()
         .filterNotNull()
-        .mapNotNull(KotlinFile.Companion::fromFileOrNull)
+        .mapNotNull(KotlinFile.Companion::fromOrNull)
         .flatMap(KotlinFile::samples)
         .forEach(this::save)
 

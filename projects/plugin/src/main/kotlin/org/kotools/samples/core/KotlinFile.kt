@@ -19,7 +19,7 @@ internal value class KotlinFile private constructor(private val file: File) {
     // ------------------------------- Creations -------------------------------
 
     companion object {
-        fun fromFileOrNull(file: File): KotlinFile? =
+        fun fromOrNull(file: File): KotlinFile? =
             if (file.extension != "kt") null
             else KotlinFile(file)
     }

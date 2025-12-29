@@ -13,24 +13,24 @@ class KotlinFileTest {
     // ------------------------------- Creations -------------------------------
 
     @Test
-    fun `fromFileOrNull passes with kt file extension`() {
+    fun `fromOrNull passes with kt file extension`() {
         // Given
         val file = File("Sample.kt")
 
         // When
-        val actual: KotlinFile? = KotlinFile.fromFileOrNull(file)
+        val actual: KotlinFile? = KotlinFile.fromOrNull(file)
 
         // Then
         assertNotNull(actual)
     }
 
     @Test
-    fun `fromFileOrNull fails with another file extension than kt`() {
+    fun `fromOrNull fails with another file extension than kt`() {
         // Given
         val file = File("Sample.java")
 
         // When
-        val actual: KotlinFile? = KotlinFile.fromFileOrNull(file)
+        val actual: KotlinFile? = KotlinFile.fromOrNull(file)
 
         // Then
         assertNull(actual)
@@ -42,7 +42,7 @@ class KotlinFileTest {
     fun `samples passes with empty file`() {
         // Given
         val file: File = resourceFile("Empty.kt")
-        val source: KotlinFile? = KotlinFile.fromFileOrNull(file)
+        val source: KotlinFile? = KotlinFile.fromOrNull(file)
         checkNotNull(source)
 
         // When
@@ -56,7 +56,7 @@ class KotlinFileTest {
     fun `samples passes with classes and member functions`() {
         // Given
         val file: File = resourceFile("MemberFunctions.kt")
-        val source: KotlinFile? = KotlinFile.fromFileOrNull(file)
+        val source: KotlinFile? = KotlinFile.fromOrNull(file)
         checkNotNull(source)
 
         // When
@@ -102,7 +102,7 @@ class KotlinFileTest {
     fun `samples fails with top-level function`() {
         // Given
         val file: File = resourceFile("TopLevelFunction.kt")
-        val source: KotlinFile? = KotlinFile.fromFileOrNull(file)
+        val source: KotlinFile? = KotlinFile.fromOrNull(file)
         checkNotNull(source)
 
         // When
@@ -130,7 +130,7 @@ class KotlinFileTest {
     fun `toString passes`() {
         // Given
         val file = File("Sample.kt")
-        val source: KotlinFile? = KotlinFile.fromFileOrNull(file)
+        val source: KotlinFile? = KotlinFile.fromOrNull(file)
         checkNotNull(source)
 
         // When
