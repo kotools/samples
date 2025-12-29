@@ -9,7 +9,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class KotlinSampleSourceTest {
+class KotlinFileTest {
     // ------------------------------- Creations -------------------------------
 
     @Test
@@ -18,8 +18,7 @@ class KotlinSampleSourceTest {
         val file = File("Sample.kt")
 
         // When
-        val actual: KotlinSampleSource? =
-            KotlinSampleSource.fromFileOrNull(file)
+        val actual: KotlinFile? = KotlinFile.fromFileOrNull(file)
 
         // Then
         assertNotNull(actual)
@@ -31,8 +30,7 @@ class KotlinSampleSourceTest {
         val file = File("Sample.java")
 
         // When
-        val actual: KotlinSampleSource? =
-            KotlinSampleSource.fromFileOrNull(file)
+        val actual: KotlinFile? = KotlinFile.fromFileOrNull(file)
 
         // Then
         assertNull(actual)
@@ -44,8 +42,7 @@ class KotlinSampleSourceTest {
     fun `samples passes with empty file`() {
         // Given
         val file: File = resourceFile("Empty.kt")
-        val source: KotlinSampleSource? =
-            KotlinSampleSource.fromFileOrNull(file)
+        val source: KotlinFile? = KotlinFile.fromFileOrNull(file)
         checkNotNull(source)
 
         // When
@@ -59,8 +56,7 @@ class KotlinSampleSourceTest {
     fun `samples passes with classes and member functions`() {
         // Given
         val file: File = resourceFile("MemberFunctions.kt")
-        val source: KotlinSampleSource? =
-            KotlinSampleSource.fromFileOrNull(file)
+        val source: KotlinFile? = KotlinFile.fromFileOrNull(file)
         checkNotNull(source)
 
         // When
@@ -106,8 +102,7 @@ class KotlinSampleSourceTest {
     fun `samples fails with top-level function`() {
         // Given
         val file: File = resourceFile("TopLevelFunction.kt")
-        val source: KotlinSampleSource? =
-            KotlinSampleSource.fromFileOrNull(file)
+        val source: KotlinFile? = KotlinFile.fromFileOrNull(file)
         checkNotNull(source)
 
         // When
@@ -135,8 +130,7 @@ class KotlinSampleSourceTest {
     fun `toString passes`() {
         // Given
         val file = File("Sample.kt")
-        val source: KotlinSampleSource? =
-            KotlinSampleSource.fromFileOrNull(file)
+        val source: KotlinFile? = KotlinFile.fromFileOrNull(file)
         checkNotNull(source)
 
         // When

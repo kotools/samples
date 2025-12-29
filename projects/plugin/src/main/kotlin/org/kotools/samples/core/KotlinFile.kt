@@ -15,15 +15,13 @@ import kotlinx.ast.grammar.kotlin.target.antlr.kotlin.KotlinGrammarAntlrKotlinPa
 import java.io.File
 
 @JvmInline
-internal value class KotlinSampleSource private constructor(
-    private val file: File
-) {
+internal value class KotlinFile private constructor(private val file: File) {
     // ------------------------------- Creations -------------------------------
 
     companion object {
-        fun fromFileOrNull(file: File): KotlinSampleSource? =
+        fun fromFileOrNull(file: File): KotlinFile? =
             if (file.extension != "kt") null
-            else KotlinSampleSource(file)
+            else KotlinFile(file)
     }
 
     // ---------------------------- File operations ----------------------------
