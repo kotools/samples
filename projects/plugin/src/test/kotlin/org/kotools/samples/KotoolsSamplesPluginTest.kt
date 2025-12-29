@@ -65,4 +65,47 @@ class KotoolsSamplesPluginTest {
             .get()
         assertEquals(expectedOutputDirectory, actualOutputDirectory)
     }
+
+    @Test
+    fun `registers inlineKotlinSamples task for JVM projects`() {
+        // Given
+        val project: Project = ProjectBuilder.builder()
+            .build()
+        project.pluginManager.apply("org.jetbrains.kotlin.jvm")
+
+        // When
+        project.pluginManager.apply(KotoolsSamplesPlugin::class)
+
+        // Then
+        val task: InlineKotlinSamplesTask = project.tasks
+            .named<InlineKotlinSamplesTask>("inlineKotlinSamples")
+            .get()
+        assertEquals(
+            "Inlines Kotlin samples referenced from sources.",
+            task.description
+        )
+        assertEquals("Kotools Samples", task.group)
+
+        val actualSourceDirectory: Directory = task.sourceDirectory.get()
+        val expectedSourceDirectory: Directory =
+            project.layout.projectDirectory.dir("src/main/kotlin")
+        assertEquals(expectedSourceDirectory, actualSourceDirectory)
+
+        val actualExtractedSampleDirectory: Directory =
+            task.extractedSampleDirectory.get()
+        val expectedExtractedSampleDirectory: Directory = project.tasks
+            .named<ExtractKotlinSamplesTask>("extractKotlinSamples")
+            .flatMap(ExtractKotlinSamplesTask::outputDirectory)
+            .get()
+        assertEquals(
+            expectedExtractedSampleDirectory,
+            actualExtractedSampleDirectory
+        )
+
+        val actualOutputDirectory: Directory = task.outputDirectory.get()
+        val expectedOutputDirectory: Directory = project.layout.buildDirectory
+            .dir("kotools-samples/inlined")
+            .get()
+        assertEquals(expectedOutputDirectory, actualOutputDirectory)
+    }
 }
