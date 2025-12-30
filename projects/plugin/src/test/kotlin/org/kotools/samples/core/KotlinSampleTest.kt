@@ -10,9 +10,10 @@ class KotlinSampleTest {
     // ------------------------------- Creations -------------------------------
 
     @Test
-    fun `from passes with valid identifier and content`() {
+    fun `from passes with non-blank content`() {
         // Given
-        val identifier = "IntSample.unaryMinus"
+        val identifier: SampleIdentifier =
+            SampleIdentifier.from("IntSample.unaryMinus")
         val content: String = """
             val x = 1
             val y = -1
@@ -24,48 +25,10 @@ class KotlinSampleTest {
     }
 
     @Test
-    fun `from fails with blank identifier`() {
-        // Given
-        val identifier = " "
-        val content: String = """
-            val x = 1
-            val y = -1
-            check(-x == y)
-        """.trimIndent()
-
-        // When & Then
-        val exception: IllegalArgumentException = assertFailsWith {
-            KotlinSample.from(identifier, content)
-        }
-        val actual: String? = exception.message
-        val expected = "Kotlin sample's identifier can't be blank."
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `from fails with illegal character in identifier`() {
-        // Given
-        val identifier = "IntSample unaryMinus"
-        val content: String = """
-            val x = 1
-            val y = -1
-            check(-x == y)
-        """.trimIndent()
-
-        // When & Then
-        val exception: IllegalArgumentException = assertFailsWith {
-            KotlinSample.from(identifier, content)
-        }
-        val actual: String? = exception.message
-        val expected = "Kotlin sample's identifier must be a qualified name " +
-                "(was: $identifier)."
-        assertEquals(expected, actual)
-    }
-
-    @Test
     fun `from fails with blank content`() {
         // Given
-        val identifier = "IntSample.unaryMinus"
+        val identifier: SampleIdentifier =
+            SampleIdentifier.from("IntSample.unaryMinus")
         val content = " "
 
         // When & Then
@@ -82,7 +45,8 @@ class KotlinSampleTest {
     @Test
     fun `equals passes with Sample having same identifier`() {
         // Given
-        val identifier = "IntSample.unaryMinus"
+        val identifier: SampleIdentifier =
+            SampleIdentifier.from("IntSample.unaryMinus")
         val content: String = """
             val x = 1
             val y = -1
@@ -102,7 +66,8 @@ class KotlinSampleTest {
     @Test
     fun `equals fails with another type than Sample`() {
         // Given
-        val identifier = "IntSample.unaryMinus"
+        val identifier: SampleIdentifier =
+            SampleIdentifier.from("IntSample.unaryMinus")
         val content: String = """
             val x = 1
             val y = -1
@@ -120,14 +85,17 @@ class KotlinSampleTest {
     @Test
     fun `equals fails with Sample having another identifier`() {
         // Given
-        val identifier = "IntSample.unaryMinus"
+        val identifier1: SampleIdentifier =
+            SampleIdentifier.from("IntSample.unaryMinus")
         val content: String = """
             val x = 1
             val y = -1
             check(-x == y)
         """.trimIndent()
-        val sample: KotlinSample = KotlinSample.from(identifier, content)
-        val other: KotlinSample = KotlinSample.from("${identifier}V2", content)
+        val sample: KotlinSample = KotlinSample.from(identifier1, content)
+        val identifier2: SampleIdentifier =
+            SampleIdentifier.from("${identifier1}V2")
+        val other: KotlinSample = KotlinSample.from(identifier2, content)
 
         // When
         val actual: Boolean = sample == other
@@ -139,7 +107,8 @@ class KotlinSampleTest {
     @Test
     fun `hashCode returns hash code value of identifier`() {
         // Given
-        val identifier = "IntSample.unaryMinus"
+        val identifier: SampleIdentifier =
+            SampleIdentifier.from("IntSample.unaryMinus")
         val content: String = """
             val x = 1
             val y = -1
@@ -160,7 +129,8 @@ class KotlinSampleTest {
     @Test
     fun `markdownFilePath passes`() {
         // Given
-        val identifier = "IntSample.unaryMinus"
+        val identifier: SampleIdentifier =
+            SampleIdentifier.from("IntSample.unaryMinus")
         val content: String = """
             val x = 1
             val y = -1
@@ -172,15 +142,16 @@ class KotlinSampleTest {
         val actual: String = sample.markdownFilePath()
 
         // Then
-        val expected: String = identifier.replace(oldChar = '.', newChar = '/')
-            .plus(".md")
+        val expected: String = identifier.toSamplePath()
+            .toString()
         assertEquals(expected, actual)
     }
 
     @Test
     fun `markdownFileContent passes`() {
         // Given
-        val identifier = "IntSample.unaryMinus"
+        val identifier: SampleIdentifier =
+            SampleIdentifier.from("IntSample.unaryMinus")
         val content: String = """
             val x = 1
             val y = -1
@@ -205,7 +176,8 @@ class KotlinSampleTest {
     @Test
     fun `toString passes`() {
         // Given
-        val identifier = "IntSample.unaryMinus"
+        val identifier: SampleIdentifier =
+            SampleIdentifier.from("IntSample.unaryMinus")
         val content: String = """
             val x = 1
             val y = -1

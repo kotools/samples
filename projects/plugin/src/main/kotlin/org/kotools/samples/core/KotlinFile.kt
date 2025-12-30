@@ -83,7 +83,9 @@ internal value class KotlinFile private constructor(private val file: File) {
         className: String
     ): KotlinSample? {
         if (declaration.keyword != "fun") return null
-        val identifier = "${className}.${declaration.identifier?.identifier}"
+        val identifier: SampleIdentifier = SampleIdentifier.from(
+            "${className}.${declaration.identifier?.identifier}"
+        )
         val raw: RawAst = declaration.attachments
             .get<RawAst>(AstAttachmentRawAst)
             ?: error("No raw AST available (was: ${declaration.description}).")

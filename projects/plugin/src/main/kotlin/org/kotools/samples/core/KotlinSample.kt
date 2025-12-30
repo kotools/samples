@@ -7,25 +7,11 @@ internal class KotlinSample private constructor(
     // ------------------------------- Creations -------------------------------
 
     companion object Companion {
-        fun from(identifier: String, content: String): KotlinSample {
-            require(identifier.isNotBlank()) {
-                "Kotlin sample's identifier can't be blank."
-            }
-            val identifierIsQualifiedName: Boolean =
-                if ('.' !in identifier) identifier.all(Char::isLetterOrDigit)
-                else identifier.split('.')
-                    .all { it.all(Char::isLetterOrDigit) }
-            require(identifierIsQualifiedName) {
-                "Kotlin sample's identifier must be a qualified name (was: " +
-                        "$identifier)."
-            }
+        fun from(identifier: SampleIdentifier, content: String): KotlinSample {
             require(content.isNotBlank()) {
                 "Kotlin sample's content can't be blank."
             }
-            return KotlinSample(
-                SampleIdentifier.from(identifier),
-                content
-            )
+            return KotlinSample(identifier, content)
         }
     }
 
