@@ -24,8 +24,7 @@ internal class KotlinSample private constructor(
 
     // -------------------------- Markdown operations --------------------------
 
-    fun markdownFilePath(): String = this.identifier.toSamplePath()
-        .toString()
+    fun path(): SamplePath = this.identifier.toSamplePath()
 
     fun markdownFileContent(): String = """
         |```kotlin

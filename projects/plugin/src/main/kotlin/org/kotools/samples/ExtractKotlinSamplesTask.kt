@@ -11,6 +11,7 @@ import org.gradle.api.tasks.TaskAction
 import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
 import org.kotools.samples.core.KotlinFile
 import org.kotools.samples.core.KotlinSample
+import org.kotools.samples.core.SamplePath
 import java.io.File
 
 /**
@@ -37,10 +38,10 @@ public abstract class ExtractKotlinSamplesTask internal constructor() :
         .forEach(this::save)
 
     private fun save(sample: KotlinSample) {
-        val path: String = sample.markdownFilePath()
+        val path: SamplePath = sample.path()
         val content: String = sample.markdownFileContent()
         this.outputDirectory.get()
-            .file(path)
+            .file("$path")
             .asFile
             .also(File::ensureParentDirsCreated)
             .writeText(content)

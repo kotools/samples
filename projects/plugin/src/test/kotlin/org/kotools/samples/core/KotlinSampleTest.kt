@@ -127,7 +127,7 @@ class KotlinSampleTest {
     // -------------------------- Markdown operations --------------------------
 
     @Test
-    fun `markdownFilePath passes`() {
+    fun `path passes`() {
         // Given
         val identifier: SampleIdentifier =
             SampleIdentifier.from("IntSample.unaryMinus")
@@ -139,11 +139,10 @@ class KotlinSampleTest {
         val sample: KotlinSample = KotlinSample.from(identifier, content)
 
         // When
-        val actual: String = sample.markdownFilePath()
+        val actual: SamplePath = sample.path()
 
         // Then
-        val expected: String = identifier.toSamplePath()
-            .toString()
+        val expected: SamplePath = identifier.toSamplePath()
         assertEquals(expected, actual)
     }
 
