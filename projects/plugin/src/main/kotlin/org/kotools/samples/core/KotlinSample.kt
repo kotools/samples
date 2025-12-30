@@ -1,7 +1,7 @@
 package org.kotools.samples.core
 
 internal class KotlinSample private constructor(
-    val identifier: String,
+    val identifier: SampleIdentifier,
     val content: String
 ) {
     // ------------------------------- Creations -------------------------------
@@ -22,7 +22,10 @@ internal class KotlinSample private constructor(
             require(content.isNotBlank()) {
                 "Kotlin sample's content can't be blank."
             }
-            return KotlinSample(identifier, content)
+            return KotlinSample(
+                SampleIdentifier.from(identifier),
+                content
+            )
         }
     }
 
@@ -35,8 +38,8 @@ internal class KotlinSample private constructor(
 
     // -------------------------- Markdown operations --------------------------
 
-    fun markdownFilePath(): String =
-        this.identifier.replace(oldChar = '.', newChar = '/') + ".md"
+    fun markdownFilePath(): String = this.identifier.toSamplePath()
+        .toString()
 
     fun markdownFileContent(): String = """
         |```kotlin

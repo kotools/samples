@@ -66,7 +66,7 @@ class KotlinFileTest {
         assertEquals(expected = 4, samples.size, "4 Kotlin samples expected.")
 
         val actualIntAddition: String = samples
-            .first { it.identifier == "test.IntSample.addition" }
+            .first { it.identifier.toString() == "test.IntSample.addition" }
             .content
         val expectedIntAddition: String = """
             val x = 1
@@ -76,13 +76,13 @@ class KotlinFileTest {
         assertEquals(expectedIntAddition, actualIntAddition)
 
         val actualIntSubtraction: String = samples
-            .first { it.identifier == "test.IntSample.subtraction" }
+            .first { it.identifier.toString() == "test.IntSample.subtraction" }
             .content
         val expectedIntSubtraction = "check(2 - 1 == 1)"
         assertEquals(expectedIntSubtraction, actualIntSubtraction)
 
         val actualLongAddition: String = samples
-            .first { it.identifier == "test.LongSample.addition" }
+            .first { it.identifier.toString() == "test.LongSample.addition" }
             .content
         val expectedLongAddition: String = """
             val x = 1L
@@ -92,7 +92,7 @@ class KotlinFileTest {
         assertEquals(expectedLongAddition, actualLongAddition)
 
         val actualLongSubtraction: String = samples
-            .first { it.identifier == "test.LongSample.subtraction" }
+            .first { it.identifier.toString() == "test.LongSample.subtraction" }
             .content
         val expectedLongSubtraction = "check(2L - 1L == 1L)"
         assertEquals(expectedLongSubtraction, actualLongSubtraction)
