@@ -8,8 +8,9 @@ internal value class SampleIdentifier private constructor(
 
     companion object {
         fun from(text: String): SampleIdentifier {
+            require(text.isNotBlank()) { "Sample identifier can't be blank." }
             val textIsValid: Boolean = text.split('.')
-                .all { it.all(Char::isLetter) }
+                .all { it.all(Char::isLetterOrDigit) }
             require(textIsValid) {
                 "Sample identifier must contain letters separated by dot " +
                         "(was: $text)."

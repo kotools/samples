@@ -8,9 +8,9 @@ class SampleIdentifierTest {
     // ------------------------------- Creations -------------------------------
 
     @Test
-    fun `from passes with text containing letters separated by dot`() {
+    fun `from passes with alphanumeric words separated by dot`() {
         // Given
-        val text = "IntSample.addition"
+        val text = "IntSample.additionV2"
 
         // When
         val actual: SampleIdentifier = SampleIdentifier.from(text)
@@ -20,7 +20,20 @@ class SampleIdentifierTest {
     }
 
     @Test
-    fun `from fails with text containing illegal characters`() {
+    fun `from fails with blank text`() {
+        // Given
+        val text = " "
+
+        // When & Then
+        val exception: IllegalArgumentException = assertFailsWith {
+            SampleIdentifier.from(text)
+        }
+        val expected = "Sample identifier can't be blank."
+        assertEquals(expected, actual = exception.message)
+    }
+
+    @Test
+    fun `from fails with text containing special characters`() {
         // Given
         val text = "IntSample addition"
 
@@ -30,7 +43,7 @@ class SampleIdentifierTest {
         }
         val expected = "Sample identifier must contain letters separated by " +
                 "dot (was: $text)."
-        assertEquals(expected, exception.message)
+        assertEquals(expected, actual = exception.message)
     }
 
     // ------------------------------ Conversions ------------------------------
