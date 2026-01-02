@@ -146,6 +146,102 @@ class KotlinFileTest {
         assertTrue(identifiers.isEmpty())
     }
 
+    @Test
+    fun `inlineSamples passes with samples`() {
+        // Given
+        val file: File = this.resourceFile("SampleReferences.kt")
+        val source: KotlinFile? = KotlinFile.fromOrNull(file)
+        checkNotNull(source)
+        val samples: Set<KotlinSample> = setOf(
+            KotlinSample.from(
+                SampleIdentifier.from("test.IntSample.addition"),
+                content = """
+                    val x = 1
+                    val y = 2
+                    check(x + y == 3)
+                """.trimIndent()
+            ),
+            KotlinSample.from(
+                SampleIdentifier.from("test.IntSample.subtraction"),
+                content = "check(2 - 1 == 1)"
+            ),
+            KotlinSample.from(
+                SampleIdentifier.from("test.LongSample.addition"),
+                content = """
+                    val x = 1L
+                    val y = 2L
+                    check(x + y == 3L)
+                """.trimIndent()
+            ),
+            KotlinSample.from(
+                SampleIdentifier.from("test.LongSample.subtraction"),
+                content = "check(2L - 1L == 1L)"
+            )
+        )
+
+        // When
+        val actual: String = source.inlineSamples(samples)
+
+        // Then
+        val expected = """
+            /**
+             * Performs an addition with [x] and [y] integers (`x + y`).
+             *
+             * ```kotlin
+             * val x = 1
+             * val y = 2
+             * check(x + y == 3)
+             * ```
+             */
+            fun addition(x: Int, y: Int): Int = x + y
+
+            /**
+             * Performs an addition with [x] and [y] integers (`x + y`).
+             *
+             * ```kotlin
+             * val x = 1L
+             * val y = 2L
+             * check(x + y == 3L)
+             * ```
+             */
+            fun addition(x: Long, y: Long): Long = x + y
+
+            /**
+             * Performs a subtraction with [x] and [y] integers (`x - y`).
+             *
+             * ```kotlin
+             * check(2 - 1 == 1)
+             * ```
+             */
+            fun subtraction(x: Int, y: Int): Int = x - y
+
+            /**
+             * Performs a subtraction with [x] and [y] integers (`x - y`).
+             *
+             * ```kotlin
+             * check(2L - 1L == 1L)
+             * ```
+             */
+            fun subtraction(x: Long, y: Long): Long = x - y
+        """.trimIndent()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `inlineSamples passes without samples`() {
+        // Given
+        val file: File = this.resourceFile("Empty.kt")
+        val source: KotlinFile? = KotlinFile.fromOrNull(file)
+        checkNotNull(source)
+        val samples: Set<KotlinSample> = emptySet()
+
+        // When
+        val content: String = source.inlineSamples(samples)
+
+        // Then
+        assertTrue(content.isBlank())
+    }
+
     private fun resourceFile(name: String): File = this::class.java
         .getResource("/$name")
         ?.toURI()

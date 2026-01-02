@@ -104,11 +104,33 @@ internal value class KotlinFile private constructor(private val file: File) {
 
     fun sampleIdentifiers(): Set<SampleIdentifier> =
         this.file.useLines { lines: Sequence<String> ->
-            lines.filter { it.contains("SAMPLE: [") && it.endsWith(']') }
-                .map { it.substringAfter('[') }
-                .map { it.substringBefore(']') }
-                .map(SampleIdentifier.Companion::from)
+            lines.filter { it.isSampleReference() }
+                .map { it.sampleReferenceToSampleIdentifier() }
                 .toSet()
+        }
+
+    private fun String.isSampleReference(): Boolean =
+        "SAMPLE: [" in this && endsWith(']')
+
+    private fun String.sampleReferenceToSampleIdentifier(): SampleIdentifier =
+        this.substringAfter('[')
+            .substringBefore(']')
+            .let(SampleIdentifier.Companion::from)
+
+    fun inlineSamples(samples: Set<KotlinSample>): String =
+        this.file.useLines { lines: Sequence<String> ->
+            lines
+                .map { line: String ->
+                    if (!line.isSampleReference()) return@map line
+                    val prefix: String = line.substringBefore("SAMPLE: [")
+                    val identifier: SampleIdentifier =
+                        line.sampleReferenceToSampleIdentifier()
+                    samples.first { it.identifier == identifier }
+                        .markdownFileContent()
+                        .split('\n')
+                        .joinToString(separator = "\n") { "$prefix$it" }
+                }
+                .joinToString("\n")
         }
 
     // ------------------------------ Conversions ------------------------------
