@@ -36,7 +36,7 @@ class KotlinFileTest {
         assertNull(actual)
     }
 
-    // ---------------------------- File operations ----------------------------
+    // ----------------------------- File reading ------------------------------
 
     @Test
     fun `samples passes with empty file`() {
@@ -116,6 +116,40 @@ class KotlinFileTest {
             expected = "Top-level function found in Kotlin sample source.",
             actual = exception.reason
         )
+    }
+
+    @Test
+    fun `sampleIdentifiers passes with sample references`() {
+        // Given
+        val file: File = this.resourceFile("SampleReferences.kt")
+        val source: KotlinFile? = KotlinFile.fromOrNull(file)
+        checkNotNull(source)
+
+        // When
+        val actual: Set<SampleIdentifier> = source.sampleIdentifiers()
+
+        // Then
+        val expected: Set<SampleIdentifier> = setOf(
+            SampleIdentifier.from("test.IntSample.addition"),
+            SampleIdentifier.from("test.LongSample.addition"),
+            SampleIdentifier.from("test.IntSample.subtraction"),
+            SampleIdentifier.from("test.LongSample.subtraction")
+        )
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `sampleIdentifiers passes without sample references`() {
+        // Given
+        val file: File = this.resourceFile("Empty.kt")
+        val source: KotlinFile? = KotlinFile.fromOrNull(file)
+        checkNotNull(source)
+
+        // When
+        val identifiers: Set<SampleIdentifier> = source.sampleIdentifiers()
+
+        // Then
+        assertTrue(identifiers.isEmpty())
     }
 
     private fun resourceFile(name: String): File = this::class.java

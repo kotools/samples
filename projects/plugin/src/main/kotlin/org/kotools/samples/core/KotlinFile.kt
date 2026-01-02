@@ -24,7 +24,7 @@ internal value class KotlinFile private constructor(private val file: File) {
             else KotlinFile(file)
     }
 
-    // ---------------------------- File operations ----------------------------
+    // ----------------------------- File reading ------------------------------
 
     fun samples(): Set<KotlinSample> {
         val nodes: List<Ast> = this.parseNodes()
@@ -101,6 +101,15 @@ internal value class KotlinFile private constructor(private val file: File) {
                 .trimIndent()
         return KotlinSample.from(identifier, content)
     }
+
+    fun sampleIdentifiers(): Set<SampleIdentifier> =
+        this.file.useLines { lines: Sequence<String> ->
+            lines.filter { it.contains("SAMPLE: [") && it.endsWith(']') }
+                .map { it.substringAfter('[') }
+                .map { it.substringBefore(']') }
+                .map(SampleIdentifier.Companion::from)
+                .toSet()
+        }
 
     // ------------------------------ Conversions ------------------------------
 
