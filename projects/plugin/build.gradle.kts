@@ -31,6 +31,7 @@ dependencies {
     this.implementation(libs.kotlin.gradle.plugin)
     this.implementation(libs.kotlinx.ast)
 
+    this.testImplementation(this.gradleTestKit())
     this.testImplementation(libs.kotlin.test)
 }
 
