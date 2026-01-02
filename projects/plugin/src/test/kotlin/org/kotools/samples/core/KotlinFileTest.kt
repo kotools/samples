@@ -60,42 +60,36 @@ class KotlinFileTest {
         checkNotNull(source)
 
         // When
-        val samples: Set<KotlinSample> = source.samples()
+        val actual: Set<KotlinSample> = source.samples()
 
         // Then
-        assertEquals(expected = 4, samples.size, "4 Kotlin samples expected.")
-
-        val actualIntAddition: String = samples
-            .first { it.identifier.toString() == "test.IntSample.addition" }
-            .content
-        val expectedIntAddition: String = """
-            val x = 1
-            val y = 2
-            check(x + y == 3)
-        """.trimIndent()
-        assertEquals(expectedIntAddition, actualIntAddition)
-
-        val actualIntSubtraction: String = samples
-            .first { it.identifier.toString() == "test.IntSample.subtraction" }
-            .content
-        val expectedIntSubtraction = "check(2 - 1 == 1)"
-        assertEquals(expectedIntSubtraction, actualIntSubtraction)
-
-        val actualLongAddition: String = samples
-            .first { it.identifier.toString() == "test.LongSample.addition" }
-            .content
-        val expectedLongAddition: String = """
-            val x = 1L
-            val y = 2L
-            check(x + y == 3L)
-        """.trimIndent()
-        assertEquals(expectedLongAddition, actualLongAddition)
-
-        val actualLongSubtraction: String = samples
-            .first { it.identifier.toString() == "test.LongSample.subtraction" }
-            .content
-        val expectedLongSubtraction = "check(2L - 1L == 1L)"
-        assertEquals(expectedLongSubtraction, actualLongSubtraction)
+        val expected: Set<KotlinSample> = setOf(
+            KotlinSample.from(
+                SampleIdentifier.from("test.IntSample.addition"),
+                content = """
+                    val x = 1
+                    val y = 2
+                    check(x + y == 3)
+                """.trimIndent()
+            ),
+            KotlinSample.from(
+                SampleIdentifier.from("test.IntSample.subtraction"),
+                content = "check(2 - 1 == 1)"
+            ),
+            KotlinSample.from(
+                SampleIdentifier.from("test.LongSample.addition"),
+                content = """
+                    val x = 1L
+                    val y = 2L
+                    check(x + y == 3L)
+                """.trimIndent()
+            ),
+            KotlinSample.from(
+                SampleIdentifier.from("test.LongSample.subtraction"),
+                content = "check(2L - 1L == 1L)"
+            )
+        )
+        assertEquals(expected, actual)
     }
 
     @Test
