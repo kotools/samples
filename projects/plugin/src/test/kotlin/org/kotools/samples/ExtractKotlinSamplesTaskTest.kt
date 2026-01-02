@@ -27,7 +27,7 @@ class ExtractKotlinSamplesTaskTest {
                     }
                 """.trimIndent()
             )
-        project.resolve("src/sample/kotlin/IntegerSamples.kt")
+        project.resolve("src/sample/kotlin/IntSample.kt")
             .also(File::ensureParentDirsCreated)
             .writeText(
                 """
