@@ -12,7 +12,7 @@ import kotlin.test.fail
 
 class ExtractKotlinSamplesTaskTest {
     @Test
-    fun `member function with body`() {
+    fun `Pass - Member function with body`() {
         // Given
         val project: File = createTempDirectory()
             .toFile()
@@ -66,7 +66,143 @@ class ExtractKotlinSamplesTaskTest {
                 assertEquals(expected, actual)
             }
     }
-    // TODO: single-expression member function
-    // TODO: top-level function
-    // TODO: function in package
+
+    @Test
+    fun `Pass - Member function with expression`() {
+        // Given
+        val project: File = createTempDirectory()
+            .toFile()
+        project.resolve("settings.gradle.kts")
+            .writeText("")
+        project.resolve("build.gradle.kts")
+            .writeText(
+                """
+                    plugins {
+                        id("org.jetbrains.kotlin.jvm")
+                        id("org.kotools.samples")
+                    }
+                """.trimIndent()
+            )
+        project.resolve("src/sample/kotlin/IntSample.kt")
+            .also(File::ensureParentDirsCreated)
+            .writeText(
+                """
+                    class IntSample {
+                        fun addition(): Unit = check(1 + 2 == 3)
+                    }
+                """.trimIndent()
+            )
+        val taskPath = ":extractKotlinSamples"
+
+        // When
+        val result: BuildResult = GradleRunner.create()
+            .withProjectDir(project)
+            .withArguments(taskPath)
+            .withPluginClasspath()
+            .build()
+
+        // Then
+        result.task(taskPath)
+            ?.let { assertEquals(TaskOutcome.SUCCESS, it.outcome) }
+            ?: fail("'$taskPath' Gradle task not found.")
+        project.resolve("build/kotools-samples/extracted/IntSample/addition.md")
+            .readText()
+            .let { actual: String ->
+                val expected: String = """
+                        ```kotlin
+                        check(1 + 2 == 3)
+                        ```
+                    """.trimIndent()
+                assertEquals(expected, actual)
+            }
+    }
+
+    @Test
+    fun `Pass - Member function in package`() {
+        // Given
+        val project: File = createTempDirectory()
+            .toFile()
+        project.resolve("settings.gradle.kts")
+            .writeText("")
+        project.resolve("build.gradle.kts")
+            .writeText(
+                """
+                    plugins {
+                        id("org.jetbrains.kotlin.jvm")
+                        id("org.kotools.samples")
+                    }
+                """.trimIndent()
+            )
+        project.resolve("src/sample/kotlin/IntSample.kt")
+            .also(File::ensureParentDirsCreated)
+            .writeText(
+                """
+                    package test
+
+                    class IntSample {
+                        fun addition(): Unit = check(1 + 2 == 3)
+                    }
+                """.trimIndent()
+            )
+        val taskPath = ":extractKotlinSamples"
+
+        // When
+        val result: BuildResult = GradleRunner.create()
+            .withProjectDir(project)
+            .withArguments(taskPath)
+            .withPluginClasspath()
+            .build()
+
+        // Then
+        result.task(taskPath)
+            ?.let { assertEquals(TaskOutcome.SUCCESS, it.outcome) }
+            ?: fail("'$taskPath' Gradle task not found.")
+        project
+            .resolve(
+                "build/kotools-samples/extracted/test/IntSample/addition.md"
+            )
+            .readText()
+            .let { actual: String ->
+                val expected: String = """
+                        ```kotlin
+                        check(1 + 2 == 3)
+                        ```
+                    """.trimIndent()
+                assertEquals(expected, actual)
+            }
+    }
+
+    @Test
+    fun `Fail - Top-level function`() {
+        // Given
+        val project: File = createTempDirectory()
+            .toFile()
+        project.resolve("settings.gradle.kts")
+            .writeText("")
+        project.resolve("build.gradle.kts")
+            .writeText(
+                """
+                    plugins {
+                        id("org.jetbrains.kotlin.jvm")
+                        id("org.kotools.samples")
+                    }
+                """.trimIndent()
+            )
+        project.resolve("src/sample/kotlin/IntSamples.kt")
+            .also(File::ensureParentDirsCreated)
+            .writeText("""fun addition(): Unit = check(1 + 2 == 3)""")
+        val taskPath = ":extractKotlinSamples"
+
+        // When
+        val result: BuildResult = GradleRunner.create()
+            .withProjectDir(project)
+            .withArguments(taskPath)
+            .withPluginClasspath()
+            .buildAndFail()
+
+        // Then
+        result.task(taskPath)
+            ?.let { assertEquals(TaskOutcome.FAILED, it.outcome) }
+            ?: fail("'$taskPath' Gradle task not found.")
+    }
 }
