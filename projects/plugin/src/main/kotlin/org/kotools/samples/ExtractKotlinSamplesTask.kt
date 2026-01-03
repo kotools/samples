@@ -1,6 +1,19 @@
 package org.kotools.samples
 
+import kotlinx.ast.common.AstSource
+import kotlinx.ast.common.ast.Ast
+import kotlinx.ast.common.ast.AstAttachmentRawAst
+import kotlinx.ast.common.ast.AstNode
+import kotlinx.ast.common.ast.AstTerminal
+import kotlinx.ast.common.flattenTerminal
+import kotlinx.ast.common.klass.KlassDeclaration
+import kotlinx.ast.common.klass.KlassIdentifier
+import kotlinx.ast.common.klass.RawAst
+import kotlinx.ast.grammar.kotlin.common.summary
+import kotlinx.ast.grammar.kotlin.common.summary.PackageHeader
+import kotlinx.ast.grammar.kotlin.target.antlr.kotlin.KotlinGrammarAntlrKotlinParser
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.InputDirectory
@@ -9,9 +22,6 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
-import org.kotools.samples.core.KotlinFile
-import org.kotools.samples.core.KotlinSample
-import org.kotools.samples.core.SamplePath
 import java.io.File
 
 /**
@@ -32,20 +42,101 @@ public abstract class ExtractKotlinSamplesTask internal constructor() :
 
     @TaskAction
     internal fun execute() {
+        val destination: Directory = this.outputDirectory.get()
         this.sourceDirectory.asFileTree.asSequence()
             .filterNotNull()
-            .mapNotNull(KotlinFile.Companion::fromOrNull)
-            .flatMap(KotlinFile::samples)
-            .forEach(this::save)
+            .filter { it.extension == "kt" }
+            .onEach(File::checkAbsenceOfTopLevelFunction)
+            .flatMap(File::extractSamples)
+            .forEach { it.save(destination) }
     }
+}
 
-    private fun save(sample: KotlinSample) {
-        val path: SamplePath = sample.path()
-        val content: String = sample.markdownFileContent()
-        this.outputDirectory.get()
-            .file("$path")
-            .asFile
-            .also(File::ensureParentDirsCreated)
-            .writeText(content)
+private fun File.checkAbsenceOfTopLevelFunction() {
+    val topLevelFunctionFound: Boolean = this.parseNodes()
+        .filterIsInstance<KlassDeclaration>()
+        .any { it.keyword == "fun" }
+    if (topLevelFunctionFound) throw FileSystemException(
+        file = this,
+        reason = "Top-level function found in Kotlin sample source."
+    )
+}
+
+private fun File.parseNodes(): List<Ast> {
+    val source: AstSource.File = AstSource.File(this.path)
+    return KotlinGrammarAntlrKotlinParser.parseKotlinFile(source)
+        .summary(attachRawAst = false)
+        .get()
+}
+
+private fun File.extractSamples(): Set<KotlinSample> {
+    val nodes: List<Ast> = this.parseNodes()
+    val packageIdentifier: String? = nodes.filterIsInstance<PackageHeader>()
+        .flatMap(PackageHeader::identifier)
+        .joinToString(separator = ".", transform = KlassIdentifier::identifier)
+        .ifBlank { null }
+    return nodes.filterIsInstance<KlassDeclaration>()
+        .flatMap { it.classSamples(packageIdentifier) }
+        .toSet()
+}
+
+private fun KlassDeclaration.classSamples(
+    packageIdentifier: String?
+): Set<KotlinSample> {
+    if (this.keyword != "class") return emptySet()
+    val identifierPrefix: String = packageIdentifier
+        ?.let { "${it}.${this.identifier?.identifier}" }
+        ?: "${this.identifier?.identifier}"
+    return this.expressions.asSequence()
+        .filter { it.description == "classBody" }
+        .filterIsInstance<AstNode>()
+        .flatMap(AstNode::children)
+        .filterIsInstance<KlassDeclaration>()
+        .mapNotNull { it.toKotlinSampleOrNull(identifierPrefix) }
+        .toSet()
+}
+
+private fun KlassDeclaration.toKotlinSampleOrNull(
+    identifierPrefix: String
+): KotlinSample? {
+    if (this.keyword != "fun") return null
+    val identifier = "${identifierPrefix}.${this.identifier?.identifier}"
+    val raw: RawAst = this.attachments.get<RawAst>(AstAttachmentRawAst)
+        ?: error("No raw AST available (was: ${this.description}).")
+    val text: String = raw.ast.flattenTerminal()
+        .joinToString(separator = "", transform = AstTerminal::text)
+    val expressionRegex = Regex("""fun [A-Za-z_]+\(\)(?:: [A-Za-z]+)? = .+$""")
+    val rawContent: String =
+        if (expressionRegex in text) text.substringAfter(" = ")
+            .trimIndent()
+        else text.substringAfter('{')
+            .substringBefore('}')
+            .trimIndent()
+    val kotlinContent: String = rawContent.ifBlank {
+        """TODO("Sample is not yet implemented.")"""
     }
+    val content: String = """
+        |```kotlin
+        |$kotlinContent
+        |```
+    """.trimMargin()
+    return KotlinSample(identifier, content)
+}
+
+private data class KotlinSample(val identifier: String, val content: String) {
+    override fun equals(other: Any?): Boolean =
+        other is KotlinSample && this.identifier == other.identifier
+
+    override fun hashCode(): Int = this.identifier.hashCode()
+
+    override fun toString(): String = "'${this.identifier}' Kotlin sample"
+}
+
+private fun KotlinSample.save(destination: Directory) {
+    val path: String = this.identifier.replace(oldChar = '.', newChar = '/')
+        .plus(".md")
+    destination.file(path)
+        .asFile
+        .also(File::ensureParentDirsCreated)
+        .writeText(this.content)
 }
