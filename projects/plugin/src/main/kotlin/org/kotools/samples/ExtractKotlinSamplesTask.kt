@@ -32,7 +32,6 @@ public abstract class ExtractKotlinSamplesTask internal constructor() :
 
     @TaskAction
     internal fun execute() {
-        // TODO: Refactor for using functional programming.
         this.sourceDirectory.asFileTree.asSequence()
             .filterNotNull()
             .mapNotNull(KotlinFile.Companion::fromOrNull)
