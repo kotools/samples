@@ -2,17 +2,16 @@ package org.kotools.samples.core
 
 internal class KotlinSample private constructor(
     val identifier: SampleIdentifier,
-    val content: String
+    private val content: String
 ) {
     // ------------------------------- Creations -------------------------------
 
     companion object Companion {
-        fun from(identifier: SampleIdentifier, content: String): KotlinSample {
-            require(content.isNotBlank()) {
-                "Kotlin sample's content can't be blank."
-            }
-            return KotlinSample(identifier, content)
-        }
+        fun from(identifier: SampleIdentifier, content: String): KotlinSample =
+            KotlinSample(
+                identifier,
+                content.ifBlank { """TODO("Sample is not yet implemented.")""" }
+            )
     }
 
     // -------------------- Structural equality operations ---------------------

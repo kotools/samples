@@ -69,6 +69,29 @@ class ExtractKotlinSamplesTest {
     }
 
     @Test
+    fun `extracts placeholder on member function with empty body`() {
+        // Given
+        val project: File = projectWithSampleSource {
+            """
+                class IntSample {
+                    fun addition() {}
+                }
+            """.trimIndent()
+        }
+
+        // When
+        val result: BuildResult = GradleRunner(project)
+            .build()
+
+        // Then
+        result.assertTaskOutcome(TaskOutcome.SUCCESS)
+        project.assertExtractedSample(
+            path = "IntSample/addition.md",
+            expectedKotlin = """TODO("Sample is not yet implemented.")"""
+        )
+    }
+
+    @Test
     fun `extracts member function with package`() {
         // Given
         val project: File = projectWithSampleSource {
@@ -123,9 +146,6 @@ class ExtractKotlinSamplesTest {
             expectedKotlin = "check(1L + 2L == 3L)"
         )
     }
-
-    // TODO: extracts placeholder on member function with blank body
-    // Placeholder: TODO("Sample is not yet implemented.")
 
     @Test
     fun `fails on top-level function`() {

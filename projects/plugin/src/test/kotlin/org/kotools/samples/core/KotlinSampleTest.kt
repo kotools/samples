@@ -2,7 +2,6 @@ package org.kotools.samples.core
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -10,7 +9,7 @@ class KotlinSampleTest {
     // ------------------------------- Creations -------------------------------
 
     @Test
-    fun `from passes with non-blank content`() {
+    fun `from passes`() {
         // Given
         val identifier: SampleIdentifier =
             SampleIdentifier.from("IntSample.unaryMinus")
@@ -22,22 +21,6 @@ class KotlinSampleTest {
 
         // When & Then
         KotlinSample.from(identifier, content)
-    }
-
-    @Test
-    fun `from fails with blank content`() {
-        // Given
-        val identifier: SampleIdentifier =
-            SampleIdentifier.from("IntSample.unaryMinus")
-        val content = " "
-
-        // When & Then
-        val exception: IllegalArgumentException = assertFailsWith {
-            KotlinSample.from(identifier, content)
-        }
-        val actual: String? = exception.message
-        val expected = "Kotlin sample's content can't be blank."
-        assertEquals(expected, actual)
     }
 
     // -------------------- Structural equality operations ---------------------
