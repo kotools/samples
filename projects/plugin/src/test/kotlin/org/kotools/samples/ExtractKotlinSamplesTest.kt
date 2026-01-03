@@ -93,6 +93,11 @@ class ExtractKotlinSamplesTest {
         )
     }
 
+    // TODO: extracts member functions from multiple classes
+
+    // TODO: extracts placeholder on member function with blank body
+    // Placeholder: TODO("Sample is not yet implemented.")
+
     @Test
     fun `fails on top-level function`() {
         // Given
