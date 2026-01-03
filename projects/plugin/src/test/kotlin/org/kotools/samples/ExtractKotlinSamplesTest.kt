@@ -93,7 +93,36 @@ class ExtractKotlinSamplesTest {
         )
     }
 
-    // TODO: extracts member functions from multiple classes
+    @Test
+    fun `extracts member functions from multiple classes`() {
+        // Given
+        val project: File = projectWithSampleSource {
+            """
+                class IntSample {
+                    fun addition(): Unit = check(1 + 2 == 3)
+                }
+
+                class LongSample {
+                    fun addition(): Unit = check(1L + 2L == 3L)
+                }
+            """.trimIndent()
+        }
+
+        // When
+        val result: BuildResult = GradleRunner(project)
+            .build()
+
+        // Then
+        result.assertTaskOutcome(TaskOutcome.SUCCESS)
+        project.assertExtractedSample(
+            path = "IntSample/addition.md",
+            expectedKotlin = "check(1 + 2 == 3)"
+        )
+        project.assertExtractedSample(
+            path = "LongSample/addition.md",
+            expectedKotlin = "check(1L + 2L == 3L)"
+        )
+    }
 
     // TODO: extracts placeholder on member function with blank body
     // Placeholder: TODO("Sample is not yet implemented.")
