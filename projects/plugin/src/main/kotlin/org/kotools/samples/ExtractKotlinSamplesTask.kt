@@ -31,11 +31,14 @@ public abstract class ExtractKotlinSamplesTask internal constructor() :
     public abstract val outputDirectory: DirectoryProperty
 
     @TaskAction
-    internal fun execute(): Unit = this.sourceDirectory.asFileTree.asSequence()
-        .filterNotNull()
-        .mapNotNull(KotlinFile.Companion::fromOrNull)
-        .flatMap(KotlinFile::samples)
-        .forEach(this::save)
+    internal fun execute() {
+        // TODO: Refactor for using functional programming.
+        this.sourceDirectory.asFileTree.asSequence()
+            .filterNotNull()
+            .mapNotNull(KotlinFile.Companion::fromOrNull)
+            .flatMap(KotlinFile::samples)
+            .forEach(this::save)
+    }
 
     private fun save(sample: KotlinSample) {
         val path: SamplePath = sample.path()
