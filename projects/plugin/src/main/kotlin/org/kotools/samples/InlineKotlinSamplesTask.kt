@@ -61,22 +61,26 @@ public abstract class InlineKotlinSamplesTask internal constructor() :
 
     private fun sampleOrOriginal(line: String): String {
         val keyword = "SAMPLE: ["
-        return if (keyword in line) {
-            val prefix: String = line.substringBefore(keyword)
-            val path: String = line.substringAfter('[')
-                .substringBefore(']')
-                .replace('.', '/')
-                .plus(".md")
-            this.sampleText(prefix, path)
-        } else line
+        if (keyword !in line) return line
+        val path: String = line.substringAfter('[')
+            .substringBefore(']')
+            .replace(oldChar = '.', newChar = '/')
+            .plus(".md")
+        if ("/** " in line && " */" in line) {
+            val leadingWhitespaces: String = line.substringBefore("/**")
+            val sample: String = this.readSample(path) { " * $it" }
+            return listOf("/**", sample, " */")
+                .joinToString(separator = "\n") { "$leadingWhitespaces$it" }
+        }
+        val prefix: String = line.substringBefore(keyword)
+        return this.readSample(path) { "$prefix$it" }
     }
 
-    private fun sampleText(prefix: String, path: String): String = this
-        .extractedSampleDirectory
-        .file(path)
+    private fun readSample(
+        path: String,
+        transform: (String) -> String
+    ): String = this.extractedSampleDirectory.file(path)
         .get()
         .asFile
-        .useLines { lines: Sequence<String> ->
-            lines.joinToString(separator = "\n") { "$prefix$it" }
-        }
+        .useLines { it.joinToString(separator = "\n", transform = transform) }
 }

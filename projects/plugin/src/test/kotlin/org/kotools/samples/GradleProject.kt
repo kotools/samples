@@ -30,7 +30,7 @@ internal class GradleProject private constructor(private val project: File) {
     }
 
     fun mainSource(text: String): Unit = this.project
-        .resolve("src/main/kotlin/TemporarySample.kt")
+        .resolve("src/main/kotlin/Temporary.kt")
         .also(File::ensureParentDirsCreated)
         .writeText(text)
 
@@ -72,5 +72,12 @@ internal class GradleProject private constructor(private val project: File) {
             |```
         """.trimMargin()
         assertEquals(expected, actual)
+    }
+
+    fun assertInlinedMainSource(expectedKotlin: String) {
+        val actual: String = this.project
+            .resolve("build/kotools-samples/inlined/Temporary.kt")
+            .readText()
+        assertEquals(expectedKotlin, actual)
     }
 }
