@@ -10,7 +10,10 @@ class InlineKotlinSamplesTest {
         project.sampleSource(
             """
                 class IntSample {
-                    fun addition(): Unit = check(1 + 2 == 3)
+                    fun addition() {
+                        val result: Int = addition(x = 1, y = 2)
+                        check(result == 3)
+                    }
                 }
             """.trimIndent()
         )
@@ -29,7 +32,8 @@ class InlineKotlinSamplesTest {
             """
                 /**
                  * ```kotlin
-                 * check(1 + 2 == 3)
+                 * val result: Int = addition(x = 1, y = 2)
+                 * check(result == 3)
                  * ```
                  */
                 fun addition(x: Int, y: Int): Int = x + y
@@ -44,7 +48,10 @@ class InlineKotlinSamplesTest {
         project.sampleSource(
             """
                 class IntSample {
-                    fun addition(): Unit = check(1 + 2 == 3)
+                    fun addition() {
+                        val result: Int = addition(x = 1, y = 2)
+                        check(result == 3)
+                    }
                 }
             """.trimIndent()
         )
@@ -65,7 +72,8 @@ class InlineKotlinSamplesTest {
             """
                 /**
                  * ```kotlin
-                 * check(1 + 2 == 3)
+                 * val result: Int = addition(x = 1, y = 2)
+                 * check(result == 3)
                  * ```
                  */
                 fun addition(x: Int, y: Int): Int = x + y
