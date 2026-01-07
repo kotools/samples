@@ -28,7 +28,7 @@ env:
   JAVA_VERSION: 17
 jobs:
   checks:
-    name: Checks
+    name: JVM checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -47,7 +47,7 @@ jobs:
       - name: Check 'jvm-demo' Gradle project
         run: ./gradlew :jvm-demo:check
   conventions:
-    name: Convention plugins
+    name: Gradle conventions
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -81,7 +81,7 @@ jobs:
       - name: Build ':demonstration' project
         run: ./gradlew :demonstration:build
   plugin:
-    name: Plugin
+    name: Gradle plugin
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
