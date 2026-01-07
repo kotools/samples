@@ -11,6 +11,7 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
 import java.io.File
+import java.io.FileNotFoundException
 
 /**
  * Task that inlines Kotlin samples referenced from sources.
@@ -62,25 +63,31 @@ public abstract class InlineKotlinSamplesTask internal constructor() :
     private fun sampleOrOriginal(line: String): String {
         val keyword = "SAMPLE: ["
         if (keyword !in line) return line
-        val path: String = line.substringAfter('[')
+        val identifier: String = line.substringAfter('[')
             .substringBefore(']')
-            .replace(oldChar = '.', newChar = '/')
-            .plus(".md")
         if ("/** " in line && " */" in line) {
             val leadingWhitespaces: String = line.substringBefore("/**")
-            val sample: String = this.readSample(path) { " * $it" }
+            val sample: String = this.readSample(identifier) { " * $it" }
             return listOf("/**", sample, " */")
                 .joinToString(separator = "\n") { "$leadingWhitespaces$it" }
         }
         val prefix: String = line.substringBefore(keyword)
-        return this.readSample(path) { "$prefix$it" }
+        return this.readSample(identifier) { "$prefix$it" }
     }
 
     private fun readSample(
-        path: String,
+        identifier: String,
         transform: (String) -> String
-    ): String = this.extractedSampleDirectory.file(path)
-        .get()
-        .asFile
-        .useLines { it.joinToString(separator = "\n", transform = transform) }
+    ): String {
+        val path: String = identifier.replace(oldChar = '.', newChar = '/')
+            .plus(".md")
+        val file: File = this.extractedSampleDirectory.file(path)
+            .get()
+            .asFile
+        if (!file.exists())
+            throw FileNotFoundException("'$identifier' sample not found.")
+        return file.useLines {
+            it.joinToString(separator = "\n", transform = transform)
+        }
+    }
 }

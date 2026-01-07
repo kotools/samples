@@ -2,7 +2,6 @@ package org.kotools.samples
 
 import org.gradle.testkit.runner.BuildResult
 import kotlin.test.Test
-import kotlin.test.assertTrue
 
 class ExtractKotlinSamplesTest {
     private val taskPath: String = ":extractKotlinSamples"
@@ -145,8 +144,8 @@ class ExtractKotlinSamplesTest {
         val result: BuildResult = project.failingBuild(this.taskPath)
 
         // Then
-        assertTrue(
-            "Top-level function found in Kotlin sample source." in result.output
+        result.assertOutputContains(
+            "Top-level function found in Kotlin sample source."
         )
     }
 }

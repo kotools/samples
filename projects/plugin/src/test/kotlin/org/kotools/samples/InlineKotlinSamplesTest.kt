@@ -1,5 +1,6 @@
 package org.kotools.samples
 
+import org.gradle.testkit.runner.BuildResult
 import kotlin.test.Test
 
 class InlineKotlinSamplesTest {
@@ -136,5 +137,33 @@ class InlineKotlinSamplesTest {
             """.trimIndent()
         )
     }
-    // TODO: fails when referenced sample doesn't exist
+
+    @Test
+    fun `fails when referenced sample doesn't exist`() {
+        // Given
+        val project: GradleProject = GradleProject.create()
+        project.sampleSource(
+            """
+                class IntSample {
+                    fun addition() {
+                        val result: Int = addition(x = 1, y = 2)
+                        check(result == 3)
+                    }
+                }
+            """.trimIndent()
+        )
+        val sampleIdentifier = "IntSample.addition.oops"
+        project.mainSource(
+            """
+                /** SAMPLE: [$sampleIdentifier] */
+                fun addition(x: Int, y: Int): Int = x + y
+            """.trimIndent()
+        )
+
+        // When
+        val result: BuildResult = project.failingBuild(this.taskPath)
+
+        // Then
+        result.assertOutputContains("'$sampleIdentifier' sample not found.")
+    }
 }
