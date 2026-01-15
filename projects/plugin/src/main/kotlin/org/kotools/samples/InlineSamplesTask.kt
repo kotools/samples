@@ -14,14 +14,13 @@ import java.io.File
 import java.io.FileNotFoundException
 
 /**
- * Task that inlines Kotlin samples referenced from sources.
+ * Task that inlines samples referenced from sources.
  *
  * - Inputs: [sourceDirectory] and [extractedSampleDirectory].
  * - Output: [outputDirectory].
  */
 @CacheableTask
-public abstract class InlineKotlinSamplesTask internal constructor() :
-    DefaultTask() {
+public abstract class InlineSamplesTask internal constructor() : DefaultTask() {
     /** Directory containing sources referencing Kotlin samples. */
     @get:InputDirectory
     @get:PathSensitive(PathSensitivity.NONE)
@@ -47,8 +46,10 @@ public abstract class InlineKotlinSamplesTask internal constructor() :
 
     private fun inlineSamples(file: File) {
         val content: String = file.useLines {
-            it.map(this::sampleOrOriginal)
-                .joinToString("\n")
+            it.joinToString(
+                separator = "\n",
+                transform = this::sampleOrOriginal
+            )
         }
         val relativePath: Provider<String> = this.sourceDirectory.map {
             file.path.removePrefix("${it.asFile.path}/")

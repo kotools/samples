@@ -3,8 +3,8 @@ package org.kotools.samples
 import org.gradle.testkit.runner.BuildResult
 import kotlin.test.Test
 
-class InlineKotlinSamplesTest {
-    private val taskPath: String = ":inlineKotlinSamples"
+class InlineSamplesTest {
+    private val taskPath: String = ":inlineSamples"
 
     @Test
     fun `inlines sample into single-line KDoc`() {

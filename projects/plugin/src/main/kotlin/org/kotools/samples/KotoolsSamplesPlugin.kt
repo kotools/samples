@@ -38,7 +38,7 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
             project.extensions.kotlin(sampleDirectory)
             val extractKotlinSamples: TaskProvider<ExtractKotlinSamplesTask> =
                 project.tasks.extractKotlinSamples(sampleDirectory)
-            project.tasks.inlineKotlinSamples(extractKotlinSamples)
+            project.tasks.inlineSamples(extractKotlinSamples)
         }
 
     private fun ExtensionContainer.kotlin(sampleDirectory: Directory) {
@@ -70,9 +70,9 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
         return task
     }
 
-    private fun TaskContainer.inlineKotlinSamples(
+    private fun TaskContainer.inlineSamples(
         extractKotlinSamples: TaskProvider<ExtractKotlinSamplesTask>
-    ): Unit = this.register<InlineKotlinSamplesTask>("inlineKotlinSamples")
+    ): Unit = this.register<InlineSamplesTask>("inlineSamples")
         .configure {
             this.description = "Inlines Kotlin samples referenced from sources."
             this.group = "Kotools Samples"
