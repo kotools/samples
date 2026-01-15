@@ -28,6 +28,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
  * sources.
  * - Extracts Kotlin sample sources as Markdown files, ready to inline into
  * documentation (see [ExtractKotlinSamplesTask]).
+ * - Inlines samples referenced from main sources (see [InlineSamplesTask]).
  */
 public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
     /** Applies this plugin to the specified [project]. */
