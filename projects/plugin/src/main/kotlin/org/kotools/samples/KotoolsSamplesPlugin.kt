@@ -4,7 +4,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.plugins.ExtensionContainer
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.getByType
@@ -41,7 +40,9 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
                 project.tasks.checkKotlinSamples(sampleDirectory)
             val extractKotlinSamples: TaskProvider<ExtractKotlinSamplesTask> =
                 project.tasks.extractKotlinSamples(checkKotlinSamples)
-            project.tasks.inlineSamples(extractKotlinSamples)
+            val checkSampleReferences: TaskProvider<CheckSampleReferencesTask> =
+                project.tasks.checkSampleReferences(extractKotlinSamples)
+            project.tasks.inlineSamples(checkSampleReferences)
         }
 
     private fun ExtensionContainer.kotlin(sampleDirectory: Directory) {
@@ -63,6 +64,7 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
                 "Checks the content of Kotlin samples from sources."
             this.group = "Kotools Samples"
 
+            // Inputs:
             this.sourceDirectory.set(sourceDirectory)
         }
         return task
@@ -76,44 +78,57 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
         task.configure {
             this.description = "Extracts Kotlin samples from sources."
             this.group = "Kotools Samples"
-
-            val sourceDirectory: Provider<Directory> =
-                checkKotlinSamples.flatMap(
-                    CheckKotlinSamplesTask::sourceDirectory
-                )
-            this.sourceDirectory.set(sourceDirectory)
-
-            val extractedSamplesDirectory: Provider<Directory> = this.project
-                .layout
-                .buildDirectory
-                .dir("kotools-samples/extracted")
-            this.outputDirectory.set(extractedSamplesDirectory)
-
             this.dependsOn(checkKotlinSamples)
+
+            // Inputs:
+            checkKotlinSamples.flatMap(CheckKotlinSamplesTask::sourceDirectory)
+                .let(this.sourceDirectory::set)
+
+            // Outputs:
+            this.project.layout.buildDirectory.dir("kotools-samples/extracted")
+                .let(this.outputDirectory::set)
+        }
+        return task
+    }
+
+    private fun TaskContainer.checkSampleReferences(
+        extractKotlinSamples: TaskProvider<ExtractKotlinSamplesTask>
+    ): TaskProvider<CheckSampleReferencesTask> {
+        val task: TaskProvider<CheckSampleReferencesTask> =
+            this.register<CheckSampleReferencesTask>("checkSampleReferences")
+        task.configure {
+            this.description =
+                "Checks the existence of samples referenced from sources."
+            this.group = "Kotools Samples"
+
+            // Inputs:
+            this.project.layout.projectDirectory.dir("src/main/kotlin")
+                .let(this.sourceDirectory::set)
+            extractKotlinSamples
+                .flatMap(ExtractKotlinSamplesTask::outputDirectory)
+                .let(this.extractedSampleDirectory::set)
         }
         return task
     }
 
     private fun TaskContainer.inlineSamples(
-        extractKotlinSamples: TaskProvider<ExtractKotlinSamplesTask>
+        checkSampleReferences: TaskProvider<CheckSampleReferencesTask>
     ): Unit = this.register<InlineSamplesTask>("inlineSamples")
         .configure {
             this.description = "Inlines Kotlin samples referenced from sources."
             this.group = "Kotools Samples"
+            this.dependsOn(checkSampleReferences)
 
             // Inputs:
-            val sourceDirectory: Directory =
-                this.project.layout.projectDirectory.dir("src/main/kotlin")
-            this.sourceDirectory.set(sourceDirectory)
-            val extractedSampleDirectory: Provider<Directory> =
-                extractKotlinSamples
-                    .flatMap(ExtractKotlinSamplesTask::outputDirectory)
-            this.extractedSampleDirectory.set(extractedSampleDirectory)
+            checkSampleReferences
+                .flatMap(CheckSampleReferencesTask::sourceDirectory)
+                .let(this.sourceDirectory::set)
+            checkSampleReferences
+                .flatMap(CheckSampleReferencesTask::extractedSampleDirectory)
+                .let(this.extractedSampleDirectory::set)
 
             // Output:
-            val outputDirectory: Provider<Directory> = this.project.layout
-                .buildDirectory
-                .dir("kotools-samples/inlined")
-            this.outputDirectory.set(outputDirectory)
+            this.project.layout.buildDirectory.dir("kotools-samples/inlined")
+                .let(this.outputDirectory::set)
         }
 }

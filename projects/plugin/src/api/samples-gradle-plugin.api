@@ -2,6 +2,11 @@ public abstract class org/kotools/samples/CheckKotlinSamplesTask : org/gradle/ap
 	public abstract fun getSourceDirectory ()Lorg/gradle/api/file/DirectoryProperty;
 }
 
+public abstract class org/kotools/samples/CheckSampleReferencesTask : org/gradle/api/DefaultTask {
+	public abstract fun getExtractedSampleDirectory ()Lorg/gradle/api/file/DirectoryProperty;
+	public abstract fun getSourceDirectory ()Lorg/gradle/api/file/DirectoryProperty;
+}
+
 public abstract class org/kotools/samples/ExtractKotlinSamplesTask : org/gradle/api/DefaultTask {
 	public abstract fun getOutputDirectory ()Lorg/gradle/api/file/DirectoryProperty;
 	public abstract fun getSourceDirectory ()Lorg/gradle/api/file/DirectoryProperty;

@@ -11,7 +11,6 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
 import java.io.File
-import java.io.FileNotFoundException
 
 /**
  * Task that inlines samples referenced from sources.
@@ -85,8 +84,6 @@ public abstract class InlineSamplesTask internal constructor() : DefaultTask() {
         val file: File = this.extractedSampleDirectory.file(path)
             .get()
             .asFile
-        if (!file.exists())
-            throw FileNotFoundException("'$identifier' sample not found.")
         return file.useLines {
             it.joinToString(separator = "\n", transform = transform)
         }
