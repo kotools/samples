@@ -37,8 +37,10 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
             val sampleDirectory: Directory =
                 project.layout.projectDirectory.dir("src/sample/kotlin")
             project.extensions.kotlin(sampleDirectory)
+            val checkKotlinSamples: TaskProvider<CheckKotlinSamplesTask> =
+                project.tasks.checkKotlinSamples(sampleDirectory)
             val extractKotlinSamples: TaskProvider<ExtractKotlinSamplesTask> =
-                project.tasks.extractKotlinSamples(sampleDirectory)
+                project.tasks.extractKotlinSamples(checkKotlinSamples)
             project.tasks.inlineSamples(extractKotlinSamples)
         }
 
@@ -51,8 +53,23 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
             .srcDir(sampleDirectory)
     }
 
-    private fun TaskContainer.extractKotlinSamples(
+    private fun TaskContainer.checkKotlinSamples(
         sourceDirectory: Directory
+    ): TaskProvider<CheckKotlinSamplesTask> {
+        val task: TaskProvider<CheckKotlinSamplesTask> =
+            this.register<CheckKotlinSamplesTask>("checkKotlinSamples")
+        task.configure {
+            this.description =
+                "Checks the content of Kotlin samples from sources."
+            this.group = "Kotools Samples"
+
+            this.sourceDirectory.set(sourceDirectory)
+        }
+        return task
+    }
+
+    private fun TaskContainer.extractKotlinSamples(
+        checkKotlinSamples: TaskProvider<CheckKotlinSamplesTask>
     ): TaskProvider<ExtractKotlinSamplesTask> {
         val task: TaskProvider<ExtractKotlinSamplesTask> =
             this.register<ExtractKotlinSamplesTask>("extractKotlinSamples")
@@ -60,6 +77,10 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
             this.description = "Extracts Kotlin samples from sources."
             this.group = "Kotools Samples"
 
+            val sourceDirectory: Provider<Directory> =
+                checkKotlinSamples.flatMap(
+                    CheckKotlinSamplesTask::sourceDirectory
+                )
             this.sourceDirectory.set(sourceDirectory)
 
             val extractedSamplesDirectory: Provider<Directory> = this.project
@@ -67,6 +88,8 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
                 .buildDirectory
                 .dir("kotools-samples/extracted")
             this.outputDirectory.set(extractedSamplesDirectory)
+
+            this.dependsOn(checkKotlinSamples)
         }
         return task
     }

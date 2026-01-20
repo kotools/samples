@@ -1,6 +1,5 @@
 package org.kotools.samples
 
-import org.gradle.testkit.runner.BuildResult
 import kotlin.test.Test
 
 class ExtractKotlinSamplesTest {
@@ -131,21 +130,6 @@ class ExtractKotlinSamplesTest {
         project.assertExtractedSample(
             path = "LongSample/addition.md",
             expectedKotlin = "check(1L + 2L == 3L)"
-        )
-    }
-
-    @Test
-    fun `fails on top-level function`() {
-        // Given
-        val project: GradleProject = GradleProject.create()
-        project.sampleSource("fun addition(): Unit = check(1 + 2 == 3)")
-
-        // When
-        val result: BuildResult = project.failingBuild(this.taskPath)
-
-        // Then
-        result.assertOutputContains(
-            "Top-level function found in Kotlin sample source."
         )
     }
 }

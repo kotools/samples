@@ -1,6 +1,5 @@
 package org.kotools.samples
 
-import kotlinx.ast.common.AstSource
 import kotlinx.ast.common.ast.Ast
 import kotlinx.ast.common.ast.AstAttachmentRawAst
 import kotlinx.ast.common.ast.AstNode
@@ -9,9 +8,7 @@ import kotlinx.ast.common.flattenTerminal
 import kotlinx.ast.common.klass.KlassDeclaration
 import kotlinx.ast.common.klass.KlassIdentifier
 import kotlinx.ast.common.klass.RawAst
-import kotlinx.ast.grammar.kotlin.common.summary
 import kotlinx.ast.grammar.kotlin.common.summary.PackageHeader
-import kotlinx.ast.grammar.kotlin.target.antlr.kotlin.KotlinGrammarAntlrKotlinParser
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
@@ -22,6 +19,7 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
+import org.kotools.samples.internal.parseNodes
 import java.io.File
 
 /**
@@ -46,27 +44,9 @@ public abstract class ExtractKotlinSamplesTask internal constructor() :
         this.sourceDirectory.asFileTree.asSequence()
             .filterNotNull()
             .filter { it.extension == "kt" }
-            .onEach(File::checkAbsenceOfTopLevelFunction)
             .flatMap(File::extractSamples)
             .forEach { it.save(destination) }
     }
-}
-
-private fun File.checkAbsenceOfTopLevelFunction() {
-    val topLevelFunctionFound: Boolean = this.parseNodes()
-        .filterIsInstance<KlassDeclaration>()
-        .any { it.keyword == "fun" }
-    if (topLevelFunctionFound) throw FileSystemException(
-        file = this,
-        reason = "Top-level function found in Kotlin sample source."
-    )
-}
-
-private fun File.parseNodes(): List<Ast> {
-    val source: AstSource.File = AstSource.File(this.path)
-    return KotlinGrammarAntlrKotlinParser.parseKotlinFile(source)
-        .summary(attachRawAst = false)
-        .get()
 }
 
 private fun File.extractSamples(): Set<KotlinSample> {
