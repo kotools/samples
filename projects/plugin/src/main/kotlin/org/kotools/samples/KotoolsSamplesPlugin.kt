@@ -25,8 +25,11 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
  * - Adds `sample` directory in `test` Kotlin source set for isolating code
  * samples from main and test sources, and for compiling them alongside test
  * sources.
+ * - Checks the content of Kotlin sample sources (see [CheckKotlinSamplesTask]).
  * - Extracts Kotlin sample sources as Markdown files, ready to inline into
  * documentation (see [ExtractKotlinSamplesTask]).
+ * - Checks the existence of samples referenced from main sources (see
+ * [CheckSampleReferencesTask]).
  * - Inlines samples referenced from main sources (see [InlineSamplesTask]).
  */
 public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
