@@ -45,6 +45,7 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
                 project.tasks.extractKotlinSamples(checkKotlinSamples)
             val checkSampleReferences: TaskProvider<CheckSampleReferencesTask> =
                 project.tasks.checkSampleReferences(extractKotlinSamples)
+            project.tasks.check(checkSampleReferences)
             project.tasks.inlineSamples(checkSampleReferences)
         }
 
@@ -113,6 +114,11 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
         }
         return task
     }
+
+    private fun TaskContainer.check(
+        checkSampleReferences: TaskProvider<CheckSampleReferencesTask>
+    ): Unit = this.named("check")
+        .configure { this.dependsOn(checkSampleReferences) }
 
     private fun TaskContainer.inlineSamples(
         checkSampleReferences: TaskProvider<CheckSampleReferencesTask>
