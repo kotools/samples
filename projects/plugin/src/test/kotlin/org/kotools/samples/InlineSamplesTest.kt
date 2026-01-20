@@ -1,6 +1,8 @@
 package org.kotools.samples
 
 import org.gradle.testkit.runner.BuildResult
+import org.kotools.samples.internal.GradleProject
+import org.kotools.samples.internal.assertOutputContains
 import kotlin.test.Test
 
 class InlineSamplesTest {

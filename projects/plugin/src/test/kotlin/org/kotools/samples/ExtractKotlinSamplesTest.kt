@@ -1,5 +1,6 @@
 package org.kotools.samples
 
+import org.kotools.samples.internal.GradleProject
 import kotlin.test.Test
 
 class ExtractKotlinSamplesTest {
