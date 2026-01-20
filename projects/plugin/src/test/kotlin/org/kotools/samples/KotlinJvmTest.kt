@@ -6,6 +6,7 @@ import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.testfixtures.ProjectBuilder
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.kotools.samples.internal.GradleProject
 import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -34,5 +35,43 @@ class KotlinJvmTest {
             .asFile
         val message = "Directory not found in Kotlin sources (was: $expected)."
         assertTrue(expected in sourceDirectories, message)
+    }
+
+    @Test
+    fun `inlines samples in sources JAR`() {
+        // Given
+        val project: GradleProject = GradleProject.create()
+        project.sampleSource(
+            """
+                class IntSample {
+                    fun addition() {
+                        val result: Int = addition(x = 1, y = 2)
+                        check(result == 3)
+                    }
+                }
+            """.trimIndent()
+        )
+        project.mainSource(
+            """
+                /** SAMPLE: [IntSample.addition] */
+                fun addition(x: Int, y: Int): Int = x + y
+            """.trimIndent()
+        )
+
+        // When
+        project.successfulBuild(taskPath = ":kotlinSourcesJar")
+
+        // Then
+        project.assertInlinedMainSourceJar(
+            """
+                /**
+                 * ```kotlin
+                 * val result: Int = addition(x = 1, y = 2)
+                 * check(result == 3)
+                 * ```
+                 */
+                fun addition(x: Int, y: Int): Int = x + y
+            """.trimIndent()
+        )
     }
 }

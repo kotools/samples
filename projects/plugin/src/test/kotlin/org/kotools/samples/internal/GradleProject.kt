@@ -5,7 +5,10 @@ import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
 import java.io.File
+import java.nio.file.FileSystems
+import java.nio.file.Path
 import kotlin.io.path.createTempDirectory
+import kotlin.io.path.readText
 import kotlin.test.assertEquals
 import kotlin.test.fail
 
@@ -79,5 +82,16 @@ internal class GradleProject private constructor(private val project: File) {
             .resolve("build/kotools-samples/inlined/Temporary.kt")
             .readText()
         assertEquals(expectedKotlin, actual)
+    }
+
+    fun assertInlinedMainSourceJar(expectedKotlin: String) {
+        val jarPath: Path = this.project
+            .resolve("build/libs/${this.project.name}-sources.jar")
+            .toPath()
+        FileSystems.newFileSystem(jarPath).use {
+            val actual: String = it.getPath("main/Temporary.kt")
+                .readText()
+            assertEquals(expectedKotlin, actual)
+        }
     }
 }

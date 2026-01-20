@@ -4,10 +4,13 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.plugins.ExtensionContainer
+import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
 /**
@@ -31,6 +34,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
  * - Checks the existence of samples referenced from main sources (see
  * [CheckSampleReferencesTask]).
  * - Inlines samples referenced from main sources (see [InlineSamplesTask]).
+ * - Integrates main sources with inlined samples in sources JAR.
  */
 public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
     /** Applies this plugin to the specified [project]. */
@@ -38,7 +42,8 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
         project.pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
             val sampleDirectory: Directory =
                 project.layout.projectDirectory.dir("src/sample/kotlin")
-            project.extensions.kotlin(sampleDirectory)
+            val kotlin: KotlinJvmProjectExtension =
+                project.extensions.kotlin(sampleDirectory)
             val checkKotlinSamples: TaskProvider<CheckKotlinSamplesTask> =
                 project.tasks.checkKotlinSamples(sampleDirectory)
             val extractKotlinSamples: TaskProvider<ExtractKotlinSamplesTask> =
@@ -46,16 +51,20 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
             val checkSampleReferences: TaskProvider<CheckSampleReferencesTask> =
                 project.tasks.checkSampleReferences(extractKotlinSamples)
             project.tasks.check(checkSampleReferences)
-            project.tasks.inlineSamples(checkSampleReferences)
+            val inlineSamples: TaskProvider<InlineSamplesTask> =
+                project.tasks.inlineSamples(checkSampleReferences)
+            project.tasks.jarTasks(kotlin, inlineSamples)
         }
 
-    private fun ExtensionContainer.kotlin(sampleDirectory: Directory) {
-        this.getByType<KotlinJvmProjectExtension>()
-            .sourceSets
-            .named("test")
+    private fun ExtensionContainer.kotlin(
+        sampleDirectory: Directory
+    ): KotlinJvmProjectExtension {
+        val kotlin: KotlinJvmProjectExtension = this.getByType()
+        kotlin.sourceSets.named("test")
             .get()
             .kotlin
             .srcDir(sampleDirectory)
+        return kotlin
     }
 
     private fun TaskContainer.checkKotlinSamples(
@@ -122,9 +131,12 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
 
     private fun TaskContainer.inlineSamples(
         checkSampleReferences: TaskProvider<CheckSampleReferencesTask>
-    ): Unit = this.register<InlineSamplesTask>("inlineSamples")
-        .configure {
-            this.description = "Inlines Kotlin samples referenced from sources."
+    ): TaskProvider<InlineSamplesTask> {
+        val task: TaskProvider<InlineSamplesTask> =
+            this.register<InlineSamplesTask>("inlineSamples")
+        task.configure {
+            this.description =
+                "Inlines Kotlin samples referenced from sources."
             this.group = "Kotools Samples"
             this.dependsOn(checkSampleReferences)
 
@@ -139,5 +151,24 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
             // Output:
             this.project.layout.buildDirectory.dir("kotools-samples/inlined")
                 .let(this.outputDirectory::set)
+        }
+        return task
+    }
+
+    private fun TaskContainer.jarTasks(
+        kotlin: KotlinJvmProjectExtension,
+        inlineSamples: TaskProvider<InlineSamplesTask>
+    ): Unit = this.withType<Jar>()
+        .named { it.endsWith("sourcesJar", ignoreCase = true) }
+        .configureEach {
+            this.dependsOn(inlineSamples)
+            this.doFirst {
+                kotlin.sourceSets.named(SourceSet.MAIN_SOURCE_SET_NAME)
+                    .configure {
+                        this@doFirst.project.layout.buildDirectory
+                            .dir("kotools-samples/inlined")
+                            .let { this.kotlin.setSrcDirs(listOf(it)) }
+                    }
+            }
         }
 }
