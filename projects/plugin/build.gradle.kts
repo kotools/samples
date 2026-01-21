@@ -28,6 +28,7 @@ gradlePlugin {
 }
 
 dependencies {
+    this.implementation(libs.dokka.gradle.plugin)
     this.implementation(libs.kotlin.gradle.plugin)
     this.implementation(libs.kotlinx.ast)
 

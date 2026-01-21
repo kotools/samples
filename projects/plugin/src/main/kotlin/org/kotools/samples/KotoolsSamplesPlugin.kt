@@ -4,6 +4,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.plugins.ExtensionContainer
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
@@ -11,6 +12,7 @@ import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.dokka.gradle.AbstractDokkaLeafTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
 /**
@@ -54,6 +56,7 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
             val inlineSamples: TaskProvider<InlineSamplesTask> =
                 project.tasks.inlineSamples(checkSampleReferences)
             project.tasks.jarTasks(kotlin, inlineSamples)
+            project.tasks.dokka(inlineSamples)
         }
 
     private fun ExtensionContainer.kotlin(
@@ -171,4 +174,15 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
                     }
             }
         }
+
+    private fun TaskContainer.dokka(
+        inlineSamples: TaskProvider<InlineSamplesTask>
+    ): Unit = this.withType<AbstractDokkaLeafTask>().configureEach {
+        this.dokkaSourceSets.named(SourceSet.MAIN_SOURCE_SET_NAME).configure {
+            val source: Provider<Directory> = inlineSamples.flatMap(
+                InlineSamplesTask::outputDirectory
+            )
+            this.sourceRoots.setFrom(source)
+        }
+    }
 }
