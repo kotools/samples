@@ -12,19 +12,19 @@ import java.io.File
 import java.io.FileNotFoundException
 
 /**
- * Task that checks the existence of samples referenced from
- * [sources][sourceDirectory].
+ * Task that checks the existence of [samples][extractedSampleDirectory]
+ * referenced from [sources][sourceDirectory].
  */
 @CacheableTask
 public abstract class CheckSampleReferencesTask internal constructor() :
     DefaultTask() {
-    /** Directory containing sources referencing Kotlin samples. */
+    /** Directory containing original sources referencing samples. */
     @get:InputDirectory
     @get:PathSensitive(PathSensitivity.NONE)
     public abstract val sourceDirectory: DirectoryProperty
 
     /**
-     * Directory containing extracted Kotlin samples, usually set from
+     * Directory containing extracted samples, usually set from
      * [ExtractKotlinSamplesTask.outputDirectory].
      */
     @get:InputDirectory
