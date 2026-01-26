@@ -13,27 +13,26 @@ import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
 import java.io.File
 
 /**
- * Task that inlines samples referenced from sources.
- *
- * - Inputs: [sourceDirectory] and [extractedSampleDirectory].
- * - Output: [outputDirectory].
+ * Task producing main sources into the [output][outputDirectory] directory,
+ * with inlined [samples][extractedSampleDirectory] referenced from original
+ * [sources][sourceDirectory].
  */
 @CacheableTask
 public abstract class InlineSamplesTask internal constructor() : DefaultTask() {
-    /** Directory containing sources referencing Kotlin samples. */
+    /** Directory containing original sources referencing samples. */
     @get:InputDirectory
     @get:PathSensitive(PathSensitivity.NONE)
     public abstract val sourceDirectory: DirectoryProperty
 
     /**
-     * Directory containing extracted Kotlin samples, usually set from
+     * Directory containing extracted samples, usually set from
      * [ExtractKotlinSamplesTask.outputDirectory].
      */
     @get:InputDirectory
     @get:PathSensitive(PathSensitivity.NONE)
     public abstract val extractedSampleDirectory: DirectoryProperty
 
-    /** Directory that will contain sources with inlined Kotlin samples. */
+    /** Directory that will contain sources with inlined samples. */
     @get:OutputDirectory
     public abstract val outputDirectory: DirectoryProperty
 
