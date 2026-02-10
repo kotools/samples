@@ -132,7 +132,7 @@ This project is licensed under the [MIT License](LICENSE.txt).
 [gradle-badge]: https://img.shields.io/badge/Gradle-v8.12.1-blue
 [kotlin]: https://kotlinlang.org
 [kotlin-badge]: https://img.shields.io/badge/Kotlin-v2.0.21-blue?logo=kotlin
-[kotools-samples-badge]: https://img.shields.io/gradle-plugin-portal/v/org.kotools.samples.jvm?label=Latest
+[kotools-samples-badge]: https://img.shields.io/github/v/release/kotools/samples?label=Latest
 [kotools-samples-contributors]: https://github.com/kotools/samples/graphs/contributors
 [kotools-samples-plugin]: https://plugins.gradle.org/plugin/org.kotools.samples
 [kotools-samples-releases]: https://github.com/kotools/samples/releases
