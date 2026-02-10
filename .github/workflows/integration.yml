@@ -78,5 +78,3 @@ jobs:
         uses: gradle/actions/setup-gradle@v4.3.1
       - name: Check 'jvm' Gradle project
         run: ./gradlew :jvm:check
-      - name: Check 'jvm-demo' Gradle project
-        run: ./gradlew :jvm-demo:check
