@@ -6,9 +6,9 @@
 [![Dokka][dokka-badge]][dokka]
 
 **Kotools Samples** is a [Gradle] plugin designed to help [Kotlin] library
-authors integrate **read-only, non-editable samples** into their documentation
-using [Dokka]. It addresses a limitation in [Dokka], which does not allow making
-code samples **non-editable** or **non-executable**.
+authors integrate **read-only samples** into their documentation. It addresses a
+limitation in [Dokka], which does not allow making code samples **non-editable**
+or **non-executable**.
 
 ## ⭐️ Key Features
 
