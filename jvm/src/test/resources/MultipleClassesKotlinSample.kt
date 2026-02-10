@@ -1,2 +1,0 @@
-class FirstClass
-class SecondClass
