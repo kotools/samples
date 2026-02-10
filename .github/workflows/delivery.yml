@@ -1,0 +1,28 @@
+name: Delivery
+on:
+  workflow_dispatch:
+jobs:
+  delivery:
+    name: Delivery
+    runs-on: macos-14
+    env:
+      GPG_PASSWORD: ${{ secrets.GPG_PASSWORD }}
+      GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+      GRADLE_CACHE_CLEANUP: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+      - name: Setup Java
+        uses: actions/setup-java@v4.7.0
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4.3.1
+      - name: Publish sources
+        run: ./gradlew :plugin:publishSources
+      - name: Archive distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: distribution
+          path: projects/plugin/build/distributions/*.zip
