@@ -36,9 +36,11 @@ the [latest version](#kotools-samples) or by another one available in the
 [changelog](CHANGELOG.md).
 
 ```kotlin
-plugins {
-  id("org.kotools.samples") version "$version"
-}
+// Plugin dependency:
+plugins { id("org.kotools.samples") version "$version" }
+
+// Library dependency:
+dependency { implementation("org.kotools:samples-gradle-plugin:$version") }
 ```
 
 > The `org.kotools.samples.jvm` plugin is deprecated (see
