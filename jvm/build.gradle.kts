@@ -1,5 +1,3 @@
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
@@ -22,7 +20,6 @@ kotlin {
     }
 }
 
-@Suppress("UnstableApiUsage")
 gradlePlugin {
     vcsUrl = "https://github.com/kotools/samples"
     website = vcsUrl
@@ -43,22 +40,9 @@ signing {
 
 dependencies {
     implementation(libs.kotlin.gradle.plugin)
-    implementation(libs.dokka.gradle.plugin)
-
-    testImplementation(libs.kotlin.test)
 }
 
-tasks {
-    withType<ValidatePlugins>().configureEach {
-        failOnWarning.set(true)
-        enableStricterValidation.set(true)
-    }
-    withType<AbstractTestTask>().configureEach {
-        testLogging {
-            events = setOf(TestLogEvent.FAILED)
-            exceptionFormat = TestExceptionFormat.FULL
-            showStackTraces = false
-        }
-    }
-    test.configure(Test::useJUnitPlatform)
+tasks.withType<ValidatePlugins>().configureEach {
+    failOnWarning.set(true)
+    enableStricterValidation.set(true)
 }
