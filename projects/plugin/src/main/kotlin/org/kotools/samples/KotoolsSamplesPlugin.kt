@@ -3,10 +3,8 @@ package org.kotools.samples
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
-import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceSet
-import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.internal.extensions.core.extra
 import org.gradle.jvm.tasks.Jar
@@ -46,137 +44,147 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
         project.pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
             val sampleDirectory: Directory =
                 project.layout.projectDirectory.dir("src/sample/kotlin")
-            val kotlin: KotlinJvmProjectExtension =
-                project.extensions.kotlin(sampleDirectory)
+            // New tasks:
             val checkKotlinSamples: TaskProvider<CheckKotlinSamplesTask> =
-                project.tasks.checkKotlinSamples(sampleDirectory)
+                checkKotlinSamplesTask(project, sampleDirectory)
             val extractKotlinSamples: TaskProvider<ExtractKotlinSamplesTask> =
-                project.tasks.extractKotlinSamples(checkKotlinSamples)
+                extractKotlinSamplesTask(project, checkKotlinSamples)
             val checkSampleReferences: TaskProvider<CheckSampleReferencesTask> =
-                project.tasks.checkSampleReferences(extractKotlinSamples)
-            project.tasks.check(checkSampleReferences)
+                checkSampleReferencesTask(project, extractKotlinSamples)
             val inlineSamples: TaskProvider<InlineSamplesTask> =
-                project.tasks.inlineSamples(checkSampleReferences)
-            project.tasks.jarTasks(kotlin, inlineSamples)
+                inlineSamplesTask(project, checkSampleReferences)
+            // Kotlin/JVM integration:
+            val kotlin: KotlinJvmProjectExtension =
+                configureKotlinJvmExtension(project, sampleDirectory)
+            configureCheckTask(project, checkSampleReferences)
+            configureSourcesJarTasks(project, kotlin, inlineSamples)
+            // Dokka integration:
             configureDokka(project, inlineSamples)
         }
-
-    private fun ExtensionContainer.kotlin(
-        sampleDirectory: Directory
-    ): KotlinJvmProjectExtension {
-        val kotlin: KotlinJvmProjectExtension = this.getByType()
-        kotlin.sourceSets.named("test")
-            .get()
-            .kotlin
-            .srcDir(sampleDirectory)
-        return kotlin
-    }
-
-    private fun TaskContainer.checkKotlinSamples(
-        sourceDirectory: Directory
-    ): TaskProvider<CheckKotlinSamplesTask> {
-        val task: TaskProvider<CheckKotlinSamplesTask> =
-            this.register<CheckKotlinSamplesTask>("checkKotlinSamples")
-        task.configure {
-            this.description =
-                "Checks the content of Kotlin samples from sources."
-            this.group = "Kotools Samples"
-
-            // Inputs:
-            this.sourceDirectory.set(sourceDirectory)
-        }
-        return task
-    }
-
-    private fun TaskContainer.extractKotlinSamples(
-        checkKotlinSamples: TaskProvider<CheckKotlinSamplesTask>
-    ): TaskProvider<ExtractKotlinSamplesTask> {
-        val task: TaskProvider<ExtractKotlinSamplesTask> =
-            this.register<ExtractKotlinSamplesTask>("extractKotlinSamples")
-        task.configure {
-            this.description = "Extracts Kotlin samples from sources."
-            this.group = "Kotools Samples"
-            this.dependsOn(checkKotlinSamples)
-
-            // Inputs:
-            checkKotlinSamples.flatMap(CheckKotlinSamplesTask::sourceDirectory)
-                .let(this.sourceDirectory::set)
-
-            // Outputs:
-            this.project.layout.buildDirectory.dir("kotools-samples/extracted")
-                .let(this.outputDirectory::set)
-        }
-        return task
-    }
-
-    private fun TaskContainer.checkSampleReferences(
-        extractKotlinSamples: TaskProvider<ExtractKotlinSamplesTask>
-    ): TaskProvider<CheckSampleReferencesTask> {
-        val task: TaskProvider<CheckSampleReferencesTask> =
-            this.register<CheckSampleReferencesTask>("checkSampleReferences")
-        task.configure {
-            this.description =
-                "Checks the existence of samples referenced from sources."
-            this.group = "Kotools Samples"
-
-            // Inputs:
-            this.project.layout.projectDirectory.dir("src/main/kotlin")
-                .let(this.sourceDirectory::set)
-            extractKotlinSamples
-                .flatMap(ExtractKotlinSamplesTask::outputDirectory)
-                .let(this.extractedSampleDirectory::set)
-        }
-        return task
-    }
-
-    private fun TaskContainer.check(
-        checkSampleReferences: TaskProvider<CheckSampleReferencesTask>
-    ): Unit = this.named("check")
-        .configure { this.dependsOn(checkSampleReferences) }
-
-    private fun TaskContainer.inlineSamples(
-        checkSampleReferences: TaskProvider<CheckSampleReferencesTask>
-    ): TaskProvider<InlineSamplesTask> {
-        val task: TaskProvider<InlineSamplesTask> =
-            this.register<InlineSamplesTask>("inlineSamples")
-        task.configure {
-            this.description =
-                "Inlines Kotlin samples referenced from sources."
-            this.group = "Kotools Samples"
-            this.dependsOn(checkSampleReferences)
-
-            // Inputs:
-            checkSampleReferences
-                .flatMap(CheckSampleReferencesTask::sourceDirectory)
-                .let(this.sourceDirectory::set)
-            checkSampleReferences
-                .flatMap(CheckSampleReferencesTask::extractedSampleDirectory)
-                .let(this.extractedSampleDirectory::set)
-
-            // Output:
-            this.project.layout.buildDirectory.dir("kotools-samples/inlined")
-                .let(this.outputDirectory::set)
-        }
-        return task
-    }
-
-    private fun TaskContainer.jarTasks(
-        kotlin: KotlinJvmProjectExtension,
-        inlineSamples: TaskProvider<InlineSamplesTask>
-    ): Unit = this.withType<Jar>()
-        .named { it.endsWith("sourcesJar", ignoreCase = true) }
-        .configureEach {
-            this.dependsOn(inlineSamples)
-            this.doFirst {
-                kotlin.sourceSets.named(SourceSet.MAIN_SOURCE_SET_NAME)
-                    .configure {
-                        this@doFirst.project.layout.buildDirectory
-                            .dir("kotools-samples/inlined")
-                            .let { this.kotlin.setSrcDirs(listOf(it)) }
-                    }
-            }
-        }
 }
+
+// --------------------------------- New tasks ---------------------------------
+
+private fun checkKotlinSamplesTask(
+    project: Project,
+    sourceDirectory: Directory
+): TaskProvider<CheckKotlinSamplesTask> {
+    val task: TaskProvider<CheckKotlinSamplesTask> =
+        project.tasks.register<CheckKotlinSamplesTask>("checkKotlinSamples")
+    task.configure {
+        this.description = "Checks the content of Kotlin samples from sources."
+        this.group = "Kotools Samples"
+
+        // Inputs:
+        this.sourceDirectory.set(sourceDirectory)
+    }
+    return task
+}
+
+private fun extractKotlinSamplesTask(
+    project: Project,
+    checkKotlinSamples: TaskProvider<CheckKotlinSamplesTask>
+): TaskProvider<ExtractKotlinSamplesTask> {
+    val task: TaskProvider<ExtractKotlinSamplesTask> =
+        project.tasks.register<ExtractKotlinSamplesTask>("extractKotlinSamples")
+    task.configure {
+        this.description = "Extracts Kotlin samples from sources."
+        this.group = "Kotools Samples"
+        this.dependsOn(checkKotlinSamples)
+
+        // Inputs:
+        checkKotlinSamples.flatMap(CheckKotlinSamplesTask::sourceDirectory)
+            .let(this.sourceDirectory::set)
+
+        // Outputs:
+        this.project.layout.buildDirectory.dir("kotools-samples/extracted")
+            .let(this.outputDirectory::set)
+    }
+    return task
+}
+
+private fun checkSampleReferencesTask(
+    project: Project,
+    extractKotlinSamples: TaskProvider<ExtractKotlinSamplesTask>
+): TaskProvider<CheckSampleReferencesTask> {
+    val task: TaskProvider<CheckSampleReferencesTask> = project.tasks
+        .register<CheckSampleReferencesTask>("checkSampleReferences")
+    task.configure {
+        this.description =
+            "Checks the existence of samples referenced from sources."
+        this.group = "Kotools Samples"
+
+        // Inputs:
+        this.project.layout.projectDirectory.dir("src/main/kotlin")
+            .let(this.sourceDirectory::set)
+        extractKotlinSamples.flatMap(ExtractKotlinSamplesTask::outputDirectory)
+            .let(this.extractedSampleDirectory::set)
+    }
+    return task
+}
+
+private fun inlineSamplesTask(
+    project: Project,
+    checkSampleReferences: TaskProvider<CheckSampleReferencesTask>
+): TaskProvider<InlineSamplesTask> {
+    val task: TaskProvider<InlineSamplesTask> =
+        project.tasks.register<InlineSamplesTask>("inlineSamples")
+    task.configure {
+        this.description = "Inlines Kotlin samples referenced from sources."
+        this.group = "Kotools Samples"
+        this.dependsOn(checkSampleReferences)
+
+        // Inputs:
+        checkSampleReferences
+            .flatMap(CheckSampleReferencesTask::sourceDirectory)
+            .let(this.sourceDirectory::set)
+        checkSampleReferences
+            .flatMap(CheckSampleReferencesTask::extractedSampleDirectory)
+            .let(this.extractedSampleDirectory::set)
+
+        // Output:
+        this.project.layout.buildDirectory.dir("kotools-samples/inlined")
+            .let(this.outputDirectory::set)
+    }
+    return task
+}
+
+// -------------------------- Kotlin/JVM integration ---------------------------
+
+private fun configureKotlinJvmExtension(
+    project: Project,
+    sampleDirectory: Directory
+): KotlinJvmProjectExtension {
+    val kotlin: KotlinJvmProjectExtension = project.extensions.getByType()
+    kotlin.sourceSets.named(SourceSet.TEST_SOURCE_SET_NAME)
+        .get()
+        .kotlin
+        .srcDir(sampleDirectory)
+    return kotlin
+}
+
+private fun configureCheckTask(
+    project: Project,
+    checkSampleReferences: TaskProvider<CheckSampleReferencesTask>
+): Unit = project.tasks.named("check")
+    .configure { this.dependsOn(checkSampleReferences) }
+
+private fun configureSourcesJarTasks(
+    project: Project,
+    kotlin: KotlinJvmProjectExtension,
+    inlineSamples: TaskProvider<InlineSamplesTask>
+): Unit = project.tasks.withType<Jar>()
+    .named { it.endsWith("sourcesJar", ignoreCase = true) }
+    .configureEach {
+        this.dependsOn(inlineSamples)
+        this.doFirst {
+            kotlin.sourceSets.named(SourceSet.MAIN_SOURCE_SET_NAME)
+                .configure {
+                    project.layout.buildDirectory.dir("kotools-samples/inlined")
+                        .let { this.kotlin.setSrcDirs(listOf(it)) }
+                }
+        }
+    }
 
 // ----------------------------- Dokka integration -----------------------------
 
