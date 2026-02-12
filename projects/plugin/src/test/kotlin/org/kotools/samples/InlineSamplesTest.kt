@@ -38,6 +38,8 @@ class InlineSamplesTest {
                  * val result: Int = addition(x = 1, y = 2)
                  * check(result == 3)
                  * ```
+                 *
+                 * _(sample integrated with 💚 by [Kotools Samples](https://github.com/kotools/samples))_
                  */
                 fun addition(x: Int, y: Int): Int = x + y
             """.trimIndent()
@@ -78,6 +80,8 @@ class InlineSamplesTest {
                  * val result: Int = addition(x = 1, y = 2)
                  * check(result == 3)
                  * ```
+                 *
+                 * _(sample integrated with 💚 by [Kotools Samples](https://github.com/kotools/samples))_
                  */
                 fun addition(x: Int, y: Int): Int = x + y
             """.trimIndent()
@@ -124,6 +128,8 @@ class InlineSamplesTest {
                  * val result: Int = addition(x = 1, y = 2)
                  * check(result == 3)
                  * ```
+                 *
+                 * _(sample integrated with 💚 by [Kotools Samples](https://github.com/kotools/samples))_
                  */
                 fun addition(x: Int, y: Int): Int = x + y
 
@@ -132,6 +138,8 @@ class InlineSamplesTest {
                  * val result: Int = subtraction(x = 3, y = 2)
                  * check(result == 1)
                  * ```
+                 *
+                 * _(sample integrated with 💚 by [Kotools Samples](https://github.com/kotools/samples))_
                  */
                 fun subtraction(x: Int, y: Int): Int = x - y
             """.trimIndent()

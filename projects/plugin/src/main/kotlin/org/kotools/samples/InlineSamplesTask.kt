@@ -83,8 +83,19 @@ public abstract class InlineSamplesTask internal constructor() : DefaultTask() {
         val file: File = this.extractedSampleDirectory.file(path)
             .get()
             .asFile
-        return file.useLines {
+        val sampleContent: String = file.useLines {
             it.joinToString(separator = "\n", transform = transform)
         }
+        val emptyLine: String = transform("")
+            .trimEnd()
+        val promotionalText: String = transform(
+            "_(sample integrated with 💚 by " +
+                    "[Kotools Samples](https://github.com/kotools/samples))_"
+        )
+        return """
+            |$sampleContent
+            |$emptyLine
+            |$promotionalText
+        """.trimMargin()
     }
 }

@@ -69,6 +69,8 @@ class KotlinJvmTest {
                  * val result: Int = addition(x = 1, y = 2)
                  * check(result == 3)
                  * ```
+                 *
+                 * _(sample integrated with 💚 by [Kotools Samples](https://github.com/kotools/samples))_
                  */
                 fun addition(x: Int, y: Int): Int = x + y
             """.trimIndent()
