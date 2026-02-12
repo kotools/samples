@@ -8,11 +8,13 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.internal.extensions.core.extra
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.dokka.gradle.AbstractDokkaLeafTask
+import org.jetbrains.dokka.gradle.DokkaExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
 /**
@@ -56,7 +58,7 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
             val inlineSamples: TaskProvider<InlineSamplesTask> =
                 project.tasks.inlineSamples(checkSampleReferences)
             project.tasks.jarTasks(kotlin, inlineSamples)
-            project.tasks.dokka(inlineSamples)
+            configureDokka(project, inlineSamples)
         }
 
     private fun ExtensionContainer.kotlin(
@@ -174,15 +176,44 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
                     }
             }
         }
+}
 
-    private fun TaskContainer.dokka(
-        inlineSamples: TaskProvider<InlineSamplesTask>
-    ): Unit = this.withType<AbstractDokkaLeafTask>().configureEach {
-        this.dokkaSourceSets.named(SourceSet.MAIN_SOURCE_SET_NAME).configure {
-            val source: Provider<Directory> = inlineSamples.flatMap(
-                InlineSamplesTask::outputDirectory
-            )
+// ----------------------------- Dokka integration -----------------------------
+
+private fun configureDokka(
+    project: Project,
+    inlineSamples: TaskProvider<InlineSamplesTask>
+): Unit = project.pluginManager.withPlugin("org.jetbrains.dokka") {
+    if (isDokkaV2Enabled(project)) configureDokkaV2(project, inlineSamples)
+    else configureDokkaV1(project, inlineSamples)
+}
+
+private fun isDokkaV2Enabled(project: Project): Boolean {
+    val property = "org.jetbrains.dokka.experimental.gradle.pluginMode"
+    val values: List<String> = listOf("V2Enabled", "V2EnabledWithHelpers")
+    return project.extra.has(property) && project.extra[property] in values
+}
+
+private fun configureDokkaV1(
+    project: Project,
+    inlineSamples: TaskProvider<InlineSamplesTask>
+): Unit = project.tasks.withType<AbstractDokkaLeafTask>().configureEach {
+    this.dokkaSourceSets.named(SourceSet.MAIN_SOURCE_SET_NAME)
+        .configure {
+            val source: Provider<Directory> =
+                inlineSamples.flatMap(InlineSamplesTask::outputDirectory)
             this.sourceRoots.setFrom(source)
         }
-    }
 }
+
+private fun configureDokkaV2(
+    project: Project,
+    inlineSamples: TaskProvider<InlineSamplesTask>
+): Unit = project.extensions.getByType<DokkaExtension>()
+    .dokkaSourceSets
+    .named(SourceSet.MAIN_SOURCE_SET_NAME)
+    .configure {
+        val source: Provider<Directory> =
+            inlineSamples.flatMap(InlineSamplesTask::outputDirectory)
+        this.sourceRoots.setFrom(source)
+    }
