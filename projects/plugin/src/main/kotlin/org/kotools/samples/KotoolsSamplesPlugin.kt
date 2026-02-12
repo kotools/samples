@@ -44,7 +44,6 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
         project.pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
             val sampleDirectory: Directory =
                 project.layout.projectDirectory.dir("src/sample/kotlin")
-            // New tasks:
             val checkKotlinSamples: TaskProvider<CheckKotlinSamplesTask> =
                 checkKotlinSamplesTask(project, sampleDirectory)
             val extractKotlinSamples: TaskProvider<ExtractKotlinSamplesTask> =
@@ -53,12 +52,10 @@ public class KotoolsSamplesPlugin internal constructor() : Plugin<Project> {
                 checkSampleReferencesTask(project, extractKotlinSamples)
             val inlineSamples: TaskProvider<InlineSamplesTask> =
                 inlineSamplesTask(project, checkSampleReferences)
-            // Kotlin/JVM integration:
-            val kotlin: KotlinJvmProjectExtension =
-                configureKotlinJvmExtension(project, sampleDirectory)
-            configureCheckTask(project, checkSampleReferences)
-            configureSourcesJarTasks(project, kotlin, inlineSamples)
-            // Dokka integration:
+            // Integrations:
+            configureKotlinJvm(
+                project, sampleDirectory, checkSampleReferences, inlineSamples
+            )
             configureDokka(project, inlineSamples)
         }
 }
@@ -150,6 +147,18 @@ private fun inlineSamplesTask(
 }
 
 // -------------------------- Kotlin/JVM integration ---------------------------
+
+private fun configureKotlinJvm(
+    project: Project,
+    sampleDirectory: Directory,
+    checkSampleReferences: TaskProvider<CheckSampleReferencesTask>,
+    inlineSamples: TaskProvider<InlineSamplesTask>
+) {
+    val kotlin: KotlinJvmProjectExtension =
+        configureKotlinJvmExtension(project, sampleDirectory)
+    configureCheckTask(project, checkSampleReferences)
+    configureSourcesJarTasks(project, kotlin, inlineSamples)
+}
 
 private fun configureKotlinJvmExtension(
     project: Project,
