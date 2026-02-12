@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
   of member function with empty body, this plugin extracts a placeholder. It
   also supports sample integration into single-line KDoc ([#42]).
 - Promotional text after inlined samples ([#44]).
+- Java compatibility documentation ([#47]).
 
 ### 🗑️ Deprecated
 
@@ -31,6 +32,7 @@ All notable changes to this project will be documented in this file.
 
 [#42]: https://github.com/kotools/samples/issues/42
 [#44]: https://github.com/kotools/samples/issues/44
+[#47]: https://github.com/kotools/samples/issues/47
 
 ## 🔖 Releases
 
