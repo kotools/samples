@@ -3,6 +3,7 @@
 [![Latest][kotools-samples-badge]][kotools-samples-releases]
 [![Gradle][gradle-badge]][gradle]
 [![Kotlin][kotlin-badge]][kotlin]
+[![Java][java-badge]][java]
 [![Dokka][dokka-badge]][dokka]
 
 **Kotools Samples** is a [Gradle] plugin designed to help [Kotlin] library
@@ -132,6 +133,8 @@ This project is licensed under the [MIT License](LICENSE.txt).
 [dokka-badge]: https://img.shields.io/badge/Dokka-v2.0.0-blue
 [gradle]: https://gradle.org
 [gradle-badge]: https://img.shields.io/badge/Gradle-v8.12.1-blue?logo=gradle
+[java]: https://www.java.com
+[java-badge]: https://img.shields.io/badge/Java-v17-blue
 [kotlin]: https://kotlinlang.org
 [kotlin-badge]: https://img.shields.io/badge/Kotlin-v2.0.21-blue?logo=kotlin
 [kotools-samples-badge]: https://img.shields.io/github/v/release/kotools/samples?label=Latest
