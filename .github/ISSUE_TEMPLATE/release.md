@@ -14,8 +14,7 @@ Issues of the milestone corresponding to this version should be done before reso
 
 - [ ] 🔖 Set Gradle project's version to this new one.
 - [ ] 📄 Check copyright notice in [license].
-- [ ] 🚀 Run [delivery workflow] for publishing sources.
-- [ ] 🚀 Release distribution on [Maven Central].
+- [ ] 🚀 Run [delivery workflow] for publishing sources, and release distribution on [Maven Central].
 - [ ] 🚀 Run [deployment workflow] for publishing Gradle plugin.
 - [ ] 📝 Move unreleased changelog to GitHub release draft, and add new release in changelog.
 - [ ] 🔖 Publish the GitHub release.
