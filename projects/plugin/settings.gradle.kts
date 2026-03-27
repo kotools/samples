@@ -1,4 +1,4 @@
-rootProject.name = "samples-gradle-plugin"
+rootProject.name = "plugin"
 
 pluginManagement.includeBuild("../conventions")
 
