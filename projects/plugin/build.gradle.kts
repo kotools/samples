@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "org.kotools"
-version = "0.5.0-SNAPSHOT"
+version = "0.5.0"
 
 private val organizationName: String = "Kotools"
 private val organizationGitHub: String = "https://github.com/kotools"
