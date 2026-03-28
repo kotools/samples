@@ -100,20 +100,28 @@ functions, even from multiple classes located in a single file. In case of empty
 body, it extracts a placeholder indicating that the sample is not yet
 implemented.
 
+Top-level functions being incompatible with the `@Test` annotation from Kotlin,
+they are not supported. This is for ensuring that all samples are testable.
+
 ```kotlin
 package samples
 
+import kotlin.test.Test
+
 class FirstSample {
+    @Test
     fun body() {
         val x = 1
         val y = 2
         check(x + y == 3)
     }
 
+    @Test
     fun expressionBody(): Unit = check(1 + 2 == 3)
 }
 
 class SecondSample { // Multiple classes in single file is supported.
+    @Test
     fun empty() {} // Placeholder: TODO("Sample is not yet implemented.")
 }
 ```
