@@ -95,9 +95,9 @@ integrating them into the documentation.
 
 ### 🧪 Sample sources
 
-This Gradle plugin is able to extract the body and the expression body of member
-functions, even from multiple classes located in a single file. In case of empty
-body, it extracts a placeholder indicating that the sample is not yet
+This Gradle plugin is able to extract the body of member functions, which can be
+an expression body, even from multiple classes located in the same file. In case
+of empty body, it extracts a placeholder indicating that the sample is not yet
 implemented.
 
 Top-level functions being incompatible with the `@Test` annotation from Kotlin,
