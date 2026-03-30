@@ -27,6 +27,7 @@ gradlePlugin {
             "Plugin that inlines read-only Kotlin samples into documentation."
         this.id = "org.kotools.${this.name}"
         this.implementationClass = "${this.id}.KotoolsSamplesPlugin"
+        this.tags = setOf("kotlin", "dokka", "documentation")
     }
 }
 
