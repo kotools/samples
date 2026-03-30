@@ -18,10 +18,9 @@ Issues of the milestone corresponding to this version should be done before reso
 - [ ] 📝 Move unreleased changelog to GitHub release draft, and add new release in changelog.
 - [ ] 🔖 Publish the GitHub release.
 - [ ] 🔖 Set Gradle project's version to the next snapshot.
-- [ ] 📝 Announce this release on [Reddit], [Slack] and [Twitter].
+- [ ] 📝 Announce this release on [Slack] and [Reddit].
 
 [deployment workflow]: https://github.com/kotools/samples/actions/workflows/deployment.yml
 [license]: https://github.com/kotools/samples/blob/main/LICENSE.txt
 [reddit]: https://www.reddit.com/r/Kotlin
 [slack]: https://kotlinlang.slack.com/archives/C05H0L1LD25
-[twitter]: https://twitter.com/kotools_org
