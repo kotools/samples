@@ -2,6 +2,7 @@ plugins {
     this.`kotlin-dsl`
     this.signing
     this.alias(libs.plugins.kotlinx.bcv)
+    this.alias(libs.plugins.gradle.plugin.publish)
     this.alias(libs.plugins.conventions.kotlin.jvm)
 }
 
