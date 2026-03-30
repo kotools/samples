@@ -16,35 +16,17 @@ All notable changes to this project will be documented in this file.
 
 ## 🚧 Unreleased
 
-### ✨ Added
-
-- New `org.kotools.samples` Gradle plugin, supporting extraction from Kotlin
-  file with multiple classes, and member functions with expression body. In case
-  of member function with empty body, this plugin extracts a placeholder. It
-  also supports sample integration into single-line KDoc ([#42]).
-- Promotional text after inlined samples ([#44]).
-- Dokka Gradle Plugin v2 support ([#49]).
-- Java compatibility documentation ([#47]).
-
-### 🗑️ Deprecated
-
-- The `org.kotools.samples.jvm` Gradle plugin, for using `org.kotools.samples`
-  instead ([#42]).
-
-[#42]: https://github.com/kotools/samples/issues/42
-[#44]: https://github.com/kotools/samples/issues/44
-[#47]: https://github.com/kotools/samples/issues/47
-[#49]: https://github.com/kotools/samples/issues/49
-
 ## 🔖 Releases
 
 | Version | Release date |
 |---------|--------------|
+| [0.5.0] | 2026-03-30   |
 | [0.4.0] | 2025-07-31   |
 | [0.3.0] | 2025-03-09   |
 | [0.2.0] | 2025-02-03   |
 | [0.1.0] | 2024-11-17   |
 
+[0.5.0]: https://github.com/kotools/samples/releases/tag/0.5.0
 [0.4.0]: https://github.com/kotools/samples/releases/tag/0.4.0
 [0.3.0]: https://github.com/kotools/samples/releases/tag/0.3.0
 [0.2.0]: https://github.com/kotools/samples/releases/tag/0.2.0
