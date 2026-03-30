@@ -20,6 +20,7 @@ kotlin.coreLibrariesVersion = libs.versions.kotlin.get()
 
 gradlePlugin {
     this.vcsUrl.set("https://github.com/kotools/samples")
+    this.website.set(this.vcsUrl)
     this.plugins.register("samples").configure {
         this.displayName = "Kotools Samples"
         this.description =
