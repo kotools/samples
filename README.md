@@ -32,11 +32,29 @@ or **non-executable**.
 ## 🛠️ Installation
 
 For adding Kotools Samples to your Kotlin/JVM project, it is recommended to use
-the [Gradle] plugins DSL in [Kotlin]. Just replace the `$version` variable by
-the [latest version](#kotools-samples) or by another one available in the
-[changelog](CHANGELOG.md).
+the [Gradle] plugins DSL in [Kotlin].
+
+First, configure your plugin repositories to use Gradle Plugin Portal and
+JitPack.
 
 ```kotlin
+// settings.gradle.kts
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven("https://jitpack.io")
+    }
+}
+```
+
+Then, add Kotools Samples as a plugin dependency. Replace the `$version`
+variable by the [latest version](#kotools-samples) or by another one available
+in the [changelog](CHANGELOG.md).
+
+```kotlin
+// build.gradle.kts
+
 plugins {
     id("org.kotools.samples") version "$version"
 }
@@ -122,7 +140,8 @@ class FirstSample {
 
 class SecondSample { // Multiple classes in single file is supported.
     @Test
-    fun empty() {} // Placeholder: TODO("Sample is not yet implemented.")
+    fun empty() {
+    } // Placeholder: TODO("Sample is not yet implemented.")
 }
 ```
 
